@@ -1,0 +1,38 @@
+.table-header {
+    padding: 0px 20px;
+}
+
+.table-header .btn,
+.table-header .icon-btn,
+.table-header .dropdown .dropdown-toggle {
+    background-color: white !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: inherit !important;
+}
+
+.table-header .btn:hover,
+.table-header .btn:focus,
+.table-header .btn:active,
+.table-header .icon-btn:hover,
+.table-header .icon-btn:focus,
+.table-header .icon-btn:active,
+.table-header .dropdown .dropdown-toggle:hover,
+.table-header .dropdown .dropdown-toggle:focus,
+.table-header .dropdown .dropdown-toggle:active {
+    background-color: white !important;
+    color: inherit !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.table-header .icon-btn i {
+    margin-right: 5px;
+}
+
+.table-header .btn,
+.table-header .dropdown-toggle,
+.table-header .icon-btn {
+    border-radius: 4px;
+}
+

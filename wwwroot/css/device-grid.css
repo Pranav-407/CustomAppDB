@@ -1,0 +1,70 @@
+.container-fluid {
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+
+}
+
+#deviceGrid {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto;
+    overflow-y: visible;
+    box-sizing: border-box;
+
+}
+
+#deviceGrid .dx-datagrid .dx-row > td {
+    background-color: #f0f0f0;
+    color: black;
+    text-align: center;       
+    height: 15px !important;
+    border-bottom: 1px solid white;
+    border-right: 2px solid white;
+}
+
+#deviceGrid .dx-datagrid .dx-header-row > td {
+    background-color: white; 
+    font-size: 12px;
+    color: black; 
+    font-weight: bold;
+    border-bottom: none;
+    text-align: center;
+    padding: 10px;
+}
+
+#deviceGrid .dx-datagrid .dx-pager {
+    margin-top: 2px;
+    font-size: 10px;
+    padding: 0px 8px;
+    border: 0.07rem solid #f5f5f5;
+    border-top: none;
+    background-color: white;
+    color: #333;
+}
+
+.dx-datagrid .dx-scrollable-content {
+    background-color: #f0f0f0;
+    padding-bottom: 6px !important;
+}
+
+#deviceGrid .dx-datagrid .dx-header-row > td {
+    border-bottom: none !important;
+}
+
+#deviceGrid .dx-datagrid-headers {
+    border-bottom: none !important;
+}
+
+#deviceGrid .dx-datagrid .dx-datagrid-headers .dx-datagrid-table {
+    border-bottom: none !important;
+}
+
+.dx-datagrid .dx-pager .dx-page{
+    height: 30px;
+    font-size: 10px !important;
+}
+.dx-datagrid .dx-pager .dx-navigate-button {
+    font-size: 12px !important;
+    line-height: 20px !important;
+}

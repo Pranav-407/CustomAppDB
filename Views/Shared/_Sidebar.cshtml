@@ -1,0 +1,53 @@
+@{
+    var current = ViewData["PageTitle"] as string ?? "Dashboard";
+}
+
+<div class="sidebar@(Context.Request.Cookies["sidebarCollapsed"] == "true" ? " collapsed" : "")" id="sidebar">
+    <div class="logo-section">
+        <button class="menu-toggle btn btn-sm text-white" id="toggleSidebar">
+            <i class="bi bi-list"></i>
+        </button>
+        <img src="~/assets/logo.png" alt="Logo" class="img-fluid" />
+    </div>
+
+    @{
+        var menuItems = new List<(string Label, string Icon, string Section)>
+        {
+            ("Dashboard", "bi-grid", "Dashboard"),
+            ("Applications", "bi-box", "Applications"),
+            ("Windows Updates", "bi-arrow-repeat", "Windows Updates"),
+            ("Inventory", "bi bi-clipboard2-data", "Inventory"),
+            ("OS Deployment", "bi-cpu", "OS Deployment"),
+            ("MDM", "bi-shield-lock", "MDM"),
+            ("Anti-Virus", "bi-shield-check", "Anti-Virus"),
+            ("Tickets", "bi-ticket-perforated", "Tickets"),
+            ("Task History", "bi-clock-history", "Task History"),
+            ("Policies", "bi-file-lock", "Policies"),
+            ("Analytics", "bi-bar-chart", "Analytics"),
+        };
+    }
+
+    @foreach (var item in menuItems)
+    {
+        var isActive = item.Label == current ? "active" : "";
+        var link = item.Label == "Applications"
+            ? Url.Action("Applications", "Homepage")
+            : Url.Action("Index", "Homepage", new { section = item.Label });
+
+        if (item.Label == "Policies") {
+            <hr class="my-2" />
+        }
+
+        <a class="@isActive" href="@link">
+            <i class="bi @item.Icon"></i> <span>@item.Label</span>
+        </a>
+    }
+
+    <div class="user-email mt-auto px-3 py-2 text-white">
+        <hr />
+        <div class="email-content">
+            <i class="bi bi-person-circle"></i>
+            <span class="email-text">aloha@alohatechnology.com</span>
+        </div>
+    </div>
+</div>

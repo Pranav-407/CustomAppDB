@@ -1,0 +1,33 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["PageTitle"] = "Applications";
+}
+
+<link rel="stylesheet" href="~/css/applications-header.css" />
+<link rel="stylesheet" href="~/css/customapp-dropdown-header.css" />
+<link rel="stylesheet" href="~/css/table-helper-header.css" />
+<link rel="stylesheet" href="~/css/device-grid.css" />
+<link rel="stylesheet" href="~/css/recent-apps-header.css" />
+<link rel="stylesheet" href="~/css/recent-apps-grid.css" />
+
+@await Html.PartialAsync("_ApplicationsHeader")
+
+@await Html.PartialAsync("_CustomAppsDropdownHeader")
+
+@await Html.PartialAsync("_TableHelperHeader")
+
+@await Html.PartialAsync("_DeviceGrid")
+
+@await Html.PartialAsync("_RecentAppsUpdatesHeader")
+
+@await Html.PartialAsync("_RecentAppsGrid")
+
+
+@section Scripts {
+    <script src="~/js/deviceGrid.js"></script>
+    <script src="~/js/recentAppsGrid.js"></script>
+    <script src="/js/customAppsStore.js"></script>
+    <script src="~/js/viewCustomAppGrid.js"></script>
+    <script src="~/js/createCustomApp.js"></script>
+    
+}

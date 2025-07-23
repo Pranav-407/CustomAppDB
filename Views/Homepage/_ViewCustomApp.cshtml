@@ -1,0 +1,214 @@
+<!-- View Custom Apps Modal -->
+<div class="modal fade" id="viewCustomAppsModal" tabindex="-1" role="dialog" aria-labelledby="viewCustomAppsModalLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-custom-large" role="document">
+        <div class="modal-content">
+           
+            <div class="modal-header d-flex justify-content-between align-items-center">
+                <div class="modal-title-wrapper d-flex align-items-center">
+                    <h5 class="modal-title mb-0" id="customModal3Label">Custom Apps</h5>
+                    <i class="bi bi-info-circle info-icon ms-2"></i>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            
+            <div class="modal-body p-0">
+                <div class="apps-header">
+                    
+                    <div class="apps-title-row mb-2">
+                        <div class="apps-title">All Custom Apps</div>
+                    </div>
+
+                    
+                    <div class="apps-controls-row d-flex justify-content-between align-items-center flex-wrap">
+                        <div class="search-container">
+                            <span class="search-icon"><i class="bi bi-search"></i></span>
+                            <input type="text" class="search-input" placeholder="Search" id="appSearchInput" />
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="action-btn" id="addAppBtn">ADD</button>
+                            <button class="action-btn editAppBtn" id="editAppBtn" disabled>EDIT</button>
+                            <button class="action-btn deleteAppBtn" id="deleteAppBtn" disabled>DELETE</button>
+                            <button class="action-btn copy-btn" id="copyAppBtn" disabled>COPY</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="customAppGrid"></div>
+
+                <p class="note px-3 text-muted small">
+                    Note: To select multiple custom apps, use ctrl + click or shift + click (cmd + click for Mac).
+                </p>
+
+                <div class="d-flex justify-content-between align-items-center px-3 pb-3">
+                    <button type="button" class="btn btn-outline-secondary cancel-btn btn-sm"
+                        data-bs-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn btn-primary done-btn btn-sm" data-dismiss="modal">DONE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="confirmDeleteAppModal" tabindex="-1" role="dialog"
+    aria-labelledby="confirmDeleteAppModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header delete-header">
+                <h6 class="modal-title" id="confirmDeleteAppModalLabel">Delete Custom App Confirm</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to delete the Custom Application <strong id="deleteAppName"></strong>?</p>
+
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="button" class="btn btn-sm btn-primary me-1 del-btn" id="confirmDeleteBtn"
+                        data-bs-dismiss="modal">Delete</button>
+
+                    <button type="button" class="btn btn-sm btn-primary del-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Edit Custom App Modal -->
+<div class="modal fade" id="EditAppModal" tabindex="-1" role="dialog" aria-labelledby="appModalTitle" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <form id="EditAppForm" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="appModalTitle">Edit Custom App</h5>
+                    <i class="bi bi-info-circle info-icon ms-2"></i>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        
+                        <div class="form-group row">
+                            <label for="appPackageName" class="col-sm-5 col-form-label font-weight-bold">Package
+                                Name</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="appPackageName" name="appPackageName"
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="appURL" class="col-sm-5 col-form-label font-weight-bold">Enter URL</label>
+                            <div class="col-sm-7">
+                                <input type="url" class="form-control" id="appURL" name="appURL" required />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-5"></div>
+                            <div class="col-sm-7">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="extractCheckbox" />
+                                    <label class="form-check-label" for="extractCheckbox">
+                                        Extract compressed file and run executable
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="appArchitecture"
+                                class="col-sm-5 col-form-label font-weight-bold">Architecture</label>
+                            <div class="col-sm-7">
+                                <select class="form-select form-control" id="appArchitecture" name="appArchitecture">
+                                    <option value="">Select</option>
+                                    <option value="32-bit">32-bit</option>
+                                    <option value="64-bit">64-bit</option>
+                                    <option value="32 and 64 bit">32 and 64 bit</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="appInstallCmd" class="col-sm-5 col-form-label font-weight-bold">Install Command
+                                Line</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="appInstallCmd" name="appInstallCmd" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="appUninstallCmd" class="col-sm-5 col-form-label font-weight-bold">Uninstall
+                                Command Line</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="appUninstallCmd" name="appUninstallCmd" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="appRestart" class="col-sm-5 col-form-label font-weight-bold">Restart</label>
+                            <div class="col-sm-7">
+                                <select class="form-select form-control" id="appRestart" name="appRestart">
+                                    <option value="">Select</option>
+                                    <option value="Not Set">Not Set</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="appTimeout" class="col-sm-5 col-form-label font-weight-bold">Install
+                                Timeout</label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" id="appTimeout" name="appTimeout"
+                                    placeholder="In minutes" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="appRunAs" class="col-sm-5 col-form-label">Run As</label>
+                            <div class="col-sm-7">
+                                <select class="form-select form-control" id="appRunAs" name="appRunAs">
+                                    <option value="System">System Account</option>
+                                    <option value="User">User Account</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="userCredentialsFields" style="display: none;">
+                            <div class="form-group row">
+                                <label class="col-sm-5"></label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="userLoginId" name="userLoginId"
+                                        placeholder="Login ID" />
+                                    <input type="password" class="form-control" id="userPassword" name="userPassword"
+                                        placeholder="Password" />
+                                    <input type="text" class="form-control" id="userDomain" name="userDomain"
+                                        placeholder="Domain" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center px-3 pb-3">
+                    <button type="button" class="btn btn-outline-secondary cancel-btn btn-sm"
+                        data-bs-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn btn-primary done-btn btn-sm" id="saveAppBtn">DONE</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

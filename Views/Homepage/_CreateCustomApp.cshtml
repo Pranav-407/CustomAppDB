@@ -1,0 +1,64 @@
+<div class="modal fade" id="createCustomAppsModal" tabindex="-1" role="dialog" aria-labelledby="createCustomAppsModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-custom-large" role="document">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header d-flex justify-content-between align-items-center">
+                <div class="modal-title-wrapper d-flex align-items-center">
+                    <h5 class="modal-title mb-0" id="customModal3Label">Set Up Custom App</h5>
+                    <i class="bi bi-info-circle info-icon ms-2"></i>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body d-flex p-0">
+
+                <div class="step-sidebar d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="apps-title">Create New Custom App Package</div>
+                        <ul class="nav flex-column step-list">
+                            <li class="step-item active" data-step="1">Step 1: Specify Custom App Details</li>
+                            <li class="step-item" data-step="2">Step 2: Select Computer to Install</li>
+                            <li class="step-item" data-step="3">Step 3: First time install</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-content flex-grow-1 d-flex flex-column">
+
+                    <div class="step-panel active flex-grow-1" data-step="1">
+                        @await Html.PartialAsync("_CreateCustomAppStep1")
+                    </div>
+
+                    <div class="step-panel d-none" data-step="2">
+                        @await Html.PartialAsync("_CreateCustomAppStep2")
+                    </div>
+                    <div class="step-panel d-none" data-step="3">
+                        @await Html.PartialAsync("_CreateCustomAppStep3")
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center px-3 py-2 border-top" style="flex-shrink: 0;">
+                <button type="button" class="btn cancel-btn btn-outline-primary" data-bs-dismiss="modal">
+                    CANCEL
+                </button>
+                <button type="button" class="btn next-btn btn-outline-primary">
+                    NEXT
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
+    <div id="appCreatedToast" class="toast align-items-center text-bg-success border-0" role="alert"
+        aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                App created successfully!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
+        </div>
+    </div>
+</div>

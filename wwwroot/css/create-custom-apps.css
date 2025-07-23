@@ -1,0 +1,348 @@
+#createCustomAppsModal .modal-header {
+    padding: 0.5rem 20px;
+    min-height: auto;
+}
+
+#createCustomAppsModal .modal-title-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+#createCustomAppsModal .modal-title {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+#createCustomAppsModal .info-icon {
+    font-size: 1.25rem;
+    color: #007bff;
+    margin-left: 0.5rem;
+}
+
+#createCustomAppsModal .modal-custom-large {
+    max-width: 1000px;
+}
+
+#createCustomAppsModal .btn-close {
+    font-size: 0.6rem;
+}
+
+#createCustomAppsModal .modal-content {
+    height: 640px;
+    display: flex;
+    flex-direction: column;
+}
+
+#createCustomAppsModal .modal-body {
+    height: 520px;
+    overflow: hidden;
+    display: flex;
+    padding: 0;
+}
+
+.step-sidebar {
+    width: 300px;
+    flex: 0 0 300px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    overflow-y: auto;
+    padding: 0;
+    height: 100%;
+}
+
+#createCustomAppsModal .apps-title {
+    padding: 6px 20px;
+    font-size: 16px;
+    background-color: rgb(230, 230, 230);
+    color: black;
+    margin-bottom: 16px;
+    font-weight: 550;
+}
+
+.step-content {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+#createCustomAppForm .form-group {
+    padding: 5px 15px 10px 10px;
+}
+
+#createCustomAppForm .col-form-label {
+    font-weight: 550;
+    color: black;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+#createCustomAppForm .form-control {
+    padding: 5px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 12px;
+    background-color: #fff;
+}
+
+#createCustomAppsModal .cancel-btn,
+#createCustomAppsModal .cancel-btn:hover {
+    padding: 5px 30px !important;
+    border-radius: 8px !important;
+    font-weight: 550 !important;
+    font-size: 12px;
+    letter-spacing: 1px;
+    background-color: white;
+    color: #007bff !important;
+    margin: 5px 20px 10px 20px;
+}
+
+#createCustomAppsModal .next-btn,
+#createCustomAppsModal .next-btn:hover {
+    margin: 5px 20px 10px 20px;
+    padding: 5px 30px !important;
+    border-radius: 8px !important;
+    font-weight: 550 !important;
+    font-size: 12px;
+    letter-spacing: 1px;
+    background-color: white;
+    color: #007bff !important;
+}
+
+#createCustomAppsModal .next-btn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    background-color: #f8f9fa !important;
+    color: #6c757d !important;
+    border-color: #dee2e6 !important;
+}
+
+#createCustomAppsModal .form-control:focus,
+#createCustomAppsModal select.form-control:focus {
+    box-shadow: none !important;
+    border-color: #ced4da;
+    outline: none;
+}
+
+label.error {
+    font-size: 12px !important;
+    color: red;
+    margin-top: 3px;
+    margin-left: 2px;
+    font-weight: 500;
+    display: block;
+}
+
+#createCustomAppForm .form-control.error {
+    border-color: red !important;
+}
+
+.custom-search-wrapper {
+    position: relative;
+    max-width: 340px;
+    padding: 10px 25px;
+}
+
+.custom-search-icon {
+    position: absolute;
+    top: 50%;
+    left: 40px;
+    transform: translateY(-50%);
+    color: black;
+    font-size: 14px;
+}
+
+.custom-search-input {
+    padding-left: 40px;
+    border-radius: 10px;
+}
+
+#computerGridWrapper {
+    overflow: auto;
+    max-height: 400px;
+    max-width: 680px;
+    padding: 0px 20px 10px 20px;
+}
+
+#computerGrid {
+    max-width: 680px !important;
+    padding: none !important;
+    overflow: auto;
+}
+
+#computerGrid .dx-datagrid .dx-row>td {
+    background-color: #f0f0f0;
+    color: black;
+    text-align: center;
+    height: 15px !important;
+    border-bottom: 2px solid white;
+    border-right: 3px solid white;
+}
+
+#computerGrid .dx-datagrid .dx-header-row>td {
+    background-color: white;
+    font-size: 12px;
+    color: black;
+    font-weight: bold;
+    border-top: none;
+    text-align: center;
+    padding: 10px;
+}
+
+#computerGrid .dx-datagrid .dx-header-row>td {
+    border-bottom: none !important;
+}
+
+#computerGrid .dx-datagrid-headers {
+    border-bottom: none !important;
+}
+
+#computerGrid .dx-datagrid .dx-datagrid-headers .dx-datagrid-table {
+    border-bottom: none !important;
+}
+
+#computerGrid .dx-datagrid .dx-row.dx-selection > td {
+    background-color: #cce5ff !important;
+    color: black !important;
+}
+
+#selectedComputerGridWrapper {
+    overflow: auto;
+    max-height: 400px;
+    max-width: 100%;
+    padding: 0px 0px 10px 20px;
+}
+
+#selectedComputerGrid {
+    max-width: 400px;
+    overflow: auto;
+}
+
+#selectedComputerGrid .dx-datagrid .dx-row>td {
+    background-color: #f0f0f0;
+    color: black;
+    text-align: center;
+    height: 15px !important;
+    border-bottom: 2px solid white;
+    border-right: 3px solid white;
+}
+
+#selectedComputerGrid .dx-datagrid .dx-header-row>td {
+    background-color: white;
+    font-size: 12px;
+    color: black;
+    font-weight: bold;
+    border-top: none;
+    text-align: center;
+    padding: 10px;
+}
+
+#selectedComputerGrid .dx-datagrid .dx-header-row>td {
+    border-bottom: none !important;
+}
+
+#selectedComputerGrid .dx-datagrid-headers {
+    border-bottom: none !important;
+}
+
+#selectedComputerGrid .dx-datagrid .dx-datagrid-headers .dx-datagrid-table {
+    border-bottom: none !important;
+}
+
+.selected-computer-info {
+    padding: 10px 25px;
+}
+
+#computerGrid .dx-selection,
+#computerGrid .dx-row-selected {
+    background-color: #e3f2fd !important;
+}
+
+#computerGrid .dx-row-selected .dx-datagrid-row-lines>td {
+    border-bottom-color: #2196f3 !important;
+}
+
+#computerGrid .dx-row-selected:hover {
+    background-color: #bbdefb !important;
+}
+
+.step-item {
+    padding: 15px 20px;
+    cursor: pointer;
+    border-left: none;
+    font-size: 14px;
+    color: rgb(20, 20, 20);
+    font-weight: 600;
+    transition: all 0.2s ease;
+    font-weight: 540;
+    position: relative;
+    padding-left: 30px;
+}
+
+.step-item.active {
+    font-weight: 600;
+    color: #007bff;
+    background-color: #fff;
+}
+
+.step-item.completed {
+    color: #28a745;
+}
+
+.step-item.completed::before {
+    content: "✓";
+    color: #28a745;
+    font-weight: bold;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+}
+
+.installBtn,
+.installBtn:hover {
+    background-color: white !important;
+    color: #28a745 !important;
+    border-color: #28a745 !important;
+    margin: 15px 100px 0px 0px;
+    padding: 3px 40px;
+    transition: all 0.2s ease;
+}
+
+.installBtn:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    background-color: #f8f9fa !important;
+    color: #6c757d !important;
+    border-color: #dee2e6 !important;
+}
+
+.status-waiting { 
+    background-color: #d3d3d3 !important; 
+    color: #333 !important;
+}
+
+.status-downloading { 
+    background-color: #87cefa !important; 
+    color: #333 !important;
+}
+
+.status-installing { 
+    background-color: #90ee90 !important; 
+    color: #333 !important;
+}
+
+.status-installed { 
+    background-color: #ffffff !important; 
+    color: #28a745 !important;
+    font-weight: bold;
+}
+
+#createCustomAppForm{
+    padding: 0px 15px 0px 5px;
+}
+
+.commandHelper{
+    font-size: 12px;
+    padding-left: 5px;
+    padding-top: 3px;
+}

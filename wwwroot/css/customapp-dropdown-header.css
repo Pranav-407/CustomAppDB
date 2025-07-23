@@ -1,0 +1,152 @@
+
+.custom-apps-section {
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.custom-apps-section::before {
+    content: "Computers - Windows";
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #007bff;
+    margin-left: 10px;
+}
+
+.custom-apps-section .btn-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 10px;
+}
+
+.custom-apps-section .btn {
+    background-color: transparent;
+    font-size: 0.7rem;
+    border: 1px solid #dee2e6;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.custom-apps-section .btn:hover,
+.custom-apps-section .btn:focus,
+.custom-apps-section .btn:active {
+    background-color: transparent !important;
+    color: #6c757d !important;
+    border-color: #dee2e6 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.custom-apps-section .btn-primary {
+    background-color: #007bff !important;
+    color: white !important;
+    border-color: #007bff !important;
+    border-radius: 8px;
+}
+
+.custom-apps-section .btn-primary i{
+    font-size: 12px;
+    padding-right: 5px;
+}
+
+.custom-apps-section .btn-primary:hover,
+.custom-apps-section .btn-primary:focus,
+.custom-apps-section .btn-primary:active {
+    background-color: #007bff !important;
+    color: white !important;
+    border-color: #007bff !important;
+}
+
+.custom-apps-section .btn-secondary {
+    background-color: white !important;
+    color: black !important;
+    border-radius: 8px;
+    border-color: #6c757d !important;
+}
+.custom-apps-section .btn-secondary i{
+    font-size: 12px;
+}
+
+.custom-apps-section .btn-secondary:hover,
+.custom-apps-section .btn-secondary:focus,
+.custom-apps-section .btn-secondary:active {
+    background-color: white !important;
+    color: black !important;
+    border-color: #6c757d !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.custom-apps-section .btn-outline-secondary {
+    background-color: white !important;
+    color: black !important;
+    border-color: #6c757d !important;
+    border-radius: 8px;
+}
+
+.custom-apps-section .btn-outline-secondary:hover,
+.custom-apps-section .btn-outline-secondary:focus,
+.custom-apps-section .btn-outline-secondary:active {
+    background-color: white !important;
+    color: black !important;
+    border-color: #6c757d !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.custom-apps-section .dropdown-toggle::after {
+    margin-left: 8px;
+}
+
+.dropdown-menu {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 4px 5px;
+    min-width: 135px;
+    font-size: 0.75rem;
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 6px 15px; 
+    font-size: 0.75rem; 
+    color: #333;
+    text-decoration: none;
+    display: block;
+    border: none;
+    background: none;
+    transition: background-color 0.15s ease;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    cursor: pointer;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu .dropdown-item:active {
+    background-color: #e9ecef;
+    color: #333;
+    outline: none;
+}
+
+.custom-apps-dropdown .dropdown-menu {
+    font-size: 0.75rem;
+}
+
+.custom-apps-dropdown .dropdown-menu .dropdown-item {
+    padding: 5px 15px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+}

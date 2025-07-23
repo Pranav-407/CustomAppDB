@@ -1,0 +1,108 @@
+<div class="apps-title">Step 1 : Specify Custom App Details</div>
+
+<form id="createCustomAppForm">
+    <div class="container-fluid">
+        <!-- Package Name -->
+        <div class="form-group row">
+            <label for="createAppPackageName" class="col-sm-4 col-form-label font-weight-bold">Package
+                Name</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Package Name" id="createAppPackageName" name="createAppPackageName" />
+            </div>
+        </div>
+
+        <!-- Enter URL -->
+        <div class="form-group row">
+            <label for="createAppURL" class="col-sm-4 col-form-label font-weight-bold">Enter URL</label>
+            <div class="col-sm-8">
+                <input type="url" class="form-control" id="createAppURL" placeholder="Start with http://, https:// " name="createAppURL" />
+
+            </div>
+        </div>
+
+        <!-- Architecture -->
+        <div class="form-group row">
+            <label for="createAppArchitecture" class="col-sm-4 col-form-label font-weight-bold">Architecture</label>
+            <div class="col-sm-8">
+                <select class="form-select form-control" id="createAppArchitecture" name="createAppArchitecture">
+                    <option value="32-bit">32-bit</option>
+                    <option value="64-bit">64-bit</option>
+                    <option value="32 and 64 bit">32 and 64 bit</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Install Command -->
+        <div class="form-group row">
+            <label for="createAppInstallCmd" class="col-sm-4 col-form-label font-weight-bold">Install Command
+                Line</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="createAppInstallCmd" placeholder="Install Command Line" name="createAppInstallCmd" />
+                <small class="form-text text-muted commandHelper">Please exclude <code>/i</code> and <code>/qn</code>
+                    for MSI Installers.
+                </small>
+            </div>
+        </div>
+
+        <!-- Uninstall Command -->
+        <div class="form-group row">
+            <label for="createAppUninstallCmd" class="col-sm-4 col-form-label font-weight-bold">Uninstall
+                Command Line</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="createAppUninstallCmd" placeholder="Uninstall Command Line" name="createAppUninstallCmd" />
+                <small class="form-text text-muted commandHelper">
+                    Request Silent install/uninstall assistance
+                    <a href="#" id="talkToSpecialistLink">Talk to a Deployment Specialist.</a>
+                </small>
+            </div>
+        </div>
+
+        <!-- Restart -->
+        <div class="form-group row">
+            <label for="createAppRestart" class="col-sm-4 col-form-label font-weight-bold">Restart</label>
+            <div class="col-sm-8">
+                <select class="form-select form-control" id="createAppRestart" name="createAppRestart">
+                    <option value="Not Set">Not Set</option>
+                    <option value="Yes">Always</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Timeout -->
+        <div class="form-group row">
+            <label for="createAppTimeout" class="col-sm-4 col-form-label font-weight-bold">Install
+                Timeout</label>
+            <div class="col-sm-8">
+                <input type="number" class="form-control" id="createAppTimeout" name="createAppTimeout"
+                    placeholder="In minutes" />
+
+            </div>
+        </div>
+
+        <!-- Row 8 -->
+        <div class="form-group row">
+            <label for="createAppRunAs" class="col-sm-4 col-form-label">Run As</label>
+            <div class="col-sm-8">
+                <select class="form-select form-control" id="createAppRunAs" name="createAppRunAs">
+                    <option value="System">System Account</option>
+                    <option value="User">User Account</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- User Credentials Fields (Toggle based on RunAs) -->
+        <div id="createAppUserCredentialsFields" style="display: none;">
+            <div class="form-group row">
+                <label class="col-sm-4"></label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="createAppUserLoginId" name="createAppUserLoginId"
+                        placeholder="Login ID" style="margin-bottom: 15px;" />
+                    <input type="password" class="form-control" id="createAppUserPassword" name="createAppUserPassword"
+                        placeholder="Password" style="margin-bottom: 15px;" />
+                    <input type="text" class="form-control" id="createAppUserDomain" name="createAppUserDomain"
+                        placeholder="Domain" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,157 @@
+/* Sidebar */
+
+.sidebar {
+    min-height: 100vh;
+    background-color: #2e2e30;
+    padding-top: 1rem;
+    position: relative;
+    transition: width 0.3s;
+    width: 220px;
+}
+
+.sidebar .logo-section {
+    display: flex;
+    align-items: start;
+    padding: 0 15px;
+    margin-bottom: 20px;
+}
+
+.sidebar .logo-section img {
+    margin-top: 5px;
+    height: 30px;
+}
+
+.sidebar .menu-toggle {
+    margin-right: 5px;
+    font-size: 1.2rem;
+    color: white;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.sidebar a {
+    color: #ffffff;
+    font-size: 0.8rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 20px;
+    border-left: 4px solid transparent;
+    border-radius: 0 20px 20px 0;
+    transition: all 0.3s;
+    margin-right: 10px;
+}
+
+.sidebar a i {
+    color: lightgray;
+    font-size: 14px;
+}
+
+.sidebar a:hover{
+    background-color: #464343;
+    color: #fff;
+}
+
+.sidebar a.active {
+    font-weight: bold;
+    background-color: #464343;
+    color: #fff;
+}
+
+.sidebar a.active i{
+    font-weight: bolder;
+    color: white;
+}
+
+.sidebar hr {
+    border-color: #666;
+    margin: 0.5rem 1rem;
+}
+
+.sidebar .user-email hr {
+    border-top: 2px solid #666 !important;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    width: 100%;
+}
+
+.sidebar .user-email {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    color: #888;
+    font-size: 0.7rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.sidebar .user-email .email-content {
+    display: flex;
+    padding: 0 10px;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.sidebar .user-email .email-content i {
+    margin-top: 5px;
+    font-size: 1rem;
+    flex-shrink: 0; 
+}
+
+.sidebar .user-email .email-content .email-text {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px; 
+}
+
+/* styles when Sidebar is collapsed state */
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar .logo-section img {
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .logo-section img {
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+}
+
+.sidebar.collapsed a {
+    justify-content: center;
+    padding: 10px;
+}
+
+.sidebar.collapsed hr {
+    margin: 0.5rem 0.5rem;
+}
+
+.sidebar.collapsed a span {
+    display: none;
+}
+
+.sidebar.collapsed .user-email {
+    padding: 0;
+}
+
+.sidebar.collapsed .user-email .email-text {
+    display: none;
+}
+
+.sidebar.collapsed .user-email i {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+}

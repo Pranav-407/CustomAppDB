@@ -1,0 +1,272 @@
+
+#viewCustomAppsModal .modal-header {
+    padding: 0.5rem 1rem;
+    min-height: auto;
+}
+
+#viewCustomAppsModal .modal-title-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+#viewCustomAppsModal .modal-title {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+#viewCustomAppsModal .info-icon {
+    font-size: 1.25rem;
+    color: #007bff;
+    margin-left: 0.5rem;
+}
+
+#viewCustomAppsModal .btn-close {
+    font-size: 0.6rem;
+}
+
+#viewCustomAppsModal .modal-custom-large {
+    max-width: 1100px;
+}
+
+#viewCustomAppsModal .apps-title {
+    padding: 6px 20px;
+    font-size: 16px;
+    background-color: rgb(230, 230, 230);
+    color: black;
+    margin-bottom: 16px;
+}
+
+#viewCustomAppsModal .apps-controls-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 15px;
+}
+
+#viewCustomAppsModal .search-container {
+    position: relative;
+    flex: 0 0 200px;
+}
+
+#viewCustomAppsModal .search-input {
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 8px 12px 8px 36px;
+    font-size: 13px;
+    width: 100%;
+}
+
+#viewCustomAppsModal .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: black;
+    font-size: 14px;
+}
+
+#viewCustomAppsModal .search-input:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+#viewCustomAppsModal .action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+#viewCustomAppsModal .action-btn {
+    padding: 6px 50px;
+    border: 1px solid #ced4da;
+    background-color: #fff;
+    color: #495057;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#viewCustomAppsModal .action-btn:hover:not(:disabled) {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+}
+
+#viewCustomAppsModal .action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#viewCustomAppsModal .action-btn.copy-btn {
+    background-color: #0ea5e9;
+    color: white;
+    border-color: #0ea5e9;
+}
+
+#viewCustomAppsModal .action-btn.copy-btn:hover {
+    background-color: #0284c7;
+    border-color: #0284c7;
+}
+
+#customAppGrid {
+    padding: 15px 15px 0px 15px;
+    height: 400px;
+}
+
+#customAppGrid .dx-datagrid {
+    border: none;
+    font-size: 13px;
+}
+
+#customAppGrid .dx-datagrid .dx-row > td {
+    background-color: #f0f0f0; 
+    color: black;
+    text-align: center;
+    border-bottom: 1px solid white;
+    border-right: 2px solid white; 
+}
+
+#customAppGrid .dx-datagrid .dx-header-row > td {
+    background-color: white; 
+    font-size: 12px;
+    color: black; 
+    font-weight: bold;
+    border-bottom: none;
+    text-align: center;
+    padding: 10px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#customAppGrid .dx-datagrid .dx-pager {
+    padding: 0px 0px !important;
+    margin-top: 5px;
+    font-size: 10px;
+    border: 0.07rem solid #f5f5f5;
+    border-top: none;
+    background-color: white;
+    color: #333;
+}
+
+#customAppGrid .dx-datagrid-rowsview,
+#customAppGrid .dx-scrollable-content {
+    background-color: #f0f0f0 !important;
+}
+
+#customAppGrid .dx-datagrid .dx-row.dx-selection > td {
+    background-color: #cce5ff !important;
+    color: black !important;
+}
+
+#viewCustomAppsModal .cancel-btn,#viewCustomAppsModal .cancel-btn:hover{
+    padding: 4px 40px !important;
+    border-radius: 8px !important;
+    font-weight: 550 !important;
+    color: black !important;
+    font-size: 12px;
+    letter-spacing: 1px;
+    border-color: rgb(208, 208, 208) !important;
+    background-color: white;
+}
+
+#viewCustomAppsModal .done-btn{
+    padding: 4px 40px !important;
+    border-radius: 8px !important;
+    font-weight: 550 !important;
+    color: white !important;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.delete-header{
+    padding: 15px 20px;
+}
+
+.del-btn{
+    border-radius: 8px !important;
+}
+
+#EditAppModal .modal-header {
+    padding: 0.6rem 1.25rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+#EditAppModal .modal-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#EditAppModal .modal-body {
+    padding: 0.5rem 1rem;
+    min-height: 560px !important;
+}
+
+#EditAppModal .modal-footer {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid #dee2e6;
+}
+
+#EditAppModal .form-group {
+    margin-bottom: 0.6rem;
+}
+
+#EditAppModal .col-form-label {
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+#EditAppModal .form-control {
+    font-size: 0.875rem;
+    padding: 0.4rem 0.5rem;
+}
+
+#userCredentialsFields input.form-control {
+    margin-bottom: 0.5rem;
+}
+
+#EditAppModal .form-check {
+    padding-left: 22px;
+    font-size: 0.90rem;
+}
+
+#EditAppModal .modal-footer .btn {
+    min-width: 90px;
+}
+
+#EditAppModal .modal-footer .btn + .btn {
+    margin-left: 0.5rem;
+}
+
+#EditAppModal select.form-control {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+#EditAppModal .form-control:focus,
+#EditAppModal select.form-control:focus {
+    box-shadow: none !important;
+    border-color: #ced4da;
+    outline: none; 
+}
+
+#EditAppModal .info-icon {
+    font-size: 1.25rem;
+    color: #007bff;
+    margin-left: 0.5rem;
+}
+
+.editAppBtn:disabled{
+    border: 1px solid #ced4da !important;
+}
+
+.editAppBtn{
+    border: 1px solid #0ea5e9 !important;
+}
+
+.deleteAppBtn:disabled{
+    border: 1px solid #ced4da !important;
+}
+
+.deleteAppBtn{
+    border: 1px solid red !important;
+}

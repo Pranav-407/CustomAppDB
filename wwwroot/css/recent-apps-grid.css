@@ -1,0 +1,64 @@
+#recentAppsGrid .dx-datagrid {
+    border: none;
+    font-size: 13px;
+}
+
+.container-fluid {
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+
+}
+
+#recentAppsGrid {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto;
+    overflow-y: visible;
+    box-sizing: border-box;
+
+}
+
+#recentAppsGrid .dx-datagrid .dx-row > td {
+    background-color: #f0f0f0;
+    color: black;
+    text-align: center;       
+    height: 15px !important;
+    border-bottom: 1px solid white;
+    border-right: 2px solid white;
+}
+
+#recentAppsGrid .dx-datagrid .dx-header-row > td {
+    background-color: white; 
+    font-size: 12px;
+    color: black; 
+    font-weight: bold;        
+    border-bottom: none;
+    text-align: center;
+    padding: 10px;
+}
+
+#recentAppsGrid .dx-datagrid .dx-pager {
+    font-size: 10px;
+    padding: 0px 8px;
+    border: 0.07rem solid #f5f5f5;
+    border-top: none;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+#recentAppsGrid .dx-datagrid .dx-scrollable-content {
+    padding-bottom: 6px !important;
+}
+
+#recentAppsGrid .dx-datagrid .dx-header-row > td {
+    border-bottom: none !important;
+}
+
+#recentAppsGrid .dx-datagrid-headers {
+    border-bottom: none !important;
+}
+
+#recentAppsGrid .dx-datagrid .dx-datagrid-headers .dx-datagrid-table {
+    border-bottom: none !important;
+}

@@ -1,0 +1,51 @@
+
+.app-header {
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #b5b5b5;
+    margin-bottom: 0;
+}
+
+.app-header h4 {
+    margin-left: 10px;
+    font-size: 1.25rem;
+    font-weight: 630;
+    color: black;
+}
+
+.app-header .btn,
+.app-header .dropdown-toggle {
+    background-color: transparent !important;
+    font-size: 0.875rem;
+    padding: 5px 5px;
+    color: grey !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.app-header .btn:hover,
+.app-header .btn:focus,
+.app-header .btn:active,
+.app-header .btn:visited,
+.app-header .dropdown-toggle:hover,
+.app-header .dropdown-toggle:focus,
+.app-header .dropdown-toggle:active,
+.app-header .dropdown-toggle:visited {
+    background-color: transparent !important;
+    color: grey !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.app-header .dropdown,
+.app-header .btn-group {
+    margin: 0 5px;
+}
