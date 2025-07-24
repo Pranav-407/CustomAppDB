@@ -319,6 +319,8 @@
                 error.insertAfter(element);
             }
         });
+
+        
     }
 
     function toggleCredentialFields() {
@@ -340,6 +342,11 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+
+        $('#talkToSpecialist').on('click', function () { debugger
+            new bootstrap.Modal(document.getElementById('talkToSpecialistModal')).show();
+        });
+
         initFormValidation();
         initializeComputerGrid();
         initializeSelectedComputerGrid();
@@ -349,6 +356,8 @@
     });
 
     nextBtn.addEventListener('click', goToNextStep);
+
+    
 
     const modalElement = document.querySelector(modalId);
     modalElement.addEventListener('hidden.bs.modal', resetModalSteps);

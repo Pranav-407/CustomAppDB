@@ -1,6 +1,4 @@
-﻿using CustomAppDB.Controllers;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -113,6 +111,103 @@ namespace CustomAppDB.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { success = false, message = "Error retrieving apps.", error = ex.Message });
+            }
+        }
+
+        [HttpPut("update/{id}")]
+        public IActionResult Update(int id, [FromBody] CustomAppModel model)
+        {
+            try
+            {
+                string connStr = _configuration.GetConnectionString("DefaultConnection");
+
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+
+                    string query = @"UPDATE CustomApps SET
+                        PackageName = @PackageName,
+                        URL = @URL,
+                        Architecture = @Architecture,
+                        InstallCommandLine = @InstallCommandLine,
+                        UninstallCommand = @UninstallCommand,
+                        Restart = @Restart,
+                        InstallTimeout = @InstallTimeout,
+                        RunAs = @RunAs,
+                        LoginId = @LoginId,
+                        Password = @Password,
+                        Domain = @Domain,
+                        Extract = @Extract
+                        WHERE ID = @ID";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", id);
+                        cmd.Parameters.AddWithValue("@PackageName", model.PackageName ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@URL", model.URL ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Architecture", model.Architecture ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@InstallCommandLine", model.InstallCommandLine ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@UninstallCommand", model.UninstallCommand ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Restart", model.Restart ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@InstallTimeout", model.InstallTimeout);
+                        cmd.Parameters.AddWithValue("@RunAs", model.RunAs ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@LoginId", model.LoginId ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Password", model.Password ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Domain", model.Domain ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Extract", model.Extract);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            return Ok(new { success = true, message = "App updated successfully." });
+                        }
+                        else
+                        {
+                            return NotFound(new { success = false, message = "App not found." });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "Error updating app.", error = ex.Message });
+            }
+        }
+
+        [HttpDelete("delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                string connStr = _configuration.GetConnectionString("DefaultConnection");
+
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+
+                    string query = "DELETE FROM CustomApps WHERE ID = @ID";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", id);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            return Ok(new { success = true, message = "App deleted successfully." });
+                        }
+                        else
+                        {
+                            return NotFound(new { success = false, message = "App not found." });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "Error deleting app.", error = ex.Message });
             }
         }
     }

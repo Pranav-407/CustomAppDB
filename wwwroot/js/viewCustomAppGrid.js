@@ -35,25 +35,55 @@
             new bootstrap.Modal(document.getElementById('EditAppModal')).show();
         });
 
-        $('#saveAppBtn').on('click', function () {
+        $('#saveAppBtn').on('click', function () { debugger
+            if (!selectedAppData) return;
+
             const appData = {
-                ID: selectedAppData ? selectedAppData.ID : Date.now(),
+                ID: selectedAppData.ID,
                 PackageName: $('#appPackageName').val(),
                 URL: $('#appURL').val(),
                 Architecture: $('#appArchitecture').val(),
                 InstallCommandLine: $('#appInstallCmd').val(),
                 UninstallCommand: $('#appUninstallCmd').val(),
                 Restart: $('#appRestart').val(),
-                InstallTimeout: parseInt($('#appTimeout').val(), 10),
+                InstallTimeout: parseInt($('#appTimeout').val(), 10) || 0,
                 RunAs: $('#appRunAs').val(),
-                LoginId: $('#userLoginId').val(),
-                Password: $('#userPassword').val(),
-                Domain: $('#userDomain').val(),
+                LoginId: $('#userLoginId').val() || '',
+                Password: $('#userPassword').val() || '',
+                Domain: $('#userDomain').val() || '',
                 Extract: $('#extractCheckbox').is(':checked')
             };
 
-            alert("Edited Successfully");
-            bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
+            // Make API call to update the app
+            $.ajax({
+                url: `/custom-apps/update/${selectedAppData.ID}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(appData),
+                success: function (response) {
+                    console.log('App updated successfully:', response);
+
+                    // Refresh the grid
+                    if (window.customAppGrid) {
+                        window.customAppGrid.refresh();
+                    }
+
+                    // Close modal
+                    bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
+
+                    // Show success message
+                    alert("App updated successfully!");
+
+                    // Clear selection
+                    selectedAppData = null;
+                    $('#editAppBtn').prop('disabled', true);
+                    $('#deleteAppBtn').prop('disabled', true);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error updating app:', xhr.responseText);
+                    alert('Failed to update app. Please try again.');
+                }
+            });
         });
 
         $('#deleteAppBtn').on('click', function () {
@@ -61,8 +91,35 @@
             new bootstrap.Modal(document.getElementById('confirmDeleteAppModal')).show();
         });
 
-        $('#confirmDeleteBtn').on('click', function () {
+        $('#confirmDeleteBtn').on('click', function () { debugger
             if (!selectedAppData) return;
+            $.ajax({
+                url: `/custom-apps/delete/${selectedAppData.ID}`,
+                type: 'DELETE',
+                success: function (response) {
+                    console.log('App deleted successfully:', response);
+
+                    // Refresh the grid
+                    if (window.customAppGrid) {
+                        window.customAppGrid.refresh();
+                    }
+
+                    // Close modal
+                    bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
+
+                    // Show success message
+                    alert("App deleted successfully!");
+
+                    // Clear selection
+                    selectedAppData = null;
+                    $('#editAppBtn').prop('disabled', true);
+                    $('#deleteAppBtn').prop('disabled', true);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error deleting app:', xhr.responseText);
+                    alert('Failed to delete app. Please try again.');
+                }
+            });
             alert("Deleted Successfully");
             bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
         });
@@ -166,6 +223,7 @@
                 selectedAppData = e.data;
                 $('#editAppBtn').prop('disabled', false);
                 $('#deleteAppBtn').prop('disabled', false);
+                console.log("Row clicked:", selectedAppData);
             },
             onSelectionChanged(e) {
                 const rows = e.selectedRowsData;
