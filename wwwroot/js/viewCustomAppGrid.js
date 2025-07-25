@@ -36,7 +36,7 @@ $(document).ready(function () {
             new bootstrap.Modal(document.getElementById('EditAppModal')).show();
         });
 
-        $('#saveAppBtn').on('click', function () { debugger
+        $('#saveAppBtn').on('click', function () {
             if (!selectedAppData) return;
             if (!$('#EditAppForm').valid()) return;
 
@@ -89,7 +89,7 @@ $(document).ready(function () {
             new bootstrap.Modal(document.getElementById('confirmDeleteAppModal')).show();
         });
 
-        $('#confirmDeleteBtn').on('click', function () { debugger
+        $('#confirmDeleteBtn').on('click', function () {
             if (!selectedAppData) return;
             $.ajax({
                 url: `/custom-apps/delete/${selectedAppData.ID}`,

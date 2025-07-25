@@ -1,5 +1,4 @@
-﻿
-let cameFromViewModal = false;
+﻿let cameFromViewModal = false;
 
 (() => {
     const modalId = '#createCustomAppsModal';
@@ -139,6 +138,28 @@ let cameFromViewModal = false;
         }
     }
 
+    // Create OK button function
+    function createOkButton() {
+        const okBtn = document.createElement('button');
+        okBtn.type = 'button';
+        okBtn.className = 'btn btn-primary ok-btn';
+        okBtn.id = 'okBtn';
+        okBtn.textContent = 'OK';
+        okBtn.style.display = 'none';
+
+        // Add click handler to close modal
+        okBtn.addEventListener('click', function () {
+            const modalElement = document.querySelector(modalId);
+            const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+            modal.hide();
+        });
+
+        // Insert OK button after the Next button
+        nextBtn.parentNode.insertBefore(okBtn, nextBtn.nextSibling);
+
+        return okBtn;
+    }
+
     function updateStatusSequentially() {
         const sequence = [
             { status: "Waiting", delay: 1000 },
@@ -211,6 +232,12 @@ let cameFromViewModal = false;
                             window.customAppGrid.refresh();
                         }
 
+                        // Show detected app section after successful installation
+                        $('.detected-app-section').show();
+
+                        // Update the dynamic package name
+                        $('.custom-app-name-display').text($('#createAppPackageName').val());
+
                         //  Show 'App Installed' toast
                         const toastEl = document.getElementById('appInstalledToast');
                         if (toastEl) {
@@ -220,12 +247,10 @@ let cameFromViewModal = false;
                             toast.show();
                         }
 
-                        // Close modal
-                        const modalEl = document.getElementById('createCustomAppsModal');
-                        const modalInstance = bootstrap.Modal.getInstance(modalEl);
-                        if (modalInstance) {
-                            modalInstance.hide();
-                        }
+                        // Show OK button and hide Next button after successful installation
+                        showOkButton();
+
+                        // DO NOT close modal - removed modal close code
                     },
                     error: function (xhr, status, error) {
                         console.error('Error saving app:', xhr.responseText);
@@ -242,6 +267,26 @@ let cameFromViewModal = false;
         nextStep();
     }
 
+    // Function to show OK button and hide Next button
+    function showOkButton() {
+        let okBtn = document.getElementById('okBtn');
+        if (!okBtn) {
+            okBtn = createOkButton();
+        }
+
+        // Hide Next button and show OK button
+        nextBtn.style.display = 'none';
+        okBtn.style.display = 'inline-block';
+    }
+
+    // Function to hide OK button and show Next button
+    function hideOkButton() {
+        const okBtn = document.getElementById('okBtn');
+        if (okBtn) {
+            okBtn.style.display = 'none';
+        }
+        nextBtn.style.display = 'inline-block';
+    }
 
     function updateNextButtonState() {
         if (currentStep === 2) {
@@ -276,6 +321,9 @@ let cameFromViewModal = false;
             nextBtn.disabled = false;
             nextBtn.style.opacity = '1';
             nextBtn.style.cursor = 'pointer';
+
+            // Hide OK button when not on step 3
+            hideOkButton();
         }
 
         currentStep = step;
@@ -303,6 +351,12 @@ let cameFromViewModal = false;
             .removeAttr('aria-invalid');
 
         $('#createAppUserCredentialsFields').hide();
+
+        // Hide detected app section when resetting
+        $('.detected-app-section').hide();
+
+        // Hide OK button when resetting
+        hideOkButton();
 
         selectedRowData = null;
         if (computerGrid) computerGrid.clearSelection();
@@ -347,7 +401,7 @@ let cameFromViewModal = false;
             }
         });
 
-        
+
     }
 
     function toggleCredentialFields() {
@@ -370,9 +424,12 @@ let cameFromViewModal = false;
 
     document.addEventListener('DOMContentLoaded', () => {
 
-        $('#talkToSpecialist').on('click', function () { debugger
+        $('#talkToSpecialist').on('click', function () {
             new bootstrap.Modal(document.getElementById('talkToSpecialistModal')).show();
         });
+
+        // Hide detected app section initially
+        $('.detected-app-section').hide();
 
         initFormValidation();
         initializeComputerGrid();
@@ -380,7 +437,7 @@ let cameFromViewModal = false;
         toggleCredentialFields();
         handleInstallClick();
         showStep(1);
-    }); 
+    });
 
     nextBtn.addEventListener('click', goToNextStep);
 
@@ -457,6 +514,5 @@ let cameFromViewModal = false;
             bootstrap.Modal.getInstance(document.getElementById('talkToSpecialistModal')).hide();
         }
     });
-
 
 })();

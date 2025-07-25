@@ -107,6 +107,18 @@
     color: #007bff !important;
 }
 
+#okBtn,
+#okBtn:hover {
+    margin: 5px 20px 10px 20px;
+    padding: 5px 30px !important;
+    border-radius: 8px !important;
+    font-weight: 550 !important;
+    font-size: 12px;
+    letter-spacing: 1px;
+    background-color: white;
+    color: #007bff !important;
+}
+
 #createCustomAppsModal .next-btn:disabled {
     opacity: 0.5 !important;
     cursor: not-allowed !important;
@@ -321,19 +333,19 @@ label.error {
     color: black !important;
 }
 
-.status-downloading { 
-    background-color: #87cefa !important; 
-    color: #333 !important;
+.status-downloading {
+    background-color: #33a7ff !important;
+    color: white !important;
 }
 
-.status-installing { 
-    background-color: #90ee90 !important; 
-    color: #333 !important;
+.status-installing {
+    background-color: #8adc32 !important;
+    color: white !important;
 }
 
 .status-installed { 
-    background-color: #ffffff !important; 
-    color: #28a745 !important;
+    background-color: transparent !important; 
+    color: black !important;
     font-weight: bold;
 }
 
@@ -483,4 +495,71 @@ label.error {
 
 #appInstallInitiatedToast .toast-body {
     padding: 0.5rem 0.75rem;
+}
+
+
+.detected-app-section {
+    max-width: 430px;
+    background-color: #f9f9f9;
+    padding: 10px 20px 0px 15px;
+    margin: 0 7px ;
+}
+
+.detected-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 13px;
+}
+
+.detected-subtitle {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.custom-app-name-section {
+    margin-top: 15px;
+}
+
+.custom-app-label {
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.custom-app-name-display {
+    background-color: #d3d3d3;
+    border-bottom: 1px solid black;
+    padding: 10px 15px;
+    font-weight: bold;
+    color: #1976d2;
+    font-size: 13px;
+    display: inline-block;
+    margin-top: 5px;
+    min-width: 100%;
+}
+
+.help-text {
+    font-size: 12px;
+    color: #666;
+    margin-top: 12px;
+    line-height: 1.4;
+}
+
+.help-link {
+    color: #1976d2;
+    text-decoration: none;
+}
+
+    .help-link:hover {
+        text-decoration: underline;
+    }
+
+.sync-info {
+    font-size: 12px;
+    color: #666;
+    margin-top: 10px;
+    line-height: 1.4;
 }
