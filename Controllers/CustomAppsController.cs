@@ -74,7 +74,7 @@ namespace CustomAppDB.Controllers
                 using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
-                    string query = "SELECT * FROM CustomApps ORDER BY PackageName";
+                    string query = "SELECT * FROM CustomApps ORDER BY ID";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))

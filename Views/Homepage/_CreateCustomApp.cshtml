@@ -1,4 +1,4 @@
-<div class="modal fade" id="createCustomAppsModal" tabindex="-1" role="dialog" aria-labelledby="createCustomAppsModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+﻿<div class="modal fade" id="createCustomAppsModal" tabindex="-1" role="dialog" aria-labelledby="createCustomAppsModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-custom-large" role="document">
         <div class="modal-content">
             <!-- Modal Header -->
@@ -49,16 +49,32 @@
     </div>
 </div>
 
-
 <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
-    <div id="appCreatedToast" class="toast align-items-center text-bg-success border-0" role="alert"
-        aria-live="assertive" aria-atomic="true">
+    <div id="appInstallInitiatedToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
-                App created successfully!
+                <i class="bi bi-check-circle me-2"></i>App installation initiated.
             </div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                aria-label="Close"></button>
+                    aria-label="Close"></button>
         </div>
     </div>
 </div>
+
+
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
+    <div id="appInstalledToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i>App Installed.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+
+@await Html.PartialAsync("_TalkSpecialist")

@@ -1,0 +1,44 @@
+﻿<div class="modal fade" id="talkToSpecialistModal" tabindex="-1" role="dialog"
+     aria-labelledby="talkToSpecialistModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-talkSpecialist modal-dialog-centered" role="document" id="talkSpecialist">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="talkToSpecialistModalLabel">Contact a Specialist</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="talkToSpecialistForm">
+                    <div class="form-row">
+                        <label class="form-label">Your Name:</label>
+                        <div class="form-input">
+                            <input type="text" id="specialistName" name="specialistName" placeholder="Your Name" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">Phone Number:</label>
+                        <div class="form-input">
+                            <input type="tel" id="specialistPhone" name="specialistPhone" placeholder="Phone Number" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">Email Address:</label>
+                        <div class="form-input">
+                            <input type="email" value="abhijesty@alohatechnologydev.com" disabled />
+                        </div>
+                    </div>
+
+                    <div class="query-section">
+                        <label class="query-label">Query:</label>
+                        <textarea class="query-textarea" id="specialistQuery" name="specialistQuery" placeholder="Enter your query here..."></textarea>
+                    </div>
+
+                    <div class="submit-section">
+                        <button type="submit" class="submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

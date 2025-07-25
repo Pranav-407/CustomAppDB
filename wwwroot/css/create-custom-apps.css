@@ -317,8 +317,8 @@ label.error {
 }
 
 .status-waiting { 
-    background-color: #d3d3d3 !important; 
-    color: #333 !important;
+    background-color: transparent !important; 
+    color: black !important;
 }
 
 .status-downloading { 
@@ -345,4 +345,142 @@ label.error {
     font-size: 12px;
     padding-left: 5px;
     padding-top: 3px;
+}
+
+#talkSpecialist {
+    max-width: 500px;
+}
+
+#talkSpecialist .modal-content {
+        border-radius: 8px;
+        border: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+#talkSpecialist .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 15px 20px;
+        border-radius: 8px 8px 0 0;
+}
+
+#talkSpecialist .modal-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+}
+
+#talkSpecialist .btn-close {
+        font-size: 18px;
+        color: #666;
+        opacity: 0.7;
+}
+
+#talkSpecialist .btn-close:hover {
+        opacity: 1;
+}
+
+#talkSpecialist .modal-body {
+        padding: 20px;
+}
+
+#talkSpecialist .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+}
+
+#talkSpecialist .form-label {
+        width: 35%;
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 0;
+        padding-right: 10px;
+}
+
+#talkSpecialist .form-input {
+        flex: 1;
+}
+
+#talkSpecialist .form-input input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        background-color: #fff;
+}
+
+    #talkSpecialist .form-input input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+#talkSpecialist .query-section {
+    margin-top: 20px;
+}
+
+#talkSpecialist .query-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+    display: block;
+}
+
+#talkSpecialist .query-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: none;
+    height: 100px;
+    background-color: #fff;
+}
+
+#talkSpecialist .query-textarea:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+#talkSpecialist .submit-section {
+    text-align: right;
+    margin-top: 20px;
+}
+
+#talkSpecialist .submit-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 25px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+#talkSpecialist .submit-btn:hover {
+        background-color: #0056b3;
+}
+
+#appInstalledToast {
+    min-width: 500px;
+    max-width: 500px;
+}
+
+#appInstalledToast .toast-body {
+        padding: 0.5rem 0.75rem;
+}
+
+#appInstallInitiatedToast {
+    min-width: 500px;
+    max-width: 500px;
+}
+
+#appInstallInitiatedToast .toast-body {
+    padding: 0.5rem 0.75rem;
 }

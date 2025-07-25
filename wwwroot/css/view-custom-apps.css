@@ -79,7 +79,7 @@
 
 #viewCustomAppsModal .action-btn {
     padding: 6px 50px;
-    border: 1px solid #ced4da;
+    border: 1px solid grey;
     background-color: #fff;
     color: #495057;
     font-size: 13px;
@@ -269,4 +269,8 @@
 
 .deleteAppBtn{
     border: 1px solid red !important;
+}
+
+#EditAppForm .form-control.error {
+    border-color: red !important;
 }

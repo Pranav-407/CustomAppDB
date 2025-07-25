@@ -1,4 +1,7 @@
-﻿(() => {
+﻿
+let cameFromViewModal = false;
+
+(() => {
     const modalId = '#createCustomAppsModal';
     const nextBtn = document.querySelector(`${modalId} .next-btn`);
     const stepItems = document.querySelectorAll(`${modalId} .step-item`);
@@ -147,6 +150,15 @@
         let step = 0;
         const installBtn = document.getElementById('installBtn');
 
+        //  Show 'installation initiated' toast
+        const initiatedToastEl = document.getElementById('appInstallInitiatedToast');
+        if (initiatedToastEl) {
+            const initiatedToast = new bootstrap.Toast(initiatedToastEl, {
+                delay: 3000
+            });
+            initiatedToast.show();
+        }
+
         function nextStep() {
             const { status, delay } = sequence[step];
             const currentData = selectedComputerGrid.option('dataSource');
@@ -199,10 +211,12 @@
                             window.customAppGrid.refresh();
                         }
 
-                        // Show success toast
-                        const toastEl = document.getElementById('appCreatedToast');
+                        //  Show 'App Installed' toast
+                        const toastEl = document.getElementById('appInstalledToast');
                         if (toastEl) {
-                            const toast = new bootstrap.Toast(toastEl);
+                            const toast = new bootstrap.Toast(toastEl, {
+                                delay: 3000
+                            });
                             toast.show();
                         }
 
@@ -227,6 +241,7 @@
 
         nextStep();
     }
+
 
     function updateNextButtonState() {
         if (currentStep === 2) {
@@ -275,12 +290,24 @@
 
     function resetModalSteps() {
         showStep(1);
+
         $('#createCustomAppForm')[0].reset();
-        $('#createCustomAppForm').validate().resetForm();
+
+        const validator = $('#createCustomAppForm').validate();
+        validator.resetForm();
+
+        // REMOVE RED BORDERS manually
+        $('#createCustomAppForm')
+            .find('.form-control')
+            .removeClass('error')
+            .removeAttr('aria-invalid');
+
         $('#createAppUserCredentialsFields').hide();
+
         selectedRowData = null;
         if (computerGrid) computerGrid.clearSelection();
         if (selectedComputerGrid) selectedComputerGrid.option('dataSource', []);
+
         stepItems.forEach(item => {
             const stepNum = parseInt(item.getAttribute('data-step'));
             item.classList.remove('active', 'completed');
@@ -353,12 +380,83 @@
         toggleCredentialFields();
         handleInstallClick();
         showStep(1);
-    });
+    }); 
 
     nextBtn.addEventListener('click', goToNextStep);
 
-    
-
     const modalElement = document.querySelector(modalId);
-    modalElement.addEventListener('hidden.bs.modal', resetModalSteps);
+    modalElement.addEventListener('hidden.bs.modal', function () {
+        resetModalSteps();
+
+        if (cameFromViewModal) {
+            const viewModalEl = document.getElementById('viewCustomAppsModal');
+            const viewModal = bootstrap.Modal.getOrCreateInstance(viewModalEl);
+            viewModal.show();
+
+            cameFromViewModal = false;
+        }
+    });
+
+    const talkModalEl = document.getElementById('talkToSpecialistModal');
+    talkModalEl.addEventListener('hidden.bs.modal', function () {
+        // Reset form fields
+        $('#talkToSpecialistForm')[0].reset();
+
+        // Reset validation messages
+        const validator = $('#talkToSpecialistForm').validate();
+        validator.resetForm();
+
+        // Remove red borders and aria-invalid
+        $('#talkToSpecialistForm')
+            .find('.form-control, textarea')
+            .removeClass('error')
+            .removeAttr('aria-invalid');
+    });
+
+    $('#talkToSpecialistForm').validate({
+        errorClass: 'error',
+        rules: {
+            specialistName: {
+                required: true,
+                minlength: 2
+            },
+            specialistPhone: {
+                required: true,
+                digits: true,
+                minlength: 10,
+                maxlength: 15
+            },
+            specialistQuery: {
+                required: true,
+                minlength: 5
+            }
+        },
+        messages: {
+            specialistName: {
+                required: "Name is required",
+                minlength: "Name must be at least 2 characters"
+            },
+            specialistPhone: {
+                required: "Phone number is required",
+                digits: "Only numbers allowed",
+                minlength: "Minimum 10 digits",
+                maxlength: "Maximum 15 digits"
+            },
+            specialistQuery: {
+                required: "Please enter your query",
+                minlength: "Query must be at least 5 characters"
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        },
+        submitHandler: function (form) {
+            console.log('Talk to Specialist Form submitted');
+
+            // Optional: perform AJAX here or just close the modal
+            bootstrap.Modal.getInstance(document.getElementById('talkToSpecialistModal')).hide();
+        }
+    });
+
+
 })();

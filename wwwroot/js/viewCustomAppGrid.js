@@ -1,8 +1,9 @@
 
-    let selectedAppData = null;
-    window.customAppGrid = null;
+let selectedAppData = null;
+window.customAppGrid = null;
 
-    $(document).ready(function () {
+$(document).ready(function () {
+        initEditFormValidation();
         initializeCustomAppGrid();
 
         $('#appRunAs').on('change', function () {
@@ -37,6 +38,7 @@
 
         $('#saveAppBtn').on('click', function () { debugger
             if (!selectedAppData) return;
+            if (!$('#EditAppForm').valid()) return;
 
             const appData = {
                 ID: selectedAppData.ID,
@@ -71,9 +73,6 @@
                     // Close modal
                     bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
 
-                    // Show success message
-                    alert("App updated successfully!");
-
                     // Clear selection
                     selectedAppData = null;
                     $('#editAppBtn').prop('disabled', true);
@@ -81,7 +80,6 @@
                 },
                 error: function (xhr, status, error) {
                     console.error('Error updating app:', xhr.responseText);
-                    alert('Failed to update app. Please try again.');
                 }
             });
         });
@@ -107,9 +105,6 @@
                     // Close modal
                     bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
 
-                    // Show success message
-                    alert("App deleted successfully!");
-
                     // Clear selection
                     selectedAppData = null;
                     $('#editAppBtn').prop('disabled', true);
@@ -117,10 +112,8 @@
                 },
                 error: function (xhr, status, error) {
                     console.error('Error deleting app:', xhr.responseText);
-                    alert('Failed to delete app. Please try again.');
                 }
             });
-            alert("Deleted Successfully");
             bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
         });
 
@@ -141,10 +134,10 @@
 
         $('#addAppBtn').on('click', function () {
             bootstrap.Modal.getInstance(document.getElementById('viewCustomAppsModal')).hide();
-
             if (typeof resetCreateCustomAppModal === 'function') {
                 resetCreateCustomAppModal();
             }
+            cameFromViewModal = true;
 
             new bootstrap.Modal(document.getElementById('createCustomAppsModal')).show();
         });
@@ -165,6 +158,36 @@
 
     });
 
+function initEditFormValidation() {
+    $('#EditAppForm').validate({
+        errorClass: 'error',
+        rules: {
+            appPackageName: { required: true },
+            appURL: {
+                required: true,
+                url: true
+            },
+            userLoginId: {
+                required: () => $('#appRunAs').val() === 'User'
+            },
+            userPassword: {
+                required: () => $('#appRunAs').val() === 'User'
+            }
+        },
+        messages: {
+            appPackageName: "This field is required",
+            appURL: {
+                required: "This field is required",
+                url: "Please enter a valid URL"
+            },
+            userLoginId: "This field is required",
+            userPassword: "This field is required"
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        }
+    });
+}
     function initializeCustomAppGrid() {
         window.customAppGrid = $('#customAppGrid').dxDataGrid({
             dataSource: {
