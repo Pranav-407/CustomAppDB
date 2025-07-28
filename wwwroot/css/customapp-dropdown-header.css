@@ -64,42 +64,36 @@
     border-color: #007bff !important;
 }
 
-.custom-apps-section .btn-secondary {
-    background-color: white !important;
-    color: black !important;
-    border-radius: 8px;
-    border-color: #6c757d !important;
-}
+    .custom-apps-section .btn-secondary,
+    .custom-apps-section .btn-secondary:active,
+    .custom-apps-section .btn-secondary:focus {
+        background-color: white !important;
+        color: black !important;
+        border-radius: 8px;
+        border-color: #6c757d !important;
+    }
 .custom-apps-section .btn-secondary i{
     font-size: 12px;
 }
 
-.custom-apps-section .btn-secondary:hover,
-.custom-apps-section .btn-secondary:focus,
-.custom-apps-section .btn-secondary:active {
-    background-color: white !important;
-    color: black !important;
-    border-color: #6c757d !important;
-    outline: none !important;
-    box-shadow: none !important;
-}
+    .custom-apps-section .btn-secondary:hover{
+        background-color: #007bff !important;
+        color: white !important;
+    }
 
-.custom-apps-section .btn-outline-secondary {
-    background-color: white !important;
-    color: black !important;
-    border-color: #6c757d !important;
-    border-radius: 8px;
-}
+    .custom-apps-section .btn-outline-secondary,
+    .custom-apps-section .btn-outline-secondary:focus,
+    .custom-apps-section .btn-outline-secondary:active {
+        background-color: white !important;
+        color: black !important;
+        border-color: #6c757d !important;
+        border-radius: 8px;
+    }
 
-.custom-apps-section .btn-outline-secondary:hover,
-.custom-apps-section .btn-outline-secondary:focus,
-.custom-apps-section .btn-outline-secondary:active {
-    background-color: white !important;
-    color: black !important;
-    border-color: #6c757d !important;
-    outline: none !important;
-    box-shadow: none !important;
-}
+        .custom-apps-section .btn-outline-secondary:hover {
+            background-color: #007bff !important;
+            color: white !important;
+        }
 
 .custom-apps-section .dropdown-toggle::after {
     margin-left: 8px;

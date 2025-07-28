@@ -11,41 +11,64 @@
     let selectedComputerGrid = null;
     let selectedRowData = null;
 
-    const computerData = [
-        {
-            computer: "0922-VSMSDN14", installedApps: 37, outdatedApps: 3, policy: "Manual",
-            group: "Default", tags: "-", configuration: "Last Applied", wingetStatus: "v1.9",
-            lastSeen: "Now", wingetApps: "2 installed", browsers: "2 installed",
-            messaging: "1 outdated", media: "2 available", runtimes: "1 installed", image: "-"
-        },
-        {
-            computer: "0922-DESKTOP01", installedApps: 42, outdatedApps: 0, policy: "Automatic",
-            group: "Production", tags: "Server", configuration: "Applied", wingetStatus: "v1.8",
-            lastSeen: "2 mins ago", wingetApps: "5 installed", browsers: "1 installed",
-            messaging: "2 installed", media: "3 available", runtimes: "2 installed", image: "Windows 11"
-        },
-        {
-            computer: "0922-LAPTOP05", installedApps: 28, outdatedApps: 1, policy: "Manual",
-            group: "Development", tags: "Mobile", configuration: "Pending", wingetStatus: "v1.9",
-            lastSeen: "5 mins ago", wingetApps: "3 installed", browsers: "3 installed",
-            messaging: "1 installed", media: "1 available", runtimes: "1 installed", image: "Windows 10"
-        },
-        {
-            computer: "0922-WORKSTATION", installedApps: 55, outdatedApps: 7, policy: "Automatic",
-            group: "Design", tags: "Workstation", configuration: "Failed", wingetStatus: "v1.7",
-            lastSeen: "10 mins ago", wingetApps: "8 installed", browsers: "2 installed",
-            messaging: "0 installed", media: "5 available", runtimes: "3 installed", image: "Windows 11"
-        }
-    ];
+    //const computerData = [
+    //    {
+    //        computer: "0922-VSMSDN14", installedApps: 37, outdatedApps: 3, policy: "Manual",
+    //        group: "Default", tags: "-", configuration: "Last Applied", wingetStatus: "v1.9",
+    //        lastSeen: "Now", wingetApps: "2 installed", browsers: "2 installed",
+    //        messaging: "1 outdated", media: "2 available", runtimes: "1 installed", image: "-"
+    //    },
+    //    {
+    //        computer: "0922-DESKTOP01", installedApps: 42, outdatedApps: 0, policy: "Automatic",
+    //        group: "Production", tags: "Server", configuration: "Applied", wingetStatus: "v1.8",
+    //        lastSeen: "2 mins ago", wingetApps: "5 installed", browsers: "1 installed",
+    //        messaging: "2 installed", media: "3 available", runtimes: "2 installed", image: "Windows 11"
+    //    },
+    //    {
+    //        computer: "0922-LAPTOP05", installedApps: 28, outdatedApps: 1, policy: "Manual",
+    //        group: "Development", tags: "Mobile", configuration: "Pending", wingetStatus: "v1.9",
+    //        lastSeen: "5 mins ago", wingetApps: "3 installed", browsers: "3 installed",
+    //        messaging: "1 installed", media: "1 available", runtimes: "1 installed", image: "Windows 10"
+    //    },
+    //    {
+    //        computer: "0922-WORKSTATION", installedApps: 55, outdatedApps: 7, policy: "Automatic",
+    //        group: "Design", tags: "Workstation", configuration: "Failed", wingetStatus: "v1.7",
+    //        lastSeen: "10 mins ago", wingetApps: "8 installed", browsers: "2 installed",
+    //        messaging: "0 installed", media: "5 available", runtimes: "3 installed", image: "Windows 11"
+    //    }
+    //];
 
     function initializeComputerGrid() {
+
+        const computerData = new DevExpress.data.CustomStore({
+            load: function () {
+                return $.ajax({
+                    url: '/Device/GetDevices',
+                    dataType: 'json',
+                    method: 'GET'
+                }).fail(function () {
+                    DevExpress.ui.notify("Failed to load devices.", "error", 3000);
+                });
+            }
+        });
+
         computerGrid = $("#computerGrid").dxDataGrid({
             dataSource: computerData,
             showBorders: false,
             columnAutoWidth: true,
-            scrolling: { mode: 'standard' },
+            scrolling: {
+                mode: 'standard',
+                scrollByContent: true,
+                scrollByThumb: true,
+                useNative: false
+            },
             rowAlternationEnabled: false,
             hoverStateEnabled: true,
+            pager: {
+                visible: true,
+                showInfo: true,
+                showNavigationButtons: true,
+            },
             selection: { mode: 'single' },
             onSelectionChanged: function (e) {
                 selectedRowData = e.selectedRowsData[0];
@@ -54,7 +77,7 @@
             columns: [
                 {
                     dataField: "computer",
-                    caption: `Computers(${computerData.length})`,
+                    caption: `Computers`,
                     width: 200,
                     cellTemplate: function (container, options) {
                         const isOutdated = options.data.outdatedApps > 0;
@@ -198,10 +221,7 @@
             if (++step < sequence.length) {
                 setTimeout(nextStep, delay);
             } else {
-                // Reset button state
-                installBtn.disabled = false;
-                installBtn.textContent = 'Install';
-
+               
                 // Prepare app data for API
                 const appData = {
                     PackageName: $('#createAppPackageName').val(),
@@ -250,13 +270,13 @@
                         // Show OK button and hide Next button after successful installation
                         showOkButton();
 
-                        // DO NOT close modal - removed modal close code
+                        installBtn.disabled = true;
+                        installBtn.textContent = 'Installed';
                     },
                     error: function (xhr, status, error) {
                         console.error('Error saving app:', xhr.responseText);
                         alert('Failed to save app. Please try again.');
 
-                        // Reset button on error
                         installBtn.disabled = false;
                         installBtn.textContent = 'Install';
                     }

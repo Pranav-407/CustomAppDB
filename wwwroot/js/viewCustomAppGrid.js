@@ -127,7 +127,7 @@ $(document).ready(function () {
             bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
         });
 
-        $('#confirmDeleteAppModal .btn-close, #confirmDeleteAppModal [data-dismiss="modal"]').on("click", function () {
+    $('#confirmDeleteAppModal .del-btn, #confirmDeleteAppModal [data-dismiss="modal"]').on("click", function () {
             bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
         });
 
