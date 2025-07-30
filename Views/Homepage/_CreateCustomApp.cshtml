@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between align-items-center px-3 py-2 border-top" style="flex-shrink: 0;">
+            <div class="d-flex justify-content-between align-items-center py-3 px-3" style="flex-shrink: 0;">
                 <button type="button" class="btn cancel-btn btn-outline-primary" data-bs-dismiss="modal">
                     CANCEL
                 </button>
@@ -56,8 +56,6 @@
             <div class="toast-body">
                 <i class="bi bi-check-circle me-2"></i>App installation initiated.
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
         </div>
     </div>
 </div>
@@ -70,11 +68,36 @@
             <div class="toast-body">
                 <i class="bi bi-check-circle me-2"></i>App Installed.
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
         </div>
     </div>
 </div>
 
+
+<div class="modal fade" id="confirmInstallAppModal" tabindex="-1" role="dialog"
+     aria-labelledby="confirmInstallAppModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header delete-header">
+                <h6 class="modal-title" id="confirmInstallAppModalLabel">Confirm Install App </h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to install this Application ?</p>
+
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="button" class="btn btn-sm btn-primary me-1 install-btn" id="confirmInstallBtn"
+                            data-bs-dismiss="modal">
+                        INSTALL
+                    </button>
+
+                    <button type="button" class="btn btn-sm btn-primary del-btn" data-bs-dismiss="modal">CANCEL</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @await Html.PartialAsync("_TalkSpecialist")

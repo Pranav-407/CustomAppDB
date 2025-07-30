@@ -99,21 +99,20 @@
     letter-spacing: 1px;
     background-color: white;
     color: #007bff !important;
-    margin: 5px 20px 10px 20px;
 }
 
-    #createCustomAppsModal .cancel-btn:hover,
-    #createCustomAppsModal .next-btn:hover, #okBtn:hover {
-        padding: 5px 30px !important;
-        border-radius: 8px !important;
-        font-weight: 550 !important;
-        font-size: 12px;
-        letter-spacing: 1px;
-        background-color: #007bff !important;
-        color: white !important;
-        margin: 5px 20px 10px 20px;
-    }
-
+#createCustomAppsModal .cancel-btn:hover,
+#createCustomAppsModal .next-btn:hover, #okBtn:hover,
+#talkSpecialist .submit-btn {
+    border: none;
+    padding: 5px 30px !important;
+    border-radius: 8px !important;
+    font-weight: 550 !important;
+    font-size: 12px;
+    letter-spacing: 1px;
+    background-color: #007bff !important;
+    color: white !important;
+}
 
 #createCustomAppsModal .next-btn:disabled {
     opacity: 0.5 !important;
@@ -139,7 +138,8 @@ label.error {
     display: block;
 }
 
-#createCustomAppForm .form-control.error {
+#createCustomAppForm .form-control.error,
+#talkToSpecialistForm .form-control.error{
     border-color: red !important;
 }
 
@@ -154,10 +154,10 @@ label.error {
     padding: 10px 25px;
 }
 
-    .custom-search-wrapper input::placeholder {
-        color: #b3b3b3;
-        font-size: 0.9rem;
-    }
+.custom-search-wrapper input::placeholder {
+    color: #b3b3b3;
+    font-size: 0.8rem;
+}
 
 .custom-search-icon {
     position: absolute;
@@ -174,6 +174,22 @@ label.error {
     border-radius: 10px;
 }
 
+.clear-search-icon {
+    position: absolute;
+    top: 45%;
+    right: 40px;
+    transform: translateY(-50%);
+    font-size: 21px;
+    color: #999;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.clear-search-icon:hover {
+    color: #333;
+}
+
 #computerGridWrapper {
     overflow: auto;
     max-height: 400px;
@@ -183,7 +199,6 @@ label.error {
 
 #computerGrid {
     max-width: 680px !important;
-    padding: none !important;
     overflow: auto;
 }
 
@@ -196,15 +211,23 @@ label.error {
     border-right: 3px solid white;
 }
 
-    #computerGrid .dx-datagrid .dx-pager .dx-page {
-        height: 30px !important;
-        font-size: 10px !important;
-    }
+#computerGrid .dx-datagrid .dx-pager .dx-page {
+    height: 30px !important;
+    font-size: 10px !important;
+}
 
-    #computerGrid .dx-datagrid .dx-pager .dx-navigate-button {
-        font-size: 12px !important;
-        line-height: 20px !important;
-    }
+#computerGrid .dx-datagrid .dx-pager .dx-navigate-button {
+    padding: 8px 6px;
+    font-size: 12px !important;
+    line-height: 20px !important;
+}
+
+.dx-pager .dx-pages .dx-info {
+    font-size: 10px;
+    display: inline-block;
+    margin-right: 9px;
+    opacity: .7;
+}
 
 #computerGrid .dx-datagrid .dx-header-row>td {
     background-color: white;
@@ -280,7 +303,6 @@ label.error {
     padding: 10px 25px;
 }
 
-#computerGrid .dx-selection,
 #computerGrid .dx-row-selected {
     background-color: #e3f2fd !important;
 }
@@ -308,7 +330,7 @@ label.error {
 
 .step-item.active {
     font-weight: 600;
-    color: #007bff;
+    color: #0092e7;
     background-color: #fff;
 }
 
@@ -327,15 +349,35 @@ label.error {
     font-size: 16px;
 }
 
-.installBtn,
-.installBtn:hover {
-    background-color: white !important;
-    color: #28a745 !important;
-    border-color: #28a745 !important;
+.installBtn {
+    background-color: white;
+    color: #28a745;
+    border: 1px solid #28a745;
+    font-weight: 500;
     margin: 15px 100px 0px 0px;
-    padding: 3px 40px;
+    padding: 5px 40px;
     transition: all 0.2s ease;
 }
+
+.installBtn:hover, .installBtn:focus {
+    background-color: #28a745 !important;
+    border: none !important;
+    color: white !important;
+}
+
+.installBtn:hover .install-text, .installBtn:focus .install-text {
+    color: white !important;
+}
+
+.install-text {
+    font-weight: bold;
+    color: #28a745; /* Green text */
+    letter-spacing: 1px;
+    font-size: 12px;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+}
+
 
 .installBtn:disabled {
     opacity: 0.6 !important;
@@ -363,7 +405,6 @@ label.error {
 .status-installed { 
     background-color: transparent !important; 
     color: black !important;
-/*    font-weight: bold;*/
 }
 .form-check {
     padding-left: 22px;
@@ -372,7 +413,7 @@ label.error {
 
 .form-check-label {
     font-size: 14px;
-    color: darkslategrey;
+    color: #212121;
 }
 #createCustomAppForm {
     padding: 0px 15px 0px 5px;
@@ -400,71 +441,71 @@ label.error {
 }
 
 #talkSpecialist .modal-content {
-        border-radius: 8px;
-        border: none;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 #talkSpecialist .modal-header {
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #dee2e6;
-        padding: 15px 20px;
-        border-radius: 8px 8px 0 0;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 15px 20px;
+    border-radius: 8px 8px 0 0;
 }
 
 #talkSpecialist .modal-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: #333;
-        margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
 }
 
-#talkSpecialist .btn-close {
-        font-size: 18px;
-        color: #666;
-        opacity: 0.7;
-}
-
-#talkSpecialist .btn-close:hover {
-        opacity: 1;
+#talkSpecialist .btn-close, #confirmInstallAppModal .btn-close {
+    font-size: 0.6rem;
 }
 
 #talkSpecialist .modal-body {
-        padding: 20px;
+    padding: 20px 20px 15px 20px;
 }
 
 #talkSpecialist .form-row {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
 #talkSpecialist .form-label {
-        width: 35%;
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 0;
-        padding-right: 10px;
+    width: 35%;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 0;
+    padding-right: 10px;
 }
 
 #talkSpecialist .form-input {
-        flex: 1;
+    flex: 1;
 }
 
 #talkSpecialist .form-input input {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 14px;
-        background-color: #fff;
+    height:35px;
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #fff;
 }
 
-    #talkSpecialist .form-input input:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-    }
+#talkSpecialist .email-input input {
+    padding: 0 0 0 5px;
+    border: none;
+}
+
+#talkSpecialist .form-input input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 1px rgba(0, 123, 255, 0.25);
+}
 
 #talkSpecialist .query-section {
     margin-top: 20px;
@@ -481,7 +522,7 @@ label.error {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 14px;
     resize: none;
     height: 100px;
@@ -489,9 +530,9 @@ label.error {
 }
 
 #talkSpecialist .query-textarea:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 1px rgba(0, 123, 255, 0.25);
 }
 
 #talkSpecialist .submit-section {
@@ -499,40 +540,14 @@ label.error {
     margin-top: 20px;
 }
 
-#talkSpecialist .submit-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 25px;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    text-transform: uppercase;
-}
-
-#talkSpecialist .submit-btn:hover {
-        background-color: #0056b3;
-}
-
-#appInstalledToast {
+#appInstalledToast, #appInstallInitiatedToast {
     min-width: 500px;
     max-width: 500px;
 }
 
-#appInstalledToast .toast-body {
-        padding: 0.5rem 0.75rem;
-}
-
-#appInstallInitiatedToast {
-    min-width: 500px;
-    max-width: 500px;
-}
-
-#appInstallInitiatedToast .toast-body {
+#appInstalledToast .toast-body, #appInstallInitiatedToast .toast-body {
     padding: 0.5rem 0.75rem;
 }
-
 
 .detected-app-section {
     max-width: 430px;
@@ -589,13 +604,22 @@ label.error {
     text-decoration: none;
 }
 
-    .help-link:hover {
-        text-decoration: underline;
-    }
+.help-link:hover {
+    text-decoration: underline;
+}
 
 .sync-info {
     font-size: 12px;
     color: #666;
     margin-top: 10px;
     line-height: 1.4;
+}
+
+#talkToSpecialistModal {
+    background-color: #f5f5f5ad !important;
+}
+
+#confirmInstallBtn {
+    border-radius: 6px !important;
+    padding: 5px 15px;
 }

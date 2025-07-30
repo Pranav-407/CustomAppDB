@@ -86,6 +86,7 @@ $(document).ready(function () {
 
         $('#deleteAppBtn').on('click', function () {
             if (!selectedAppData) return;
+            $('#deleteAppName').text(selectedAppData.PackageName);
             new bootstrap.Modal(document.getElementById('confirmDeleteAppModal')).show();
         });
 
@@ -105,6 +106,14 @@ $(document).ready(function () {
                     // Close modal
                     bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
 
+                    //  Show 'delete' toast
+                    const deletedToastEl = document.getElementById('appDeletedToast');
+                    if (deletedToastEl) {
+                        const deletedToast = new bootstrap.Toast(deletedToastEl, {
+                            delay: 2500
+                        });
+                        deletedToast.show();
+                    }
                     // Clear selection
                     selectedAppData = null;
                     $('#editAppBtn').prop('disabled', true);
@@ -118,16 +127,28 @@ $(document).ready(function () {
         });
 
         $("#appSearchInput").on("input", function () {
+            const val = $(this).val();
             if (window.customAppGrid) {
-                window.customAppGrid.searchByText($(this).val());
+                window.customAppGrid.searchByText(val);
             }
+
+            if (val.length > 0) {
+                $("#clearAppSearch").show();
+            } else {
+                $("#clearAppSearch").hide();
+            }
+        });
+
+        $("#clearAppSearch").on("click", function () {
+            $("#appSearchInput").val('').trigger('input');
+            $(this).hide();
         });
 
         $('#EditAppModal .btn-close, #EditAppModal [data-dismiss="modal"]').on("click", function () {
             bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
         });
 
-    $('#confirmDeleteAppModal .del-btn, #confirmDeleteAppModal [data-dismiss="modal"]').on("click", function () {
+        $('#confirmDeleteAppModal .del-btn, #confirmDeleteAppModal [data-dismiss="modal"]').on("click", function () {
             bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
         });
 
@@ -142,21 +163,21 @@ $(document).ready(function () {
             new bootstrap.Modal(document.getElementById('createCustomAppsModal')).show();
         });
 
-        $('#viewCustomAppsModal .cancel-btn, #viewCustomAppsModal [data-dismiss="modal"]').on("click", function () {
+        $('#viewCustomAppsModal .btn-close, #viewCustomAppsModal [data-dismiss="modal"]').on("click", function () {
 
-            if (window.customAppGrid) {
-                window.customAppGrid.clearSelection();
-                window.customAppGrid.searchByText('');
-            }
+                if (window.customAppGrid) {
+                    window.customAppGrid.clearSelection();
+                    window.customAppGrid.searchByText('');
+                }
 
-            selectedAppData = null;
-            $('#editAppBtn').prop('disabled', true);
-            $('#deleteAppBtn').prop('disabled', true);
-            $('#appSearchInput').val('');
-            bootstrap.Modal.getInstance(document.getElementById('viewCustomAppsModal')).hide();
+                selectedAppData = null;
+                $('#editAppBtn').prop('disabled', true);
+                $('#deleteAppBtn').prop('disabled', true);
+                $('#appSearchInput').val('');
+                bootstrap.Modal.getInstance(document.getElementById('viewCustomAppsModal')).hide();
+            });
+
         });
-
-    });
 
 function initEditFormValidation() {
     $('#EditAppForm').validate({
@@ -188,71 +209,80 @@ function initEditFormValidation() {
         }
     });
 }
-    function initializeCustomAppGrid() {
-        window.customAppGrid = $('#customAppGrid').dxDataGrid({
-            dataSource: {
-                load: function () {
-                    return $.get('/custom-apps/list')
-                        .then(function (response) {
-                            if (response.success && response.data) {
-                                // Transform the API response to match the expected format
-                                return response.data.map(function (item) {
-                                    return {
-                                        ID: item.id,
-                                        PackageName: item.packageName,
-                                        URL: item.url,
-                                        Architecture: item.architecture,
-                                        InstallCommandLine: item.installCommandLine,
-                                        UninstallCommand: item.uninstallCommand,
-                                        Restart: item.restart,
-                                        InstallTimeout: item.installTimeout,
-                                        RunAs: item.runAs,
-                                        LoginId: item.loginId,
-                                        Password: item.password,
-                                        Domain: item.domain,
-                                        Extract: item.extract
-                                    };
-                                });
-                            }
-                            return [];
-                        })
-                        .catch(function (error) {
-                            console.error('Error loading custom apps:', error);
-                            return [];
-                        });
-                }
-            },
-            keyExpr: 'ID',
-            selection: { mode: 'single' },
-            hoverStateEnabled: true,
-            columnAutoWidth: true,
-            pager: {
-                visible: true,
-                showInfo: true,
-                showNavigationButtons: true
-            },
-            scrolling: { mode: "standard" },
-            columns: [
-                { dataField: 'PackageName', caption: 'Package Name' },
-                { dataField: 'URL', caption: 'URL' },
-                { dataField: 'Architecture', caption: 'Architecture' },
-                { dataField: 'InstallCommandLine', caption: 'Install Command' },
-                { dataField: 'UninstallCommand', caption: 'Uninstall Command' },
-                { dataField: 'Restart', caption: 'Restart' },
-                { dataField: 'InstallTimeout', caption: 'Timeout (min)' },
-                { dataField: 'RunAs', caption: 'Run As' }
-            ],
-            onRowClick(e) {
-                selectedAppData = e.data;
-                $('#editAppBtn').prop('disabled', false);
-                $('#deleteAppBtn').prop('disabled', false);
-                console.log("Row clicked:", selectedAppData);
-            },
-            onSelectionChanged(e) {
-                const rows = e.selectedRowsData;
-                selectedAppData = rows.length === 1 ? rows[0] : null;
-                $('#editAppBtn').prop('disabled', rows.length !== 1);
-                $('#deleteAppBtn').prop('disabled', rows.length !== 1);
+
+function initializeCustomAppGrid() {
+    window.customAppGrid = $('#customAppGrid').dxDataGrid({
+        dataSource: {
+            load: function () {
+                return $.get('/custom-apps/list')
+                    .then(function (response) {
+                        if (response.success && response.data) {
+                            // Transform the API response to match the expected format
+                            return response.data.map(function (item) {
+                                return {
+                                    ID: item.id,
+                                    PackageName: item.packageName,
+                                    URL: item.url,
+                                    Architecture: item.architecture,
+                                    InstallCommandLine: item.installCommandLine,
+                                    UninstallCommand: item.uninstallCommand,
+                                    Restart: item.restart,
+                                    InstallTimeout: item.installTimeout,
+                                    RunAs: item.runAs,
+                                    LoginId: item.loginId,
+                                    Password: item.password,
+                                    Domain: item.domain,
+                                    Extract: item.extract
+                                };
+                            });
+                        }
+                        return [];
+                    })
+                    .catch(function (error) {
+                        console.error('Error loading custom apps:', error);
+                        return [];
+                    });
             }
-        }).dxDataGrid('instance');
-    }
+        },
+        keyExpr: 'ID',
+        selection: { mode: 'single' },
+        hoverStateEnabled: true,
+        columnAutoWidth: true,
+        loadPanel: {
+            enabled: false
+        },
+        pager: {
+            visible: true,
+            showInfo: true,
+            showNavigationButtons: true
+        },
+        scrolling: { mode: "standard" },
+        columns: [
+            { dataField: 'PackageName', caption: 'Package Name', alignment: "start" },
+            { dataField: 'URL', caption: 'URL', alignment: "start" },
+            { dataField: 'Architecture', caption: 'Architecture', alignment: "start" },
+            { dataField: 'InstallCommandLine', caption: 'Install Command Line', alignment: "start" },
+            { dataField: 'UninstallCommand', caption: 'Uninstall Command Line', alignment: "start" },
+            { dataField: 'Restart', caption: 'Restart', alignment: "start" },
+            { dataField: 'InstallTimeout', caption: 'Install Timeout', alignment: "start" },
+        ],
+        // Remove onRowClick and rely only on onSelectionChanged
+        onSelectionChanged(e) {
+            const rows = e.selectedRowsData;
+            selectedAppData = rows.length === 1 ? rows[0] : null;
+            const hasSelection = rows.length === 1;
+
+            $('#editAppBtn').prop('disabled', !hasSelection);
+            $('#deleteAppBtn').prop('disabled', !hasSelection);
+
+            $('#copyAppBtn').prop('disabled', !hasSelection);
+            $('#dropdownToggle').prop('disabled', !hasSelection);
+
+            if (hasSelection) {
+                console.log("Row selected:", selectedAppData);
+            } else {
+                console.log("No row selected");
+            }
+        }
+    }).dxDataGrid('instance');
+}

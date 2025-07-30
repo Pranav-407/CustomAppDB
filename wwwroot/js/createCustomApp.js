@@ -11,33 +11,6 @@
     let selectedComputerGrid = null;
     let selectedRowData = null;
 
-    //const computerData = [
-    //    {
-    //        computer: "0922-VSMSDN14", installedApps: 37, outdatedApps: 3, policy: "Manual",
-    //        group: "Default", tags: "-", configuration: "Last Applied", wingetStatus: "v1.9",
-    //        lastSeen: "Now", wingetApps: "2 installed", browsers: "2 installed",
-    //        messaging: "1 outdated", media: "2 available", runtimes: "1 installed", image: "-"
-    //    },
-    //    {
-    //        computer: "0922-DESKTOP01", installedApps: 42, outdatedApps: 0, policy: "Automatic",
-    //        group: "Production", tags: "Server", configuration: "Applied", wingetStatus: "v1.8",
-    //        lastSeen: "2 mins ago", wingetApps: "5 installed", browsers: "1 installed",
-    //        messaging: "2 installed", media: "3 available", runtimes: "2 installed", image: "Windows 11"
-    //    },
-    //    {
-    //        computer: "0922-LAPTOP05", installedApps: 28, outdatedApps: 1, policy: "Manual",
-    //        group: "Development", tags: "Mobile", configuration: "Pending", wingetStatus: "v1.9",
-    //        lastSeen: "5 mins ago", wingetApps: "3 installed", browsers: "3 installed",
-    //        messaging: "1 installed", media: "1 available", runtimes: "1 installed", image: "Windows 10"
-    //    },
-    //    {
-    //        computer: "0922-WORKSTATION", installedApps: 55, outdatedApps: 7, policy: "Automatic",
-    //        group: "Design", tags: "Workstation", configuration: "Failed", wingetStatus: "v1.7",
-    //        lastSeen: "10 mins ago", wingetApps: "8 installed", browsers: "2 installed",
-    //        messaging: "0 installed", media: "5 available", runtimes: "3 installed", image: "Windows 11"
-    //    }
-    //];
-
     function initializeComputerGrid() {
 
         const computerData = new DevExpress.data.CustomStore({
@@ -62,6 +35,9 @@
                 scrollByThumb: true,
                 useNative: false
             },
+            loadPanel: {
+                enabled: false
+            },
             rowAlternationEnabled: false,
             hoverStateEnabled: true,
             pager: {
@@ -77,8 +53,7 @@
             columns: [
                 {
                     dataField: "computer",
-                    caption: `Computers`,
-                    width: 200,
+                    caption: `Computer Name`,
                     cellTemplate: function (container, options) {
                         const isOutdated = options.data.outdatedApps > 0;
                         const indicatorColor = isOutdated ? "rgb(218, 68, 9)" : "rgb(141, 206, 45)";
@@ -91,26 +66,26 @@
                         }).appendTo(container);
                     },
                 },
-                { dataField: "installedApps", caption: "Installed Apps", width: 135 },
-                { dataField: "outdatedApps", caption: "Outdated Apps", width: 135 },
-                { dataField: "policy", caption: "Policy", width: 135 },
-                { dataField: "group", caption: "Group", width: 135 },
-                { dataField: "tags", caption: "Tags", width: 135 },
-                { dataField: "configuration", caption: "Configuration", width: 135 },
-                { dataField: "wingetStatus", caption: "Winget Status", width: 135 },
-                { dataField: "lastSeen", caption: "Last Seen", width: 135 },
-                { dataField: "wingetApps", caption: "Winget Apps", width: 135 },
-                { dataField: "browsers", caption: "Web Browsers", width: 135 },
-                { dataField: "messaging", caption: "Messaging", width: 135 },
-                { dataField: "media", caption: "Media", width: 135 },
-                { dataField: "runtimes", caption: "Runtimes", width: 135 },
-                { dataField: "image", caption: "Image", width: 135 }
+                { dataField: "group", caption: "Group"},
+                { dataField: "policy", caption: "Policy"},
+                { dataField: "image", caption: "Operating System"}
             ]
         }).dxDataGrid("instance");
 
         $("#customSearchInput").on("input", function () {
             const searchText = $(this).val();
             computerGrid.searchByText(searchText);
+
+            if (searchText.length > 0) {
+                $("#clearSearchInput").show();
+            } else {
+                $("#clearSearchInput").hide();
+            }
+        });
+
+        $("#clearSearchInput").on("click", function () {
+            $("#customSearchInput").val('').trigger('input');
+            $(this).hide();
         });
     }
 
@@ -119,6 +94,9 @@
             dataSource: [],
             showBorders: false,
             columnAutoWidth: true,
+            loadPanel: {
+                enabled: false
+            },
             scrolling: { mode: 'standard' },
             rowAlternationEnabled: false,
             hoverStateEnabled: true,
@@ -156,7 +134,7 @@
             case "Waiting": return "status-waiting";
             case "Downloading": return "status-downloading";
             case "Installing": return "status-installing";
-            case "Installed": return "status-installed";
+            case "4.42.117": return "status-installed";
             default: return "";
         }
     }
@@ -185,10 +163,10 @@
 
     function updateStatusSequentially() {
         const sequence = [
-            { status: "Waiting", delay: 1000 },
-            { status: "Downloading", delay: 2000 },
-            { status: "Installing", delay: 2000 },
-            { status: "Installed", delay: 1000 }
+            { status: "Waiting", delay: 2000 },
+            { status: "Downloading", delay: 2500 },
+            { status: "Installing", delay: 2500 },
+            { status: "4.42.117", delay: 1500 }
         ];
 
         let step = 0;
@@ -198,7 +176,7 @@
         const initiatedToastEl = document.getElementById('appInstallInitiatedToast');
         if (initiatedToastEl) {
             const initiatedToast = new bootstrap.Toast(initiatedToastEl, {
-                delay: 3000
+                delay: 1500
             });
             initiatedToast.show();
         }
@@ -262,7 +240,7 @@
                         const toastEl = document.getElementById('appInstalledToast');
                         if (toastEl) {
                             const toast = new bootstrap.Toast(toastEl, {
-                                delay: 3000
+                                delay: 1500
                             });
                             toast.show();
                         }
@@ -333,7 +311,7 @@
         if (step === 3) {
             nextBtn.classList.add('d-none');
             if (selectedRowData && selectedComputerGrid) {
-                const dataWithStatus = { ...selectedRowData, Status: "Not Installed" };
+                const dataWithStatus = { ...selectedRowData, Status: "" };
                 selectedComputerGrid.option('dataSource', [dataWithStatus]);
             }
         } else {
@@ -387,6 +365,12 @@
             item.classList.remove('active', 'completed');
             if (stepNum === 1) item.classList.add('active');
         });
+
+        const installBtn = document.getElementById('installBtn');
+        if (installBtn) {
+            installBtn.disabled = false;
+            installBtn.textContent = 'Install';
+        }
     }
 
     window.resetCreateCustomAppModal = function () {
@@ -420,8 +404,6 @@
                 error.insertAfter(element);
             }
         });
-
-
     }
 
     function toggleCredentialFields() {
@@ -436,8 +418,17 @@
         if (installBtn) {
             installBtn.addEventListener('click', function () {
                 if (!this.disabled) {
-                    updateStatusSequentially();
+                    const confirmModal = new bootstrap.Modal(document.getElementById('confirmInstallAppModal'));
+                    confirmModal.show();
                 }
+            });
+        }
+
+        // Now handle the confirm install button inside the modal
+        const confirmInstallBtn = document.getElementById('confirmInstallBtn');
+        if (confirmInstallBtn) {
+            confirmInstallBtn.addEventListener('click', function () {
+                updateStatusSequentially();
             });
         }
     }
@@ -534,5 +525,4 @@
             bootstrap.Modal.getInstance(document.getElementById('talkToSpecialistModal')).hide();
         }
     });
-
 })();

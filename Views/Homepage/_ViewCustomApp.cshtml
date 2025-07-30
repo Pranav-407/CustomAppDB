@@ -12,7 +12,6 @@
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             
             <div class="modal-body p-0">
                 <div class="apps-header">
@@ -23,16 +22,50 @@
 
                     
                     <div class="apps-controls-row d-flex justify-content-between align-items-center flex-wrap">
-                        <div class="search-container">
-                            <span class="search-icon"><i class="bi bi-search"></i></span>
+                        <div class="search-container position-relative">
+                            <span><i class="fas fa-search search-icon"></i></span>
                             <input type="text" class="search-input" placeholder="Search" id="appSearchInput" />
+                            <span class="clear-app-search-icon" id="clearAppSearch" style="display: none;">&times;</span>
                         </div>
 
+
                         <div class="action-buttons">
-                            <button class="action-btn" id="addAppBtn">ADD</button>
+                            <button class="action-btn addAppBtn" id="addAppBtn">ADD</button>
                             <button class="action-btn editAppBtn" id="editAppBtn" disabled>EDIT</button>
                             <button class="action-btn deleteAppBtn" id="deleteAppBtn" disabled>DELETE</button>
-                            <button class="action-btn copy-btn" id="copyAppBtn" disabled>COPY</button>
+                            @* <button class="action-btn copy-btn " id="copyAppBtn" disabled>COPY</button> *@
+
+                            <div class="btn-group split-button-container" role="group">
+                                <!-- Main Action Button -->
+                                <button type="button"
+                                        class="action-btn copy-btn btn-split-main"
+                                        id="copyAppBtn"
+                                        disabled
+                                        onclick="handleMainAction()">
+                                    COPY
+                                </button>
+
+                                <!-- Dropdown Toggle Button -->
+                                <button type="button"
+                                        class="action-btn copy-btn btn-split-toggle dropdown-toggle dropdown-toggle-split"
+                                        id="dropdownToggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        disabled>
+                                    <span class="dropdown-chevron">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="6,9 12,15 18,9"></polyline>
+                                        </svg>
+                                    </span>
+                                    <span class="visually-hidden">Toggle Dropdown</span>
+                                </button>
+
+                                <!-- Dropdown menu (optional) -->
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Copy Option 1</a></li>
+                                    <li><a class="dropdown-item" href="#">Copy Option 2</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,6 +111,16 @@
     </div>
 </div>
 
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
+    <div id="appDeletedToast" class="toast align-items-center text-bg-danger border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i>App Deleted Successfully.
+            </div>
+        </div>
+    </div>
+</div>
 
 <!--Edit Custom App Modal -->
 <div class="modal fade" id="EditAppModal" tabindex="-1" role="dialog" aria-labelledby="appModalTitle" aria-hidden="true"
@@ -206,7 +249,8 @@
                 <div class="d-flex justify-content-between align-items-center px-3 pb-3">
                     <button type="button" class="btn btn-outline-secondary cancel-btn btn-sm"
                         data-bs-dismiss="modal">CANCEL</button>
-                    <button type="button" class="btn btn-primary done-btn btn-sm" id="saveAppBtn">DONE</button>
+
+                    <button type="button" class="btn btn-primary done-btn btn-sm" id="saveAppBtn">UPDATE</button>
                 </div>
             </form>
         </div>
