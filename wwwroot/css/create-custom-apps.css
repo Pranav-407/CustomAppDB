@@ -104,12 +104,6 @@
 #createCustomAppsModal .cancel-btn:hover,
 #createCustomAppsModal .next-btn:hover, #okBtn:hover,
 #talkSpecialist .submit-btn {
-    border: none;
-    padding: 5px 30px !important;
-    border-radius: 8px !important;
-    font-weight: 550 !important;
-    font-size: 12px;
-    letter-spacing: 1px;
     background-color: #007bff !important;
     color: white !important;
 }
@@ -540,12 +534,12 @@ label.error {
     margin-top: 20px;
 }
 
-#appInstalledToast, #appInstallInitiatedToast {
+#appInstalledToast, #appInstallInitiatedToast, #appDeletedToast{
     min-width: 500px;
     max-width: 500px;
 }
 
-#appInstalledToast .toast-body, #appInstallInitiatedToast .toast-body {
+#appInstalledToast .toast-body, #appInstallInitiatedToast .toast-body, #appDeletedToast .toast-body {
     padding: 0.5rem 0.75rem;
 }
 

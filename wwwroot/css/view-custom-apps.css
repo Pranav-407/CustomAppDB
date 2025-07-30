@@ -279,8 +279,9 @@
     cursor: not-allowed !important;
 }
 
-.editAppBtn:not(:disabled):hover, .addAppBtn:hover{
+.editAppBtn:not(:disabled):hover, .addAppBtn:hover {
     background-color: dodgerblue !important;
+    border: 1px solid dodgerblue !important;
     color: white !important;
 }
 .deleteAppBtn:not(:disabled):hover {

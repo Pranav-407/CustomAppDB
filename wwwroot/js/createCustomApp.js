@@ -193,7 +193,6 @@
 
             if (step === 0) {
                 installBtn.disabled = true;
-                installBtn.textContent = 'Installing...';
             }
 
             if (++step < sequence.length) {
@@ -249,14 +248,12 @@
                         showOkButton();
 
                         installBtn.disabled = true;
-                        installBtn.textContent = 'Installed';
                     },
                     error: function (xhr, status, error) {
                         console.error('Error saving app:', xhr.responseText);
                         alert('Failed to save app. Please try again.');
 
                         installBtn.disabled = false;
-                        installBtn.textContent = 'Install';
                     }
                 });
             }
@@ -369,7 +366,6 @@
         const installBtn = document.getElementById('installBtn');
         if (installBtn) {
             installBtn.disabled = false;
-            installBtn.textContent = 'Install';
         }
     }
 

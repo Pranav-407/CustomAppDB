@@ -73,10 +73,10 @@ $(document).ready(function () {
                     // Close modal
                     bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
 
-                    // Clear selection
-                    selectedAppData = null;
-                    $('#editAppBtn').prop('disabled', true);
-                    $('#deleteAppBtn').prop('disabled', true);
+                    //// Clear selection
+                    //selectedAppData = null;
+                    //$('#editAppBtn').prop('disabled', true);
+                    //$('#deleteAppBtn').prop('disabled', true);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error updating app:', xhr.responseText);
@@ -106,7 +106,7 @@ $(document).ready(function () {
                     // Close modal
                     bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
 
-                    //  Show 'delete' toast
+                    //  Show 'delete' 
                     const deletedToastEl = document.getElementById('appDeletedToast');
                     if (deletedToastEl) {
                         const deletedToast = new bootstrap.Toast(deletedToastEl, {
@@ -114,6 +114,7 @@ $(document).ready(function () {
                         });
                         deletedToast.show();
                     }
+
                     // Clear selection
                     selectedAppData = null;
                     $('#editAppBtn').prop('disabled', true);
@@ -163,7 +164,7 @@ $(document).ready(function () {
             new bootstrap.Modal(document.getElementById('createCustomAppsModal')).show();
         });
 
-        $('#viewCustomAppsModal .btn-close, #viewCustomAppsModal [data-dismiss="modal"]').on("click", function () {
+    $('#viewCustomAppsModal .btn-close,#viewCustomAppsModal .cancel-btn , #viewCustomAppsModal [data-dismiss="modal"]').on("click", function () {
 
                 if (window.customAppGrid) {
                     window.customAppGrid.clearSelection();

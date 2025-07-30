@@ -33,25 +33,25 @@
                             <button class="action-btn addAppBtn" id="addAppBtn">ADD</button>
                             <button class="action-btn editAppBtn" id="editAppBtn" disabled>EDIT</button>
                             <button class="action-btn deleteAppBtn" id="deleteAppBtn" disabled>DELETE</button>
-                            @* <button class="action-btn copy-btn " id="copyAppBtn" disabled>COPY</button> *@
 
                             <div class="btn-group split-button-container" role="group">
+                                
                                 <!-- Main Action Button -->
                                 <button type="button"
                                         class="action-btn copy-btn btn-split-main"
                                         id="copyAppBtn"
-                                        disabled
-                                        onclick="handleMainAction()">
+                                        disabled >
                                     COPY
                                 </button>
 
                                 <!-- Dropdown Toggle Button -->
-                                <button type="button"
-                                        class="action-btn copy-btn btn-split-toggle dropdown-toggle dropdown-toggle-split"
-                                        id="dropdownToggle"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                        disabled>
+                                <button type="button" 
+                                    class="action-btn copy-btn btn-split-toggle dropdown-toggle dropdown-toggle-split"
+                                    id="dropdownToggle"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                    disabled >
+                                    
                                     <span class="dropdown-chevron">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <polyline points="6,9 12,15 18,9"></polyline>
@@ -112,7 +112,7 @@
 </div>
 
 <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
-    <div id="appDeletedToast" class="toast align-items-center text-bg-danger border-0" role="alert"
+    <div id="appDeletedToast" class="toast align-items-center text-bg-primary border-0" role="alert"
          aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
@@ -171,7 +171,6 @@
                                 class="col-sm-5 col-form-label font-weight-bold">Architecture</label>
                             <div class="col-sm-7">
                                 <select class="form-select form-control" id="appArchitecture" name="appArchitecture">
-                                    <option value="">Select</option>
                                     <option value="32-bit">32-bit</option>
                                     <option value="64-bit">64-bit</option>
                                     <option value="32 and 64 bit">32 and 64 bit</option>
@@ -184,7 +183,6 @@
                                 Line</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="appInstallCmd" name="appInstallCmd" />
-
                             </div>
                         </div>
 
@@ -193,7 +191,6 @@
                                 Command Line</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="appUninstallCmd" name="appUninstallCmd" />
-
                             </div>
                         </div>
 
@@ -215,7 +212,6 @@
                             <div class="col-sm-7">
                                 <input type="number" class="form-control" id="appTimeout" name="appTimeout"
                                     placeholder="In minutes" />
-
                             </div>
                         </div>
 
@@ -239,7 +235,6 @@
                                         placeholder="Password" />
                                     <input type="text" class="form-control" id="userDomain" name="userDomain"
                                         placeholder="Domain" />
-
                                 </div>
                             </div>
                         </div>
