@@ -5,12 +5,11 @@
     const nextBtn = document.querySelector(`${modalId} .next-btn`);
     const stepItems = document.querySelectorAll(`${modalId} .step-item`);
     const stepPanels = document.querySelectorAll(`${modalId} .step-panel`);
-
     let currentStep = 1;
     let computerGrid = null;
     let selectedComputerGrid = null;
     let selectedRowData = null;
-
+    let appInstalled = false;
     function initializeComputerGrid() {
 
         const computerData = new DevExpress.data.CustomStore({
@@ -119,7 +118,7 @@
                 },
                 {
                     dataField: "Status",
-                    caption: "Status",
+                    caption: "",
                     width: 150,
                     cellTemplate: function (container, options) {
                         container.addClass(getStatusClass(options.value)).text(options.value);
@@ -246,7 +245,7 @@
 
                         // Show OK button and hide Next button after successful installation
                         showOkButton();
-
+                        appInstalled = true;
                         installBtn.disabled = true;
                     },
                     error: function (xhr, status, error) {
@@ -328,6 +327,11 @@
     function goToNextStep() {
         if (currentStep === 1 && !$('#createCustomAppForm').valid()) return;
         if (currentStep === 2 && !selectedRowData) return;
+        if (currentStep === 2 && selectedComputerGrid) {
+            const packageName = $('#createAppPackageName').val();
+            selectedComputerGrid.columnOption("Status", "caption", packageName);
+            selectedComputerGrid.repaint();
+        }
         if (currentStep < 3) showStep(currentStep + 1);
     }
 
@@ -350,9 +354,12 @@
         // Hide detected app section when resetting
         $('.detected-app-section').hide();
 
+        $('#extractCheckboxRow').hide();
+        $('#createAppExtractCheckbox').prop('checked', false);
+
         // Hide OK button when resetting
         hideOkButton();
-
+        appInstalled = false;
         selectedRowData = null;
         if (computerGrid) computerGrid.clearSelection();
         if (selectedComputerGrid) selectedComputerGrid.option('dataSource', []);
@@ -429,15 +436,99 @@
         }
     }
 
+    function handleCancelAction() {
+
+        if (appInstalled) {
+            bootstrap.Modal.getInstance(document.getElementById('createCustomAppsModal')).hide();
+        } else {
+            if (currentStep > 1) {
+                new bootstrap.Modal(document.getElementById('confirmCancelAppModal')).show();
+            } else {
+                bootstrap.Modal.getInstance(document.getElementById('createCustomAppsModal')).hide();
+            }
+        }
+    }
+
+    function handleURLCheckboxVisibility() {
+        const urlInput = $('#createAppURL');
+        const checkboxRow = $('#extractCheckboxRow');
+        const extractCheckbox = $('#createAppExtractCheckbox');
+
+        function checkURLAndToggleCheckbox() {
+            const url = urlInput.val().trim();
+
+            // Check if URL is valid HTTP/HTTPS and has content after domain
+            if (url && isValidHTTPURLWithPath(url)) {
+                checkboxRow.show();
+            } else {
+                checkboxRow.hide();
+                // Uncheck the checkbox when hiding it
+                extractCheckbox.prop('checked', false);
+            }
+        }
+
+        function isValidHTTPURLWithPath(url) {
+            // Only allow HTTP and HTTPS URLs
+            const httpPattern = /^https?:\/\//i;
+            if (!httpPattern.test(url)) {
+                return false;
+            }
+
+            try {
+                const urlObj = new URL(url);
+                const pathname = urlObj.pathname;
+
+                // Check if pathname has more than just '/' 
+                // Examples:
+                // https://google.com -> pathname = '/' (should not show checkbox)
+                // https://google.com/ -> pathname = '/' (should not show checkbox)
+                // https://google.com/deploy -> pathname = '/deploy' (should show checkbox)
+                // https://google.com/folder/file.zip -> pathname = '/folder/file.zip' (should show checkbox)
+
+                return pathname.length > 1 && pathname !== '/';
+
+            } catch (error) {
+                // If URL parsing fails, return false
+                return false;
+            }
+        }
+
+        // Add event listeners using jQuery
+        urlInput.on('input keyup paste', function () {
+            // Small delay to allow paste to complete
+            setTimeout(checkURLAndToggleCheckbox, 10);
+        });
+
+        urlInput.on('blur', checkURLAndToggleCheckbox);
+
+        // Initial check when page loads
+        checkURLAndToggleCheckbox();
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
 
         $('#talkToSpecialist').on('click', function () {
             new bootstrap.Modal(document.getElementById('talkToSpecialistModal')).show();
         });
 
+        $(document).on('click', '#talkToSpecialistAfterInstalled', function (e) {
+            e.preventDefault(); // Prevent default link behavior
+            new bootstrap.Modal(document.getElementById('talkToSpecialistModal')).show();
+        });
+
+        $('.cancel-btn, #createCustomAppsModal .btn-close').on('click', function (e) {
+            e.preventDefault();
+            handleCancelAction();
+        });
+
+        $('#confirmCancelBtn').on('click', function (e) {
+            bootstrap.Modal.getInstance(document.getElementById('createCustomAppsModal')).hide();
+        });
+        
         // Hide detected app section initially
         $('.detected-app-section').hide();
 
+        handleURLCheckboxVisibility();
         initFormValidation();
         initializeComputerGrid();
         initializeSelectedComputerGrid();

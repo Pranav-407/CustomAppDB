@@ -4,8 +4,9 @@
     <div class="container-fluid">
         <!-- Package Name -->
         <div class="form-group row">
-            <label for="createAppPackageName" class="col-sm-4 col-form-label font-weight-bold">Package
-                Name</label>
+            <label for="createAppPackageName" class="col-sm-4 col-form-label font-weight-bold">
+                Package Name
+            </label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" placeholder="Package Name" id="createAppPackageName" name="createAppPackageName" />
             </div>
@@ -15,11 +16,12 @@
         <div class="form-group row">
             <label for="createAppURL" class="col-sm-4 col-form-label font-weight-bold">Enter URL</label>
             <div class="col-sm-8">
-                <input type="url" class="form-control" id="createAppURL" placeholder="Start with http://, https://, sftp:// or \\UNC" name="createAppURL" />
+                <input type="url" class="form-control" id="createAppURL" placeholder="Start with http:// or https://" name="createAppURL" />
             </div>
         </div>
 
-        @* <div class="form-group row">
+        <!-- Extract Checkbox - Initially Hidden -->
+        <div class="form-group row" id="extractCheckboxRow" style="display: none;">
             <div class="col-sm-4"></div>
             <div class="col-sm-7">
                 <div class="form-check">
@@ -29,7 +31,7 @@
                     </label>
                 </div>
             </div>
-        </div> *@
+        </div>
 
         <!-- Architecture -->
         <div class="form-group row">
@@ -37,7 +39,7 @@
             <div class="col-sm-4">
                 <select class="form-select form-control" id="createAppArchitecture" name="createAppArchitecture">
                     <option value="32-bit">32-bit</option>
-                    <option value="64-bit">64-bit</option>  
+                    <option value="64-bit">64-bit</option>
                     <option value="32 and 64 bit" selected>32 and 64 bit</option>
                 </select>
             </div>
@@ -45,13 +47,13 @@
 
         <!-- Install Command -->
         <div class="form-group row" style="padding:5px 15px 0px 10px ">
-            <label for="createAppInstallCmd" class="col-sm-4 col-form-label font-weight-bold">Install Command
-                Line</label>
+            <label for="createAppInstallCmd" class="col-sm-4 col-form-label font-weight-bold">
+                Install Command Line
+            </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="createAppInstallCmd" placeholder="Install Command Line" name="createAppInstallCmd" />  
+                <input type="text" class="form-control" id="createAppInstallCmd" placeholder="Install Command Line" name="createAppInstallCmd" />
             </div>
         </div>
-
 
         <div class="form-group-helper row">
             <label class="col-sm-4"></label>
@@ -62,11 +64,11 @@
             </div>
         </div>
 
-
         <!-- Uninstall Command -->
         <div class="form-group row" style="padding:5px 15px 0px 10px">
-            <label for="createAppUninstallCmd" class="col-sm-4 col-form-label font-weight-bold">Uninstall
-                Command Line</label>
+            <label for="createAppUninstallCmd" class="col-sm-4 col-form-label font-weight-bold">
+                Uninstall Command Line
+            </label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="createAppUninstallCmd" placeholder="Uninstall Command Line" name="createAppUninstallCmd" />
             </div>
@@ -83,6 +85,7 @@
                 </small>
             </div>
         </div>
+
         <!-- Restart -->
         <div class="form-group row">
             <label for="createAppRestart" class="col-sm-4 col-form-label font-weight-bold">Restart</label>
@@ -96,12 +99,12 @@
 
         <!-- Timeout -->
         <div class="form-group row">
-            <label for="createAppTimeout" class="col-sm-4 col-form-label font-weight-bold">Install
-                Timeout</label>
+            <label for="createAppTimeout" class="col-sm-4 col-form-label font-weight-bold">
+                Install Timeout
+            </label>
             <div class="col-sm-4">
                 <input type="number" class="form-control" id="createAppTimeout" name="createAppTimeout"
                        value="10" min="0" />
-
             </div>
         </div>
 
@@ -123,7 +126,7 @@
                 <label class="col-sm-4"></label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="createAppUserLoginId" name="createAppUserLoginId"
-                           placeholder="Login ID"/>
+                           placeholder="Login ID" />
                 </div>
             </div>
 
@@ -131,7 +134,7 @@
                 <label class="col-sm-4"></label>
                 <div class="col-sm-8">
                     <input type="password" class="form-control" id="createAppUserPassword" name="createAppUserPassword"
-                           placeholder="Password"/>
+                           placeholder="Password" />
                 </div>
             </div>
 

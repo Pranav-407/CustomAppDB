@@ -76,7 +76,7 @@
 } 
 
 #createCustomAppForm .col-form-label {
-    font-weight: 640;
+    font-weight: 700;
     color: black;
     font-size: 12px;
     letter-spacing: 0.5px;
@@ -91,7 +91,7 @@
 }
 
 #createCustomAppsModal .cancel-btn,
-#createCustomAppsModal .next-btn, #okBtn{
+#createCustomAppsModal .next-btn, #okBtn, #talkSpecialist .submit-btn {
     padding: 5px 30px !important;
     border-radius: 8px !important;
     font-weight: 550 !important;
@@ -101,9 +101,14 @@
     color: #007bff !important;
 }
 
-#createCustomAppsModal .cancel-btn:hover,
-#createCustomAppsModal .next-btn:hover, #okBtn:hover,
 #talkSpecialist .submit-btn {
+    background-color: dodgerblue !important;
+    border: none !important;
+    color : white !important;
+}
+
+#createCustomAppsModal .cancel-btn:hover,
+#createCustomAppsModal .next-btn:hover, #okBtn:hover {
     background-color: #007bff !important;
     color: white !important;
 }
@@ -350,14 +355,13 @@ label.error {
     font-weight: 500;
     margin: 15px 100px 0px 0px;
     padding: 5px 40px;
-    transition: all 0.2s ease;
 }
 
-.installBtn:hover, .installBtn:focus {
-    background-color: #28a745 !important;
-    border: none !important;
-    color: white !important;
-}
+    .installBtn:hover, .installBtn:focus {
+        background-color: #28a745 !important;
+        border: 1px solid #28a745 !important;
+        color: white !important;
+    }
 
 .installBtn:hover .install-text, .installBtn:focus .install-text {
     color: white !important;
@@ -365,13 +369,11 @@ label.error {
 
 .install-text {
     font-weight: bold;
-    color: #28a745; /* Green text */
+    color: #28a745;
     letter-spacing: 1px;
     font-size: 12px;
     text-transform: uppercase;
-    transition: color 0.2s ease;
 }
-
 
 .installBtn:disabled {
     opacity: 0.6 !important;
@@ -454,7 +456,7 @@ label.error {
     margin: 0;
 }
 
-#talkSpecialist .btn-close, #confirmInstallAppModal .btn-close {
+#talkSpecialist .btn-close, #confirmInstallAppModal .btn-close, #confirmCancelAppModal .btn-close {
     font-size: 0.6rem;
 }
 

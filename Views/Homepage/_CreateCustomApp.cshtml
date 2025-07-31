@@ -7,7 +7,7 @@
                     <h5 class="modal-title mb-0" id="customModal3Label">Set Up Custom App</h5>
                     <i class="bi bi-info-circle info-icon ms-2"></i>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" aria-label="Close"></button>
             </div>
 
             <div class="modal-body d-flex p-0">
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-between align-items-center py-3 px-3" style="flex-shrink: 0;">
-                <button type="button" class="btn cancel-btn btn-outline-primary" data-bs-dismiss="modal">
+                <button type="button" class="btn cancel-btn btn-outline-primary">
                     CANCEL
                 </button>
                 <button type="button" class="btn next-btn btn-outline-primary">
@@ -101,3 +101,30 @@
 </div>
 
 @await Html.PartialAsync("_TalkSpecialist")
+
+<!-- Confirm Cancel Modal -->
+<div class="modal fade" id="confirmCancelAppModal" tabindex="-1" role="dialog"
+     aria-labelledby="confirmCancelAppModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header delete-header">
+                <h6 class="modal-title" id="confirmCancelAppModalLabel">Abort custom app setup confirm </h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to abort this custom app setup ?</p>
+
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="button" class="btn btn-sm btn-primary me-1" id="confirmCancelBtn"
+                            data-bs-dismiss="modal">
+                        YES
+                    </button>
+
+                    <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">NO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
