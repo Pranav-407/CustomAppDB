@@ -431,6 +431,13 @@ label.error {
     padding-bottom: 15px;
     font-weight: 400;
 }
+.form-check .form-check-input {
+    border-color: #adadad !important;
+}
+
+.form-check-input:focus {
+    box-shadow: none !important;
+}
 
 #talkSpecialist {
     max-width: 500px;

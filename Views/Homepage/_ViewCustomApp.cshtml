@@ -60,8 +60,7 @@
                                     <span class="visually-hidden">Toggle Dropdown</span>
                                 </button>
 
-                                <!-- Dropdown menu (optional) -->
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu" id="copyDropdownList">
                                     <li><a class="dropdown-item" href="#">Copy Option 1</a></li>
                                     <li><a class="dropdown-item" href="#">Copy Option 2</a></li>
                                 </ul>
@@ -122,6 +121,17 @@
     </div>
 </div>
 
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
+    <div id="appUpdatedToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i>App Updated Successfully.
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--Edit Custom App Modal -->
 <div class="modal fade" id="EditAppModal" tabindex="-1" role="dialog" aria-labelledby="appModalTitle" aria-hidden="true"
     data-bs-backdrop="static" data-bs-keyboard="false">
@@ -165,6 +175,7 @@
                                 </div>
                             </div>
                         </div>
+
 
                         <div class="form-group row">
                             <label for="appArchitecture"

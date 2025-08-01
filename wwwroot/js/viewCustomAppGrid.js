@@ -3,182 +3,248 @@ let selectedAppData = null;
 window.customAppGrid = null;
 
 $(document).ready(function () {
-        initEditFormValidation();
-        initializeCustomAppGrid();
+    initEditFormValidation();
+    initializeCustomAppGrid();
+    handleEditURLCheckboxVisibility();
 
-        $('#appRunAs').on('change', function () {
-            $('#userCredentialsFields').toggle($(this).val() === 'User');
-        });
+    $('#appRunAs').on('change', function () {
+        const show = $(this).val() === 'User';
 
-        $('#editAppBtn').on('click', function () {
-            if (!selectedAppData) return;
+        $('#userLoginId').val("");
+        $('#userPassword').val("");
+        $('#userDomain').val("");
 
-            $('#appModalTitle').text("Edit Custom App");
-            $('#appPackageName').val(selectedAppData.PackageName);
-            $('#appURL').val(selectedAppData.URL);
-            $('#appArchitecture').val(selectedAppData.Architecture);
-            $('#appInstallCmd').val(selectedAppData.InstallCommandLine);
-            $('#appUninstallCmd').val(selectedAppData.UninstallCommand);
-            $('#appRestart').val(selectedAppData.Restart);
-            $('#appTimeout').val(selectedAppData.InstallTimeout);
-            $('#appRunAs').val(selectedAppData.RunAs);
-            $('#extractCheckbox').prop('checked', selectedAppData.Extract);
+        $('#userCredentialsFields').toggle(show);
+    });
 
-            if (selectedAppData.RunAs === 'User') {
-                $('#userCredentialsFields').show();
-                $('#userLoginId').val(selectedAppData.LoginId);
-                $('#userPassword').val(selectedAppData.Password);
-                $('#userDomain').val(selectedAppData.Domain);
-            } else {
-                $('#userCredentialsFields').hide();
-            }
+    $('#editAppBtn').on('click', function () {
+        if (!selectedAppData) return;
 
-            new bootstrap.Modal(document.getElementById('EditAppModal')).show();
-        });
+        $('#appModalTitle').text("Edit Custom App");
+        $('#appPackageName').val(selectedAppData.PackageName);
+        $('#appURL').val(selectedAppData.URL);
+        $('#appArchitecture').val(selectedAppData.Architecture);
+        $('#appInstallCmd').val(selectedAppData.InstallCommandLine);
+        $('#appUninstallCmd').val(selectedAppData.UninstallCommand);
+        $('#appRestart').val(selectedAppData.Restart);
+        $('#appTimeout').val(selectedAppData.InstallTimeout);
+        $('#appRunAs').val(selectedAppData.RunAs);
+        $('#userLoginId').val(selectedAppData.LoginId);
+        $('#userPassword').val(selectedAppData.Password);
+        $('#userDomain').val(selectedAppData.Domain);
+        $('#extractCheckbox').prop('checked', selectedAppData.Extract);
 
-        $('#saveAppBtn').on('click', function () {
-            if (!selectedAppData) return;
-            if (!$('#EditAppForm').valid()) return;
+        if (selectedAppData.RunAs === 'User') {
+            $('#userCredentialsFields').show();     
+        } else {
+            $('#userCredentialsFields').hide();
+        }
+        
+        checkEditURLAndToggleCheckbox();
 
-            const appData = {
-                ID: selectedAppData.ID,
-                PackageName: $('#appPackageName').val(),
-                URL: $('#appURL').val(),
-                Architecture: $('#appArchitecture').val(),
-                InstallCommandLine: $('#appInstallCmd').val(),
-                UninstallCommand: $('#appUninstallCmd').val(),
-                Restart: $('#appRestart').val(),
-                InstallTimeout: parseInt($('#appTimeout').val(), 10) || 0,
-                RunAs: $('#appRunAs').val(),
-                LoginId: $('#userLoginId').val() || '',
-                Password: $('#userPassword').val() || '',
-                Domain: $('#userDomain').val() || '',
-                Extract: $('#extractCheckbox').is(':checked')
-            };
+        new bootstrap.Modal(document.getElementById('EditAppModal')).show();
+    });
 
-            // Make API call to update the app
-            $.ajax({
-                url: `/custom-apps/update/${selectedAppData.ID}`,
-                type: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify(appData),
-                success: function (response) {
-                    console.log('App updated successfully:', response);
+    $('#saveAppBtn').on('click', function () {
+        if (!selectedAppData) return;
+        if (!$('#EditAppForm').valid()) return;
 
-                    // Refresh the grid
-                    if (window.customAppGrid) {
-                        window.customAppGrid.refresh();
-                    }
+        const appData = {
+            ID: selectedAppData.ID,
+            PackageName: $('#appPackageName').val(),
+            URL: $('#appURL').val(),
+            Architecture: $('#appArchitecture').val(),
+            InstallCommandLine: $('#appInstallCmd').val(),
+            UninstallCommand: $('#appUninstallCmd').val(),
+            Restart: $('#appRestart').val(),
+            InstallTimeout: parseInt($('#appTimeout').val(), 10) || 0,
+            RunAs: $('#appRunAs').val(),
+            LoginId: $('#userLoginId').val() || '',
+            Password: $('#userPassword').val() || '',
+            Domain: $('#userDomain').val() || '',
+            Extract: $('#extractCheckbox').is(':checked')
+        };
 
-                    // Close modal
-                    bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
+        $.ajax({
+            url: `/custom-apps/update/${selectedAppData.ID}`,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(appData),
+            success: function (response) {
 
-                    //// Clear selection
-                    //selectedAppData = null;
-                    //$('#editAppBtn').prop('disabled', true);
-                    //$('#deleteAppBtn').prop('disabled', true);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error updating app:', xhr.responseText);
+                //  Show 'App Updated Toast' 
+                const updatedToastEl = document.getElementById('appUpdatedToast');
+                if (updatedToastEl) {
+                    const updatedToast = new bootstrap.Toast(updatedToastEl, {
+                        delay: 2500
+                    });
+                    updatedToast.show();
                 }
-            });
-        });
 
-        $('#deleteAppBtn').on('click', function () {
-            if (!selectedAppData) return;
-            $('#deleteAppName').text(selectedAppData.PackageName);
-            new bootstrap.Modal(document.getElementById('confirmDeleteAppModal')).show();
-        });
-
-        $('#confirmDeleteBtn').on('click', function () {
-            if (!selectedAppData) return;
-            $.ajax({
-                url: `/custom-apps/delete/${selectedAppData.ID}`,
-                type: 'DELETE',
-                success: function (response) {
-                    console.log('App deleted successfully:', response);
-
-                    // Refresh the grid
-                    if (window.customAppGrid) {
-                        window.customAppGrid.refresh();
-                    }
-
-                    // Close modal
-                    bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
-
-                    //  Show 'delete' 
-                    const deletedToastEl = document.getElementById('appDeletedToast');
-                    if (deletedToastEl) {
-                        const deletedToast = new bootstrap.Toast(deletedToastEl, {
-                            delay: 2500
-                        });
-                        deletedToast.show();
-                    }
-
-                    // Clear selection
-                    selectedAppData = null;
-                    $('#editAppBtn').prop('disabled', true);
-                    $('#deleteAppBtn').prop('disabled', true);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error deleting app:', xhr.responseText);
-                }
-            });
-            bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
-        });
-
-        $("#appSearchInput").on("input", function () {
-            const val = $(this).val();
-            if (window.customAppGrid) {
-                window.customAppGrid.searchByText(val);
-            }
-
-            if (val.length > 0) {
-                $("#clearAppSearch").show();
-            } else {
-                $("#clearAppSearch").hide();
-            }
-        });
-
-        $("#clearAppSearch").on("click", function () {
-            $("#appSearchInput").val('').trigger('input');
-            $(this).hide();
-        });
-
-        $('#EditAppModal .btn-close, #EditAppModal [data-dismiss="modal"]').on("click", function () {
-            bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
-        });
-
-        $('#confirmDeleteAppModal .del-btn, #confirmDeleteAppModal [data-dismiss="modal"]').on("click", function () {
-            bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
-        });
-
-
-        $('#addAppBtn').on('click', function () {
-            bootstrap.Modal.getInstance(document.getElementById('viewCustomAppsModal')).hide();
-            if (typeof resetCreateCustomAppModal === 'function') {
-                resetCreateCustomAppModal();
-            }
-            cameFromViewModal = true;
-
-            new bootstrap.Modal(document.getElementById('createCustomAppsModal')).show();
-        });
-
-    $('#viewCustomAppsModal .btn-close,#viewCustomAppsModal .cancel-btn , #viewCustomAppsModal [data-dismiss="modal"]').on("click", function () {
-
+                // Refresh the grid
                 if (window.customAppGrid) {
-                    window.customAppGrid.clearSelection();
-                    window.customAppGrid.searchByText('');
+                    window.customAppGrid.refresh();
+                }
+
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
+
+            },
+            error: function (xhr, status, error) {
+                console.error('Error updating app:', xhr.responseText);
+            }
+        });
+    });
+
+    $('#deleteAppBtn').on('click', function () {
+        if (!selectedAppData) return;
+        $('#deleteAppName').text(selectedAppData.PackageName);
+        new bootstrap.Modal(document.getElementById('confirmDeleteAppModal')).show();
+    });
+
+    $('#confirmDeleteBtn').on('click', function () {
+        if (!selectedAppData) return;
+
+        $.ajax({
+            url: `/custom-apps/delete/${selectedAppData.ID}`,
+            type: 'DELETE',
+            success: function (response) {
+                
+                // Refresh the grid
+                if (window.customAppGrid) {
+                    window.customAppGrid.refresh();
+                }
+
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
+
+                //  Show 'delete' 
+                const deletedToastEl = document.getElementById('appDeletedToast');
+                if (deletedToastEl) {
+                    const deletedToast = new bootstrap.Toast(deletedToastEl, {
+                        delay: 2500
+                    });
+                    deletedToast.show();
                 }
 
                 selectedAppData = null;
                 $('#editAppBtn').prop('disabled', true);
                 $('#deleteAppBtn').prop('disabled', true);
-                $('#appSearchInput').val('');
-                bootstrap.Modal.getInstance(document.getElementById('viewCustomAppsModal')).hide();
-            });
-
+            },
+            error: function (xhr, status, error) {
+                console.error('Error deleting app:', xhr.responseText);
+            }
         });
+        bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
+    });
+
+    $("#appSearchInput").on("input", function () {
+        const val = $(this).val();
+        if (window.customAppGrid) {
+            window.customAppGrid.searchByText(val);
+        }
+
+        if (val.length > 0) {
+            $("#clearAppSearch").show();
+        } else {
+            $("#clearAppSearch").hide();
+        }
+    });
+
+    $("#clearAppSearch").on("click", function () {
+        $("#appSearchInput").val('').trigger('input');
+        $(this).hide();
+    });
+
+    $('#EditAppModal .btn-close, #EditAppModal [data-dismiss="modal"]').on("click", function () {
+        bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
+    });
+
+    $('#confirmDeleteAppModal .del-btn, #confirmDeleteAppModal [data-dismiss="modal"]').on("click", function () {
+        bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
+    });
+
+    $('#addAppBtn').on('click', function () {
+        bootstrap.Modal.getInstance(document.getElementById('viewCustomAppsModal')).hide();
+        if (typeof resetCreateCustomAppModal === 'function') {
+            resetCreateCustomAppModal();
+        }
+        cameFromViewModal = true;
+
+        new bootstrap.Modal(document.getElementById('createCustomAppsModal')).show();
+    });
+
+    $('#viewCustomAppsModal .btn-close, #viewCustomAppsModal .cancel-btn , #viewCustomAppsModal [data-dismiss="modal"]').on("click", function () {
+
+        if (window.customAppGrid) {
+            window.customAppGrid.clearSelection();
+            window.customAppGrid.searchByText('');
+        }
+
+        selectedAppData = null;
+        $('#editAppBtn').prop('disabled', true);
+        $('#deleteAppBtn').prop('disabled', true);
+        $('#appSearchInput').val('');
+
+        const copyDropdownList = document.getElementById('copyDropdownList');
+        if (copyDropdownList) {
+            $('#copyDropdownList').hide();
+        }
+        
+        bootstrap.Modal.getInstance(document.getElementById('viewCustomAppsModal')).hide();
+    });
+
+
+});
+
+function handleEditURLCheckboxVisibility() {
+    const urlInput = $('#appURL');
+    const extractCheckbox = $('#extractCheckbox');
+
+    function checkEditURLAndToggleCheckbox() {
+        const url = urlInput.val().trim();
+
+        if (url && isValidHTTPURLWithPath(url)) {
+            extractCheckbox.closest('.form-group').show();
+        } else {
+            extractCheckbox.closest('.form-group').hide();
+            extractCheckbox.prop('checked', false);
+        }
+    }
+
+    function isValidHTTPURLWithPath(url) {
+        const httpPattern = /^https?:\/\//i;
+        if (!httpPattern.test(url)) {
+            return false;
+        }
+
+        try {
+            const urlObj = new URL(url);
+            const pathname = urlObj.pathname;
+
+            // Check if pathname has more than just '/' 
+            // Examples:
+            // https://google.com -> pathname = '/' (should not show checkbox)
+            // https://google.com/ -> pathname = '/' (should not show checkbox)
+            // https://google.com/deploy -> pathname = '/deploy' (should show checkbox)
+            // https://google.com/folder/file.zip -> pathname = '/folder/file.zip' (should show checkbox)
+
+            return pathname.length > 1 && pathname !== '/';
+
+        } catch (error) {
+            // If URL parsing fails, return false
+            return false;
+        }
+    }
+
+    urlInput.on('input keyup paste', function () {
+        setTimeout(checkEditURLAndToggleCheckbox, 10);
+    });
+
+    urlInput.on('blur', checkEditURLAndToggleCheckbox);
+
+    window.checkEditURLAndToggleCheckbox = checkEditURLAndToggleCheckbox;
+}
 
 function initEditFormValidation() {
     $('#EditAppForm').validate({
@@ -218,7 +284,6 @@ function initializeCustomAppGrid() {
                 return $.get('/custom-apps/list')
                     .then(function (response) {
                         if (response.success && response.data) {
-                            // Transform the API response to match the expected format
                             return response.data.map(function (item) {
                                 return {
                                     ID: item.id,
@@ -249,9 +314,7 @@ function initializeCustomAppGrid() {
         selection: { mode: 'single' },
         hoverStateEnabled: true,
         columnAutoWidth: true,
-        loadPanel: {
-            enabled: false
-        },
+        loadPanel: { enabled: false },
         pager: {
             visible: true,
             showInfo: true,
@@ -267,7 +330,6 @@ function initializeCustomAppGrid() {
             { dataField: 'Restart', caption: 'Restart', alignment: "start" },
             { dataField: 'InstallTimeout', caption: 'Install Timeout', alignment: "start" },
         ],
-        // Remove onRowClick and rely only on onSelectionChanged
         onSelectionChanged(e) {
             const rows = e.selectedRowsData;
             selectedAppData = rows.length === 1 ? rows[0] : null;
@@ -278,12 +340,6 @@ function initializeCustomAppGrid() {
 
             $('#copyAppBtn').prop('disabled', !hasSelection);
             $('#dropdownToggle').prop('disabled', !hasSelection);
-
-            if (hasSelection) {
-                console.log("Row selected:", selectedAppData);
-            } else {
-                console.log("No row selected");
-            }
         }
     }).dxDataGrid('instance');
 }
