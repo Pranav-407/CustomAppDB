@@ -72,7 +72,7 @@ $(document).ready(function () {
         };
 
         $.ajax({
-            url: `/custom-apps/update/${selectedAppData.ID}`,
+            url: `/custom-apps/UpdateCustomApp/${selectedAppData.ID}`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify(appData),
@@ -116,7 +116,7 @@ $(document).ready(function () {
         if (!selectedAppData) return;
 
         $.ajax({
-            url: `/custom-apps/delete/${selectedAppData.ID}`,
+            url: `/custom-apps/DeleteCustomApp/${selectedAppData.ID}`,
             type: 'DELETE',
             success: function (response) {
                 // Close modal first

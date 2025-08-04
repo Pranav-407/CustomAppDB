@@ -32,7 +32,6 @@ $(document).ready(function () {
 //}
 
 function initializeComputerGrid() {
-    console.log(devicesData);
     computerGrid = $("#computerGrid").dxDataGrid({
         dataSource: devicesData,
         showBorders: false,
@@ -276,7 +275,7 @@ function saveAppData(installBtn) {
     };
 
     $.ajax({
-        url: '/custom-apps/create',
+        url: '/custom-apps/CreateCustomApp',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(appData),
@@ -380,7 +379,7 @@ function updateButtonsForStep(step) {
         $(nextBtn).removeClass('d-none');
         nextBtn.disabled = false;
         nextBtn.style.opacity = '1';
-        nextBtn.style.cursor = 'pointer';
+        nextBtn.style.cursor = 'pointer';``
         hideOkButton();
     }
 }
@@ -599,7 +598,6 @@ function setupTalkToSpecialistModal() {
             error.insertAfter(element);
         },
         submitHandler: function (form) {
-            console.log('Talk to Specialist Form submitted');
             bootstrap.Modal.getInstance(document.getElementById('talkToSpecialistModal')).hide();
         }
     });

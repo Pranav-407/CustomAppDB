@@ -1,6 +1,6 @@
 ﻿namespace CustomAppDB.Models
 {
-    public class CustomApp
+    public class CustomAppModel
     {
         public int ID { get; set; }
         public string PackageName { get; set; }
