@@ -14,11 +14,6 @@ namespace CustomAppDB.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("test")]
-        public IActionResult Test()
-        {
-            return Ok("Controller is working!");
-        }
 
         [HttpPost("create")]
         public IActionResult Create([FromBody] CustomAppModel model)
@@ -32,11 +27,13 @@ namespace CustomAppDB.Controllers
                     conn.Open();
 
                     string query = @"INSERT INTO CustomApps
-                        (PackageName, URL, Architecture, InstallCommandLine, UninstallCommand,
-                         Restart, InstallTimeout, RunAs, LoginId, Password, Domain, Extract)
-                        VALUES
-                        (@PackageName, @URL, @Architecture, @InstallCommandLine, @UninstallCommand,
-                         @Restart, @InstallTimeout, @RunAs, @LoginId, @Password, @Domain, @Extract)";
+                (PackageName, URL, Architecture, InstallCommandLine, UninstallCommand,
+                 Restart, InstallTimeout, RunAs, LoginId, Password, Domain, Extract)
+                VALUES
+                (@PackageName, @URL, @Architecture, @InstallCommandLine, @UninstallCommand,
+                 @Restart, @InstallTimeout, @RunAs, @LoginId, @Password, @Domain, @Extract);
+                 
+                SELECT SCOPE_IDENTITY();";  // Retrieves the last inserted identity
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -53,20 +50,22 @@ namespace CustomAppDB.Controllers
                         cmd.Parameters.AddWithValue("@Domain", model.Domain ?? (object)DBNull.Value);
                         cmd.Parameters.AddWithValue("@Extract", model.Extract);
 
-                        cmd.ExecuteNonQuery();
+                        // Execute the query and get the last inserted ID
+                        var insertedId = cmd.ExecuteScalar();
+
+                        return Ok(new { success = true, message = "App saved successfully.", id = insertedId });
                     }
                 }
-
-                return Ok(new { success = true, message = "App saved successfully." });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = "Error saving app." });
+                return StatusCode(500, new { success = false, message = "Error saving app.", error = ex.Message });
             }
         }
 
-        [HttpGet("list")]
-        public IActionResult GetAll()
+
+        [HttpGet("GetCustomApps")]
+        public IActionResult GetCustomApps()
         {
             try
             {

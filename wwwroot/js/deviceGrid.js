@@ -1,26 +1,48 @@
 let selectedDeviceRow = null;
+let deviceGrid = null;
+let devicesData = [];
 
-$(function () {
-    const device = new DevExpress.data.CustomStore({
-        load: function () {
-            return $.ajax({
-                url: '/Device/GetDevices',
-                dataType: 'json',
-                method: 'GET'
-            }).fail(function () {
-                DevExpress.ui.notify("Failed to load devices.", "error", 3000);
-            });
+$(document).ready(function () {
+    initializeDeviceGrid();
+    loadDevicesData();
+});
+
+// Load devices data from server and store in variable
+async function loadDevicesData() {
+    try {
+        const response = await $.ajax({
+            url: '/Device/GetDevices',
+            dataType: 'json',
+            method: 'GET'
+        });
+
+        if (response) {
+            devicesData = response;
+        } else {
+            devicesData = [];
         }
-    });
 
-    $("#deviceGrid").dxDataGrid({
-        dataSource: device,
+        // Update grid if it exists
+        if (deviceGrid) {
+            deviceGrid.option('dataSource', [...devicesData]);
+        }
+    } catch (error) {
+        console.error('Error loading devices:', error);
+        DevExpress.ui.notify("Failed to load devices.", "error", 3000);
+        devicesData = [];
+    }
+}
+
+// Initialize the grid structure
+function initializeDeviceGrid() {
+    deviceGrid = $("#deviceGrid").dxDataGrid({
+        dataSource: devicesData,
         showBorders: false,
         columnAutoWidth: true,
         rowAlternationEnabled: false,
         hoverStateEnabled: true,
         loadPanel: {
-            enabled:false
+            enabled: false
         },
         scrolling: {
             mode: "standard",
@@ -100,5 +122,5 @@ $(function () {
             { dataField: "runtimes", caption: "Runtimes" },
             { dataField: "image", caption: "Image" }
         ]
-    });
-});
+    }).dxDataGrid('instance');
+}

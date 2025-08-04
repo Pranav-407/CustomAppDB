@@ -1,5 +1,9 @@
-$(function () {
 
+$(document).ready(function () {
+    initializeRecentAppsGrid();
+});
+
+function initializeRecentAppsGrid() {
     const recentApps = new DevExpress.data.CustomStore({
         load: function () {
             return $.ajax({
@@ -11,6 +15,7 @@ $(function () {
             });
         }
     });
+
     $("#recentAppsGrid").dxDataGrid({
         dataSource: recentApps,
         loadPanel: {
@@ -33,39 +38,37 @@ $(function () {
             showNavigationButtons: true,
         },
         columns: [
-            {
-                caption: "",
-                width: 40,
-                cssClass: "radio-column",
-                cellTemplate: function (container, options) {
-                    const radio = $("<input type='radio' name='deviceGridRadio' class='grid-radio'>")
-                        .val(options.rowIndex)
-                        .prop("checked", selectedDeviceRow === options.rowIndex)
-                        .on("click", function () {
-                            const grid = $("#recentAppsGrid").dxDataGrid("instance");
-                            if (selectedDeviceRow === options.rowIndex) {
-                                grid.clearSelection();
-                                selectedDeviceRow = null;
-                                $(this).prop("checked", false);
-                            } else {
-                                grid.selectRowsByIndexes([options.rowIndex]);
-                                selectedDeviceRow = options.rowIndex;
-                            }
-                        });
-                    $(container).append(radio);
-                },
-                allowSorting: false,
-                allowFiltering: false
-            },
+            //{
+            //    caption: "",
+            //    width: 40,
+            //    cssClass: "radio-column",
+            //    cellTemplate: function (container, options) {
+            //        const radio = $("<input type='radio' name='deviceGridRadio' class='grid-radio'>")
+            //            .val(options.rowIndex)
+            //            .prop("checked", selectedDeviceRow === options.rowIndex)
+            //            .on("click", function () {
+            //                const grid = $("#recentAppsGrid").dxDataGrid("instance");
+            //                if (selectedDeviceRow === options.rowIndex) {
+            //                    grid.clearSelection();
+            //                    selectedDeviceRow = null;
+            //                    $(this).prop("checked", false);
+            //                } else {
+            //                    grid.selectRowsByIndexes([options.rowIndex]);
+            //                    selectedDeviceRow = options.rowIndex;
+            //                }
+            //            });
+            //        $(container).append(radio);
+            //    },
+            //    allowSorting: false,
+            //    allowFiltering: false
+            //},
             {
                 dataField: "name",
                 caption: "Name",
                 cellTemplate: function (container, options) {
                     const isOutdated = options.data.outdated > 0;
                     const indicatorColor = isOutdated ? "rgb(218, 68, 9)" : "rgb(141, 206, 45)";
-
                     container.css({ padding: 0, margin: 0, height: "100%" });
-
                     $("<div>")
                         .text(options.value)
                         .css({
@@ -94,4 +97,4 @@ $(function () {
             }
         ]
     });
-});
+}

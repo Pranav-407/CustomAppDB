@@ -1,6 +1,9 @@
-
 let selectedAppData = null;
-window.customAppGrid = null;
+let customAppGrid = null;
+let checkEditURLAndToggleCheckbox;
+
+let customAppsData = [];
+
 
 $(document).ready(function () {
     initEditFormValidation();
@@ -35,12 +38,15 @@ $(document).ready(function () {
         $('#extractCheckbox').prop('checked', selectedAppData.Extract);
 
         if (selectedAppData.RunAs === 'User') {
-            $('#userCredentialsFields').show();     
+            $('#userCredentialsFields').show();
         } else {
             $('#userCredentialsFields').hide();
         }
-        
-        checkEditURLAndToggleCheckbox();
+
+        // FIXED: Now this function is available in global scope
+        if (typeof checkEditURLAndToggleCheckbox === 'function') {
+            checkEditURLAndToggleCheckbox();
+        }
 
         new bootstrap.Modal(document.getElementById('EditAppModal')).show();
     });
@@ -71,8 +77,10 @@ $(document).ready(function () {
             contentType: 'application/json',
             data: JSON.stringify(appData),
             success: function (response) {
+                // Close modal first
+                bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
 
-                //  Show 'App Updated Toast' 
+                // Show success toast
                 const updatedToastEl = document.getElementById('appUpdatedToast');
                 if (updatedToastEl) {
                     const updatedToast = new bootstrap.Toast(updatedToastEl, {
@@ -81,14 +89,16 @@ $(document).ready(function () {
                     updatedToast.show();
                 }
 
-                // Refresh the grid
-                if (window.customAppGrid) {
-                    window.customAppGrid.refresh();
+                // Update local data and refresh grid
+                const index = customAppsData.findIndex(app => app.ID === selectedAppData.ID);
+                if (index !== -1) {
+                    customAppsData[index] = { ...appData };
+                    if (customAppGrid) {
+                        customAppGrid.option('dataSource', []);
+                        customAppGrid.option('dataSource', customAppsData);
+                        customAppGrid.refresh();
+                    }
                 }
-
-                // Close modal
-                bootstrap.Modal.getInstance(document.getElementById('EditAppModal')).hide();
-
             },
             error: function (xhr, status, error) {
                 console.error('Error updating app:', xhr.responseText);
@@ -109,16 +119,21 @@ $(document).ready(function () {
             url: `/custom-apps/delete/${selectedAppData.ID}`,
             type: 'DELETE',
             success: function (response) {
-                
-                // Refresh the grid
-                if (window.customAppGrid) {
-                    window.customAppGrid.refresh();
-                }
-
-                // Close modal
+                // Close modal first
                 bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
 
-                //  Show 'delete' 
+                // Remove from local data and refresh grid
+                const index = customAppsData.findIndex(app => app.ID === selectedAppData.ID);
+                if (index !== -1) {
+                    customAppsData.splice(index, 1);
+                    if (customAppGrid) {
+                        customAppGrid.option('dataSource', []);
+                        customAppGrid.option('dataSource', customAppsData);
+                        customAppGrid.refresh();
+                    }
+                }
+
+                // Show delete toast
                 const deletedToastEl = document.getElementById('appDeletedToast');
                 if (deletedToastEl) {
                     const deletedToast = new bootstrap.Toast(deletedToastEl, {
@@ -127,6 +142,7 @@ $(document).ready(function () {
                     deletedToast.show();
                 }
 
+                // Reset selection
                 selectedAppData = null;
                 $('#editAppBtn').prop('disabled', true);
                 $('#deleteAppBtn').prop('disabled', true);
@@ -135,13 +151,12 @@ $(document).ready(function () {
                 console.error('Error deleting app:', xhr.responseText);
             }
         });
-        bootstrap.Modal.getInstance(document.getElementById('confirmDeleteAppModal')).hide();
     });
 
     $("#appSearchInput").on("input", function () {
         const val = $(this).val();
-        if (window.customAppGrid) {
-            window.customAppGrid.searchByText(val);
+        if (customAppGrid) {
+            customAppGrid.searchByText(val);
         }
 
         if (val.length > 0) {
@@ -176,9 +191,9 @@ $(document).ready(function () {
 
     $('#viewCustomAppsModal .btn-close, #viewCustomAppsModal .cancel-btn , #viewCustomAppsModal [data-dismiss="modal"]').on("click", function () {
 
-        if (window.customAppGrid) {
-            window.customAppGrid.clearSelection();
-            window.customAppGrid.searchByText('');
+        if (customAppGrid) {
+            customAppGrid.clearSelection();
+            customAppGrid.searchByText('');
         }
 
         selectedAppData = null;
@@ -190,18 +205,17 @@ $(document).ready(function () {
         if (copyDropdownList) {
             $('#copyDropdownList').hide();
         }
-        
+
         bootstrap.Modal.getInstance(document.getElementById('viewCustomAppsModal')).hide();
     });
-
-
 });
 
 function handleEditURLCheckboxVisibility() {
     const urlInput = $('#appURL');
     const extractCheckbox = $('#extractCheckbox');
 
-    function checkEditURLAndToggleCheckbox() {
+    // MOVED: Assign to global variable so it can be accessed from outside
+    checkEditURLAndToggleCheckbox = function () {
         const url = urlInput.val().trim();
 
         if (url && isValidHTTPURLWithPath(url)) {
@@ -210,7 +224,7 @@ function handleEditURLCheckboxVisibility() {
             extractCheckbox.closest('.form-group').hide();
             extractCheckbox.prop('checked', false);
         }
-    }
+    };
 
     function isValidHTTPURLWithPath(url) {
         const httpPattern = /^https?:\/\//i;
@@ -222,17 +236,9 @@ function handleEditURLCheckboxVisibility() {
             const urlObj = new URL(url);
             const pathname = urlObj.pathname;
 
-            // Check if pathname has more than just '/' 
-            // Examples:
-            // https://google.com -> pathname = '/' (should not show checkbox)
-            // https://google.com/ -> pathname = '/' (should not show checkbox)
-            // https://google.com/deploy -> pathname = '/deploy' (should show checkbox)
-            // https://google.com/folder/file.zip -> pathname = '/folder/file.zip' (should show checkbox)
-
             return pathname.length > 1 && pathname !== '/';
 
         } catch (error) {
-            // If URL parsing fails, return false
             return false;
         }
     }
@@ -242,8 +248,6 @@ function handleEditURLCheckboxVisibility() {
     });
 
     urlInput.on('blur', checkEditURLAndToggleCheckbox);
-
-    window.checkEditURLAndToggleCheckbox = checkEditURLAndToggleCheckbox;
 }
 
 function initEditFormValidation() {
@@ -277,39 +281,37 @@ function initEditFormValidation() {
     });
 }
 
-function initializeCustomAppGrid() {
-    window.customAppGrid = $('#customAppGrid').dxDataGrid({
-        dataSource: {
-            load: function () {
-                return $.get('/custom-apps/list')
-                    .then(function (response) {
-                        if (response.success && response.data) {
-                            return response.data.map(function (item) {
-                                return {
-                                    ID: item.id,
-                                    PackageName: item.packageName,
-                                    URL: item.url,
-                                    Architecture: item.architecture,
-                                    InstallCommandLine: item.installCommandLine,
-                                    UninstallCommand: item.uninstallCommand,
-                                    Restart: item.restart,
-                                    InstallTimeout: item.installTimeout,
-                                    RunAs: item.runAs,
-                                    LoginId: item.loginId,
-                                    Password: item.password,
-                                    Domain: item.domain,
-                                    Extract: item.extract
-                                };
-                            });
-                        }
-                        return [];
-                    })
-                    .catch(function (error) {
-                        console.error('Error loading custom apps:', error);
-                        return [];
-                    });
-            }
-        },
+async function initializeCustomAppGrid() {
+    try {
+        const response = await $.get('/custom-apps/GetCustomApps');
+        if (response.success && response.data) {
+            customAppsData = response.data.map(function (item) {
+                return {
+                    ID: item.id,
+                    PackageName: item.packageName,
+                    URL: item.url,
+                    Architecture: item.architecture,
+                    InstallCommandLine: item.installCommandLine,
+                    UninstallCommand: item.uninstallCommand,
+                    Restart: item.restart,
+                    InstallTimeout: item.installTimeout,
+                    RunAs: item.runAs,
+                    LoginId: item.loginId,
+                    Password: item.password,
+                    Domain: item.domain,
+                    Extract: item.extract
+                };
+            });
+        } else {
+            customAppsData = [];
+        }
+    } catch (error) {
+        console.error('Error loading custom apps:', error);
+        customAppsData = [];
+    }
+
+    customAppGrid = $('#customAppGrid').dxDataGrid({
+        dataSource: customAppsData,
         keyExpr: 'ID',
         selection: { mode: 'single' },
         hoverStateEnabled: true,
@@ -342,4 +344,13 @@ function initializeCustomAppGrid() {
             $('#dropdownToggle').prop('disabled', !hasSelection);
         }
     }).dxDataGrid('instance');
+}
+
+function addAppToLocalData(newAppData) {
+    customAppsData.push(newAppData);
+    if (customAppGrid) {
+        customAppGrid.option('dataSource', []);
+        customAppGrid.option('dataSource', [...customAppsData]);
+        customAppGrid.refresh();
+    }
 }
