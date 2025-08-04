@@ -7,7 +7,6 @@ $(document).ready(function () {
     loadDevicesData();
 });
 
-// Load devices data from server and store in variable
 async function loadDevicesData() {
     try {
         const response = await $.ajax({
@@ -22,10 +21,15 @@ async function loadDevicesData() {
             devicesData = [];
         }
 
-        // Update grid if it exists
         if (deviceGrid) {
             deviceGrid.option('dataSource', [...devicesData]);
         }
+
+        // Add this single line:
+        if (typeof initializeComputerGrid === 'function') {
+            initializeComputerGrid();
+        }
+
     } catch (error) {
         console.error('Error loading devices:', error);
         DevExpress.ui.notify("Failed to load devices.", "error", 3000);
@@ -33,7 +37,6 @@ async function loadDevicesData() {
     }
 }
 
-// Initialize the grid structure
 function initializeDeviceGrid() {
     deviceGrid = $("#deviceGrid").dxDataGrid({
         dataSource: devicesData,

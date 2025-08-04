@@ -9,7 +9,8 @@ let appInstalled = false;
 
 $(document).ready(function () {
     initFormValidation();
-    initializeComputerGrid();
+    //initializeComputerGrid();
+    //waitForDevicesData();
     initializeSelectedComputerGrid();
     toggleCredentialFields();
     handleURLCheckboxVisibility();
@@ -22,22 +23,18 @@ $(document).ready(function () {
     $('.detected-app-section').hide();
 });
 
+//function waitForDevicesData() {
+//    if (typeof devicesData !== 'undefined' && devicesData.length > 0) {
+//        initializeComputerGrid();
+//    } else {
+//        setTimeout(waitForDevicesData, 100); // Check every 100ms
+//    }
+//}
 
 function initializeComputerGrid() {
-    const computerData = new DevExpress.data.CustomStore({
-        load: function () {
-            return $.ajax({
-                url: '/Device/GetDevices',
-                dataType: 'json',
-                method: 'GET'
-            }).fail(function () {
-                DevExpress.ui.notify("Failed to load devices.", "error", 3000);
-            });
-        }
-    });
-
+    console.log(devicesData);
     computerGrid = $("#computerGrid").dxDataGrid({
-        dataSource: computerData,
+        dataSource: devicesData,
         showBorders: false,
         columnAutoWidth: true,
         scrolling: {
