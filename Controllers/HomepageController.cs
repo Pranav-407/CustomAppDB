@@ -6,7 +6,6 @@ namespace CustomAppTask.Controllers
     {
         public IActionResult Index(string section)
         {
-            // If no section OR refreshing, default to Dashboard
             if (string.IsNullOrEmpty(section))
                 ViewData["PageTitle"] = "Dashboard";
             else
@@ -20,12 +19,6 @@ namespace CustomAppTask.Controllers
             ViewData["PageTitle"] = "Applications";
             return View();
         }
-
-
-        // public IActionResult ViewCustomApps()
-        // {
-        //     return View();
-        // }
 
     }
 }
