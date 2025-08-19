@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.getElementById('sidebar');
 
     if (toggleBtn && sidebar) {
-        
         toggleBtn.addEventListener('click', function () {
             const isCollapsed = sidebar.classList.toggle('collapsed');
             localStorage.setItem('sidebarCollapsed', isCollapsed);
