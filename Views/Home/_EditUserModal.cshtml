@@ -1,0 +1,234 @@
+﻿<div class="modal fade" id="EditUserModal" tabindex="-1" role="dialog" aria-labelledby="EditUserModalLabel"
+     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-custom-large" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header d-flex justify-content-between align-items-center">
+                <div class="modal-title-wrapper d-flex align-items-center">
+                    <h5 class="modal-title mb-0">Edit User</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-0">
+
+                <div class="apps-header">
+                    <div class="apps-title-row mb-2">
+                        <div class="apps-title">Deploy User : <span id="displayUserEmail" class="user-email"></span></div>
+                    </div>
+                </div>
+                <form id="editUserForm">
+                    <input type="hidden" id="editOriginalEmail" name="OriginalEmail">
+                    <div class="form-section">
+
+                        <!-- full name -->
+                        <div class="form-group">
+                            <label class="form-label" for="editFullName">Full Name</label>
+                            <input type="text" class="form-control fullName" id="editFullName" name="FullName" placeholder="Full Name" required>
+                        </div>
+
+                        <!-- disabled check box -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="editDisabled" name="IsDisabled" value="true">
+                            <input type="hidden" name="IsDisabled" value="false">
+                            <label class="form-check-label" for="editDisabled">
+                                Disabled
+                            </label>
+                        </div>
+
+                        <!-- access control title -->
+                        <div class="section-title">Access Control</div>
+                        <div class="section-subtitle">Configure permissions for selected users</div>
+
+                        <div class="row">
+
+                            <!-- role dropdown -->
+                            <div class="form-group col-md-5">
+                                <label class="form-label" for="editRole">Role</label>
+                                <select class="form-control" id="editRole" name="Role" required>
+                                    <option value="Super Administrator">Super Administrator</option>
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Limited Administrator">Limited Administrator</option>
+                                    <option value="Remote Support">Remote Support</option>
+                                    <option value="Report Viewer">Report Viewer</option>
+                                </select>
+
+                                <!-- role related info -->
+                                <div class="role-info" id="editRoleInfo" style="display: none;"></div>
+                            </div>
+
+                            <!-- Sites only dropdown for Administrator -->
+                            <div class="col-md-6" id="editSiteOnlyAccessContainer" style="display: none;">
+                                <label class="form-label">Site Access</label>
+                                <div class="custom-dropdown" id="editSiteOnlyDropdown">
+                                    <div class="dropdown-btn">
+                                        SITES SELECTED: <span id="editSiteOnlyCount" class="count">0</span>
+                                    </div>
+                                    <div class="dropdown-content">
+                                        <div class="dropdown-columns">
+                                            <div class="column">
+                                                <h4>Sites</h4>
+                                                <label><input type="checkbox" class="site-only"> Site 1</label>
+                                                <label><input type="checkbox" class="site-only"> Site 2</label>
+                                                <label><input type="checkbox" class="site-only"> Site 3</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- site and groups dropdown -->
+                            <div class="col-md-6" id="editSiteAccessContainer">
+                                <label class="form-label">Site and Group Access</label>
+                                <div class="custom-dropdown" id="editSiteGroupDropdown">
+                                    <div class="dropdown-btn">
+                                        SITES SELECTED: <span id="editSiteCount" class="count">0</span> &nbsp;
+                                        GROUPS SELECTED: <span id="editGroupCount" class="count">0</span>
+                                    </div>
+                                    <div class="dropdown-content">
+                                        <div class="dropdown-columns">
+                                            <div class="column">
+                                                <h4>Sites</h4>
+                                                <label><input type="checkbox" class="site" value="Site 1"> Site 1</label>
+                                                <label><input type="checkbox" class="site" value="Site 2"> Site 2</label>
+                                                <label><input type="checkbox" class="site" value="Site 3"> Site 3</label>
+                                            </div>
+                                            <div class="column">
+                                                <h4>Groups</h4>
+                                                <label><input type="checkbox" class="group" value="Group 1"> Group 1</label>
+                                                <label><input type="checkbox" class="group" value="Group 2"> Group 2</label>
+                                                <label><input type="checkbox" class="group" value="Group 3"> Group 3</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Features Section -->
+                        <div class="features-section" id="editFeaturesSection">
+
+                            <div class="features-header d-flex align-items-center justify-content-between mb-2">
+                                <div class="features-title mb-0">
+                                    Features
+                                    <span class="section-subtitle mb-0" id="editFeaturesSubtitle">(Please Select at least one feature)</span>
+                                </div>
+                            </div>
+
+                            <!-- Administrator Features -->
+                            <div id="editAdministratorFeatures" style="display: none;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="editAllowUserManagement" name="AllowUserManagement" value="true">
+                                    <input type="hidden" name="AllowUserManagement" value="false">
+                                    <label class="form-check-label" for="editAllowUserManagement">
+                                        Allow User Management
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Features -->
+                            <div id="editFeatures" style="display: none;">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editApplications" name="Applications" value="true">
+                                            <label class="form-check-label" for="editApplications">Applications</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editOSDeployment" name="OSDeployment" value="true">
+                                            <label class="form-check-label" for="editOSDeployment">OS Deployment</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editDownloadAgent" name="DownloadAgent" value="true">
+                                            <label class="form-check-label" for="editDownloadAgent">Download Agent</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editTaskHistory" name="TaskHistory" value="true">
+                                            <label class="form-check-label" for="editTaskHistory">Task History</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editInventory" name="Inventory" value="true">
+                                            <label class="form-check-label" for="editInventory">Inventory</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editTicketing" name="Ticketing" value="true">
+                                            <label class="form-check-label" for="editTicketing">Ticketing</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editAntiVirus" name="AntiVirus" value="true">
+                                            <label class="form-check-label" for="editAntiVirus">Anti-Virus</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editMDM" name="MDM" value="true">
+                                            <label class="form-check-label" for="editMDM">MDM</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editWindowsUpdates" name="WindowsUpdates" value="true">
+                                            <label class="form-check-label" for="editWindowsUpdates">Windows Updates</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editPolicies" name="Patches" value="true">
+                                            <label class="form-check-label" for="editPolicies">Policies</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editRemoteConnect" name="RemoteConnect" value="true">
+                                            <label class="form-check-label" for="editRemoteConnect">Remote Connect</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="editComputers" name="Computers" value="true">
+                                            <label class="form-check-label" for="editComputers">Computers</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- More Actions Section -->
+                        <div class="more-actions-section">
+                            <div class="section-title">More Actions</div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-outline-light btn-sm w-100" id="sendInviteEmailBtn">
+                                        SEND INVITE EMAIL
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-outline-light btn-sm w-100" id="sendPasswordResetBtn">
+                                        SEND PASSWORD RESET EMAIL
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-outline-light btn-sm w-100" id="cloneUserBtn">
+                                        CLONE USER
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-outline-danger btn-sm w-100" id="deleteUserBtn">
+                                        DELETE USER
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="d-flex justify-content-between align-items-center p-2">
+                    <button type="button" class="btn btn-dark cancel-btn btn-sm"
+                            data-bs-dismiss="modal">
+                        CANCEL
+                    </button>
+                    <button type="button" class="btn btn-dark submit-btn btn-sm" id="editSubmitBtn">UPDATE</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

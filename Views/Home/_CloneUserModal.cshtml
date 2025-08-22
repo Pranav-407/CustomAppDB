@@ -1,0 +1,177 @@
+﻿<div class="modal fade" id="CloneUserModal" tabindex="-1" role="dialog" aria-labelledby="CloneUserModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-custom-large" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header d-flex justify-content-between align-items-center">
+                <div class="modal-title-wrapper d-flex align-items-center">
+                    <h5 class="modal-title mb-0">Clone User</h5>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-0">
+                <div class="apps-header">
+                    <div class="apps-title-row mb-2"> <div class="apps-title">Clone User </div></div>
+                </div>
+                <form id="cloneUserForm">
+                    <input type="hidden" id="cloneOriginalEmail" name="OriginalEmail">
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label class="form-label" for="cloneFullName">Full Name</label>
+                            <input type="text" class="form-control fullName" id="cloneFullName" name="FullName" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cloneEmailAddress">Email Address</label>
+                            <input type="email" class="form-control" id="cloneEmailAddress" name="EmailAddress" placeholder="Email Address" required>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="cloneDisabled" name="IsDisabled" value="true">
+                            <input type="hidden" name="IsDisabled" value="false">
+                            <label class="form-check-label" for="cloneDisabled">Disabled </label>
+                        </div>
+                        <div class="section-title">Access Control</div>
+                        <div class="section-subtitle">Configure permissions for selected users</div>
+
+                        <div class="row">
+                            <div class="form-group col-md-5">
+                                <label class="form-label" for="cloneRole">Role</label>
+                                <select class="form-control" id="cloneRole" name="Role" required>
+                                    <option value="Super Administrator">Super Administrator</option>
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Limited Administrator">Limited Administrator</option>
+                                    <option value="Remote Support">Remote Support</option>
+                                    <option value="Report Viewer">Report Viewer</option>
+                                </select>
+                                <div class="role-info" id="cloneRoleInfo" style="display: none;"></div>
+                            </div>
+
+                            <!-- Sites only dropdown for Administrator -->
+                            <div class="col-md-6" id="cloneSiteOnlyAccessContainer" style="display: none;">
+                                <label class="form-label">Site Access</label>
+                                <div class="custom-dropdown" id="cloneSiteOnlyDropdown">
+                                    <div class="dropdown-btn">
+                                        SITES SELECTED: <span id="cloneSiteOnlyCount" class="count">0</span>
+                                    </div>
+                                    <div class="dropdown-content">
+                                        <div class="dropdown-columns">
+                                            <div class="column">
+                                                <h4>Sites</h4>
+                                                <label><input type="checkbox" class="site-only"> Site 1</label>
+                                                <label><input type="checkbox" class="site-only"> Site 2</label>
+                                                <label><input type="checkbox" class="site-only"> Site 3</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6" id="cloneSiteAccessContainer">
+                                <label class="form-label">Site and Group Access</label>
+                                <div class="custom-dropdown" id="cloneSiteGroupDropdown">
+                                    <div class="dropdown-btn">
+                                        SITES SELECTED: <span id="cloneSiteCount" class="count">0</span> &nbsp; GROUPS SELECTED: <span id="cloneGroupCount" class="count">0</span>
+                                    </div>
+                                    <div class="dropdown-content">
+                                        <div class="dropdown-columns">
+                                            <div class="column">
+                                                <h4>Sites</h4>
+                                                <label><input type="checkbox" class="site" value="Site 1"> Site 1</label>
+                                                <label><input type="checkbox" class="site" value="Site 2"> Site 2</label>
+                                                <label><input type="checkbox" class="site" value="Site 3"> Site 3</label>
+                                            </div>
+                                            <div class="column">
+                                                <h4>Groups</h4>
+                                                <label><input type="checkbox" class="group" value="Group 1"> Group 1</label>
+                                                <label><input type="checkbox" class="group" value="Group 2"> Group 2</label>
+                                                <label><input type="checkbox" class="group" value="Group 3"> Group 3</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="features-section" id="cloneFeaturesSection">
+                            <div class="features-header d-flex align-items-center justify-content-between mb-2">
+                                <div class="features-title mb-0">
+                                    Features
+                                    <span class="section-subtitle mb-0" id="cloneFeaturesSubtitle">(Please Select at least one feature)</span>
+                                </div>
+                            </div>
+                            <div id="cloneAdministratorFeatures" style="display: none;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="cloneAllowUserManagement" name="AllowUserManagement" value="true">
+                                    <input type="hidden" name="AllowUserManagement" value="false">
+                                    <label class="form-check-label" for="cloneAllowUserManagement"> Allow User Management</label>
+                                </div>
+                            </div>
+                            <div id="cloneFeatures" style="display: none;">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cloneApplications" name="Applications" value="true">
+                                            <label class="form-check-label" for="cloneApplications">Applications</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cloneOSDeployment" name="OSDeployment" value="true">
+                                            <label class="form-check-label" for="cloneOSDeployment">OS Deployment</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cloneDownloadAgent" name="DownloadAgent" value="true">
+                                            <label class="form-check-label" for="cloneDownloadAgent">Download Agent</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cloneTaskHistory" name="TaskHistory" value="true">
+                                            <label class="form-check-label" for="cloneTaskHistory">Task History</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cloneInventory" name="Inventory" value="true">
+                                            <label class="form-check-label" for="cloneInventory">Inventory</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cloneTicketing" name="Ticketing" value="true">
+                                            <label class="form-check-label" for="cloneTicketing">Ticketing</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cloneAntiVirus" name="AntiVirus" value="true">
+                                            <label class="form-check-label" for="cloneAntiVirus">Anti-Virus</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cloneMDM" name="MDM" value="true">
+                                            <label class="form-check-label" for="cloneMDM">MDM</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cloneWindowsUpdates" name="WindowsUpdates" value="true">
+                                            <label class="form-check-label" for="cloneWindowsUpdates">Windows Updates</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="clonePolicies" name="Patches" value="true">
+                                            <label class="form-check-label" for="clonePolicies">Policies</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cloneRemoteConnect" name="RemoteConnect" value="true">
+                                            <label class="form-check-label" for="cloneRemoteConnect">Remote Connect</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cloneComputers" name="Computers" value="true">
+                                            <label class="form-check-label" for="cloneComputers">Computers</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="d-flex justify-content-between align-items-center p-2">
+                    <button type="button" class="btn btn-dark cancel-btn btn-sm" data-bs-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn btn-dark submit-btn btn-sm" id="cloneSubmitBtn">CLONE USER</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+﻿<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header delete-header">
+                <h6 class="modal-title" id="confirmDeleteAppModalLabel">Delete Confirmation</h6>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to delete this User<strong id="deleteAppName"></strong>?</p>
+
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="button" class="btn btn-dark cancel-btn btn-sm" data-bs-dismiss="modal" id="deleteCancelBtn"> CANCEL </button>
+
+                    <button type="button" class="btn btn-dark del-btn btn-sm" id="deleteConfirmBtn" data-dismiss="modal">DELETE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

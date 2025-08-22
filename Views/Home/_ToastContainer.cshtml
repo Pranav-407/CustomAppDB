@@ -1,0 +1,67 @@
+﻿<!-- Updated _ToastContainer.cshtml -->
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
+    <div id="userDeletedToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i><span id="deletedUserName">[User Name]</span> deleted successfully.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
+    <div id="userNotSelectedToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i>Please Select the User.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
+    <div id="userUpdatedToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i>User Updated Successfully.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Updated userAddedToast with dynamic content -->
+<div class="position-fixed top-0 start-50 translate-middle-x p-2" style="z-index: 9999">
+    <div id="userAddedToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+         aria-live="assertive" aria-atomic="true" style="min-width: 550px;">
+        <div class="d-flex align-items-center">
+            <div class="toast-body" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                <i class="bi bi-check-circle me-2"></i><span id="userAddedMessage">User Added Successfully.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
+    <div id="EmailInviteToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i>Invite email sent Successfully.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999">
+    <div id="PasswordResetEmailToast" class="toast align-items-center text-bg-primary border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i>Password reset email sent Successfully.
+            </div>
+        </div>
+    </div>
+</div>

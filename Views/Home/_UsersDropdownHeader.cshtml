@@ -1,0 +1,61 @@
+
+<link rel="stylesheet" href="~/css/add-user-modal.css" />
+<link rel="stylesheet" href="~/css/edit-user-modal.css" />
+<link rel="stylesheet" href="~/css/clone-user-modal.css" />
+<link rel="stylesheet" href="~/css/delete-confirmation-modal.css" />
+
+<div class="users-section d-flex justify-content-between align-items-center">
+    <div class="section-title"></div>
+
+    <div class="btn-group align-items-center">
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-list"></i> ACTIONS
+            </button>
+            <ul class="dropdown-menu" id="actionsDropdownList">
+                <li><div class="dropdown-header">USER ACTIONS</div></li>
+                <li><a class="dropdown-item"><i class="fa-solid fa-user-pen"></i>Edit User</a></li>
+                <li><a class="dropdown-item"><i class="fa-solid fa-user-group"></i>Clone User</a></li>
+                <li><a class="dropdown-item"><i class="fa-solid fa-user-xmark"></i>Delete User </a></li>
+                <li><div class="dropdown-divider"></div></li>
+                <li><div class="dropdown-header">EMAIL</div></li>
+                <li><a class="dropdown-item"><i class="fa-solid fa-chart-diagram"></i>Send Invite Email</a></li>
+                <li><a class="dropdown-item"><i class="fa-solid fa-paper-plane"></i>Send Password Reset Email</a></li>
+            </ul>
+        </div>
+
+        <div class="header-btn"> <button class="btn btn-dark" type="button"> SAML</button></div>
+
+        <div class="header-btn"><button class="btn btn-dark" type="button">ACTIVE DIRECTORY</button></div>
+
+        <div class="btn-group split-button-container" role="group">
+            <!-- Add data-bs-toggle="dropdown" to the main button -->
+            <button type="button" class="action-btn add-btn btn-split-main" id="addAppBtn"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                ADD
+            </button>
+
+            <button type="button" class="action-btn add-btn btn-split-toggle dropdown-toggle dropdown-toggle-split"
+                    id="dropdownToggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="dropdown-chevron">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6,9 12,15 18,9"></polyline>
+                    </svg>
+                </span>
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+
+            <ul class="dropdown-menu" id="addDropdownList">
+                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#AddUserModal">User Via Email</a></li>
+                <li><a class="dropdown-item" href="#">User Via AD</a></li>
+                <li><div class="dropdown-divider"></div></li>
+                <li><a class="dropdown-item" href="#">Group Via AD</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@await Html.PartialAsync("_AddUserModal") 
+@await Html.PartialAsync("_EditUserModal")
+@await Html.PartialAsync("_CloneUserModal")  

@@ -1,0 +1,43 @@
+﻿#deleteConfirmationModal .modal-header {
+    background-color: #292929;
+    padding: 15px 20px;
+    color: white;
+    border-bottom: 1px solid grey;
+}
+
+#deleteConfirmationModal .modal-title {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+#deleteConfirmationModal .btn-close {
+    font-size: 0.6rem;
+}
+
+#deleteConfirmationModal .modal-body {
+    color: white;
+    background-color: #292929;
+}
+
+#deleteConfirmationModal .cancel-btn {
+    font-size: 12px;
+    background-color: #292929;
+    padding: 4px 25px !important;
+    font-weight: 550 !important;
+}
+
+#deleteConfirmationModal .cancel-btn:hover {
+    background-color: rgb(94 94 94);
+    border: 1px solid rgb(94 94 94) !important;
+}
+
+#deleteConfirmationModal .del-btn {
+    margin-left: 5px;
+    padding: 4px 30px !important;
+    border-radius: 6px !important;
+    font-weight: 650 !important;
+    color: white !important;
+    font-size: 12px;
+    background-color: rgb(94 94 94);
+    border: 1px solid rgb(94 94 94) !important;
+}

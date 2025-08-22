@@ -1,59 +1,81 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CustomAppDB.DAL;
+using System.Data.SqlClient;
 
 namespace CustomAppDB.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly LoginManager _loginManager;
+        private readonly string _connectionString;
 
-        public AccountController(IConfiguration configuration)
+        public AccountController(Microsoft.Extensions.Configuration.IConfiguration configuration)
         {
-            _loginManager = new LoginManager(configuration);
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        // GET: /Account/Login
-        public IActionResult Login()
+        // -------------------- Logout --------------------
+        [HttpPost]
+        public IActionResult Logout()
         {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
+
+        // Login
+        [HttpGet]
+        public IActionResult Login() => View();
+
+
+        [HttpPost]
+        public IActionResult Login(string email, string password)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM NewUsers WHERE Email = @Email AND Password = @Password";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Email", email ?? string.Empty);
+                    cmd.Parameters.AddWithValue("@Password", password ?? string.Empty);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            reader.Read();
+                            var fullName = reader["FullName"]?.ToString();
+                            HttpContext.Session.SetString("FullName", fullName ?? string.Empty);
+                            HttpContext.Session.SetString("Email", reader["Email"]?.ToString() ?? string.Empty);
+                            HttpContext.Session.SetString("Role", reader["Role"]?.ToString() ?? "");
+                            HttpContext.Session.SetString("Features", reader["Features"]?.ToString() ?? "");
+                            bool isUserManagement = false;
+                            if (reader["UserManagement"] != DBNull.Value)
+                                isUserManagement = Convert.ToBoolean(reader["UserManagement"]);
+                            HttpContext.Session.SetString("UserManagement", isUserManagement.ToString());
+
+                            reader.Close();
+
+                            string updateSql = "UPDATE NewUsers SET LastLogin = @LastLogin WHERE Email = @Email";
+                            using (SqlCommand updateCmd = new SqlCommand(updateSql, conn))
+                            {
+                                string formattedNow = DateTime.Now.ToString("M/d/yyyy h:mm:ss tt");
+                                updateCmd.Parameters.AddWithValue("@LastLogin", formattedNow);
+                                updateCmd.Parameters.AddWithValue("@Email", email);
+                                updateCmd.ExecuteNonQuery();
+                                HttpContext.Session.SetString("LastLogin", formattedNow);
+                            }
+
+                            conn.Close();
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ViewBag.Error = "Invalid Email or Password";
+                        }
+                    }
+                }
+                conn.Close();
+            }
             return View();
         }
 
-        // POST: /Account/Login
-        [HttpPost]
-        public IActionResult Login(string Username, string Password)
-        {
-            if (_loginManager.ValidateUser(Username, Password))
-            {
-                // Store login info in session
-                HttpContext.Session.SetString("Username", Username);
-                return RedirectToAction("Index", "Homepage");
-            }
-            else
-            {
-                ViewBag.Message = "Invalid username or password.";
-                return View();
-            }
-        }
-
-        // GET: /Account/Signup
-        public IActionResult Signup()
-        {
-            return View();
-        }
-
-        // POST: /Account/Signup
-        [HttpPost]
-        public IActionResult Signup(string Username, string Email, string Password)
-        {
-            if (_loginManager.CreateUser(Username, Email, Password))
-            {
-                return RedirectToAction("Login");
-            }
-            else
-            {
-                ViewBag.Message = "Username or Email already exists.";
-                return View();
-            }
-        }
     }
 }

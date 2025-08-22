@@ -1,5 +1,62 @@
 @{
     var current = ViewData["PageTitle"] as string ?? "Dashboard";
+    var username = Context.Session.GetString("Username") ?? "Guest";
+    var email = Context.Session.GetString("Email") ?? "Guest";
+    var role = Context.Session.GetString("Role");
+    var userManagementFlag = Context.Session.GetString("UserManagement") ?? "False";
+    bool isUserManagement = bool.Parse(userManagementFlag);
+    var userFeatures = Context.Session.GetString("Features") ?? "";
+    var assignedFeatures = new List<string>();
+
+    // Role-based feature assignment
+    if (role == "Super Administrator" || role == "Administrator")
+    {
+        if (userFeatures == "All")
+        {
+            assignedFeatures = new List<string> { "Applications", "Windows Updates", "Inventory", "OS Deployment", "MDM", "Anti-Virus", "Tickets", "Task History", "Policies", "Analytics" };
+        }
+        else if (!string.IsNullOrEmpty(userFeatures))
+        {
+            assignedFeatures = userFeatures.Split(',').Select(f => f.Trim()).ToList();
+        }
+    }
+    else if (role == "Limited Administrator")
+    {
+        if (userFeatures == "All")
+        {
+            // Limited Administrator with "All" features gets only these 12 specific features
+            assignedFeatures = new List<string> {
+                "Applications",
+                "Inventory",
+                "Windows Updates",
+                "OS Deployment",
+                "Tickets",
+                "Policies",
+                "Download Agent",
+                "Anti-Virus",
+                "Remote Connect",
+                "Task History",
+                "MDM",
+                "Computers"
+            };
+        }
+        else if (!string.IsNullOrEmpty(userFeatures))
+        {
+            assignedFeatures = userFeatures.Split(',').Select(f => f.Trim()).ToList();
+        }
+    }
+    else
+    {
+        // For other roles, use the existing logic
+        if (userFeatures == "All")
+        {
+            assignedFeatures = new List<string> { "Applications", "Windows Updates", "Inventory", "OS Deployment", "MDM", "Anti-Virus", "Tickets", "Task History", "Policies", "Analytics" };
+        }
+        else if (!string.IsNullOrEmpty(userFeatures))
+        {
+            assignedFeatures = userFeatures.Split(',').Select(f => f.Trim()).ToList();
+        }
+    }
 }
 
 <div class="sidebar@(Context.Request.Cookies["sidebarCollapsed"] == "true" ? " collapsed" : "")" id="sidebar">
@@ -11,30 +68,54 @@
     </div>
 
     @{
-        var menuItems = new List<(string Label, string Icon, string Section)>
-        {
-            ("Dashboard", "bi-grid", "Dashboard"),
-            ("Applications", "bi-box", "Applications"),
-            ("Windows Updates", "bi-arrow-repeat", "Windows Updates"),
-            ("Inventory", "bi bi-clipboard2-data", "Inventory"),
-            ("OS Deployment", "bi-cpu", "OS Deployment"),
-            ("MDM", "bi-shield-lock", "MDM"),
-            ("Anti-Virus", "bi-shield-check", "Anti-Virus"),
-            ("Tickets", "bi-ticket-perforated", "Tickets"),
-            ("Task History", "bi-clock-history", "Task History"),
-            ("Policies", "bi-file-lock", "Policies"),
-            ("Analytics", "bi-bar-chart", "Analytics"),
+        var allMenuItems = new Dictionary<string, (string Label, string Icon, string Section)> {
+        { "Dashboard", ("Dashboard", "bi-grid", "Dashboard") },
+        { "Applications", ("Applications", "bi-box", "Applications") },
+        { "Inventory", ("Inventory", "bi bi-clipboard2-data", "Inventory") },
+        { "Windows Updates", ("Windows Updates", "bi-arrow-repeat", "Windows Updates") },
+        { "OS Deployment", ("OS Deployment", "bi-cpu", "OS Deployment") },
+        { "Ticketing", ("Tickets", "bi-ticket-perforated", "Tickets") },
+        { "Policies", ("Policies", "bi-file-lock", "Policies") },
+        { "Download Agent", ("Download Agent", "bi-box", "Download Agent") },
+        { "Anti-Virus", ("Anti-Virus", "bi-shield-check", "Anti-Virus") },
+        { "Remote Connect", ("Remote Connect", "bi-shield-check", "Remote Connect") },
+        { "Task History", ("Task History", "bi-clock-history", "Task History") },
+        { "MDM", ("MDM", "bi-shield-lock", "MDM") },
+        { "Computers", ("Computers", "bi bi-clipboard2-data", "Computers") },
+        { "Analytics", ("Analytics", "bi-bar-chart", "Analytics")},
         };
+
+        var menuItemsToShow = new List<(string Label, string Icon, string Section, bool IsPolicies)>();
+
+        // Add Dashboard only for Super Administrator and Administrator roles
+        if (role == "Super Administrator" || role == "Administrator")
+        {
+            menuItemsToShow.Add((allMenuItems["Dashboard"].Label, allMenuItems["Dashboard"].Icon, allMenuItems["Dashboard"].Section, false));
+        }
+
+        foreach (var feature in assignedFeatures)
+        {
+            if (allMenuItems.ContainsKey(feature) && feature != "Dashboard")
+            {
+                var item = allMenuItems[feature];
+                if (!menuItemsToShow.Any(x => x.Label == item.Label))
+                {
+                    bool isPolicies = item.Label == "Policies";
+                    menuItemsToShow.Add((item.Label, item.Icon, item.Section, isPolicies));
+                }
+            }
+        }
     }
 
-    @foreach (var item in menuItems)
+    @foreach (var item in menuItemsToShow)
     {
         var isActive = item.Label == current ? "active" : "";
         var link = item.Label == "Applications"
-            ? Url.Action("Applications", "Homepage")
-            : Url.Action("Index", "Homepage", new { section = item.Label });
+        ? Url.Action("Applications", "Home")
+        : Url.Action("Index", "Home", new { section = item.Label });
 
-        if (item.Label == "Policies") {
+        if (item.IsPolicies)
+        {
             <hr class="my-2" />
         }
 
@@ -43,11 +124,62 @@
         </a>
     }
 
-    <div class="user-email mt-auto px-3 py-2 text-white">
+    <div class="user-section mt-auto px-3 py-2 text-white">
         <hr />
-        <div class="email-content">
-            <i class="bi bi-person-circle"></i>
-            <span class="email-text">aloha@alohatechnology.com</span>
+
+        <div class="user-dropdown">
+            <div class="user-info" id="userDropdownToggle">
+                <div class="user-details">
+                    <span class="user-email">@email</span>
+                </div>
+                <i class="bi bi-chevron-up dropdown-arrow" id="dropdownArrow"></i>
+            </div>
+
+            <div class="dropdown-menu" id="userDropdownMenu" style="width: 220px;">
+
+                <h6 class="dropdown-header">Manage Account</h6>
+
+                <div class="dropdown-divider"></div>
+
+                <a href="#" class="dropdown-item">
+                    <i class="bi bi-person"></i>
+                    <span>User Profile</span>
+                </a>
+
+                <a href="#" class="dropdown-item">
+                    <i class="bi bi-gear"></i>
+                    <span>Organization Settings</span>
+                </a>
+                @if (isUserManagement)
+                {
+                    <a href="@Url.Action("UserManagement", "Home")" class="dropdown-item">
+                        <i class="bi bi-people"></i>
+                        <span>User Management</span>
+                    </a>
+                }
+                <a href="#" class="dropdown-item">
+                    <i class="bi bi-tags"></i>
+                    <span>Manage Tags</span>
+                </a>
+                <a href="#" class="dropdown-item">
+                    <i class="bi bi-question-circle"></i>
+                    <span>Online Help</span>
+                </a>
+                <a href="#" class="dropdown-item">
+                    <i class="bi bi-shield-check"></i>
+                    <span>Product Data &amp; Privacy</span>
+                </a>
+                <a href="#" class="dropdown-item">
+                    <i class="bi bi-journal-text"></i>
+                    <span>Release Notes</span>
+                </a>
+                <form asp-controller="Account" asp-action="Logout" method="post" style="margin: 0;">
+                    <button type="submit" class="dropdown-item">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Sign Out</span>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

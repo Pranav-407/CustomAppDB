@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CustomAppTask.Controllers
 {
-    public class HomepageController : Controller
+    public class HomeController : Controller
     {
         public IActionResult Index(string section)
         {
@@ -20,5 +20,10 @@ namespace CustomAppTask.Controllers
             return View();
         }
 
+        public IActionResult UserManagement()
+        {
+            ViewData["PageTitle"] = "User Management";
+            return View();
+        }
     }
 }

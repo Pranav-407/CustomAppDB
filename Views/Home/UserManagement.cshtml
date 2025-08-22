@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "User Management";
+}
+
+
+<link rel="stylesheet" href="~/css/users-management-header.css" />
+<link rel="stylesheet" href="~/css/users-dropdown-header.css" />
+<link rel="stylesheet" href="~/css/users-grid.css" />
+
+<div class="user-management-content">
+    @await Html.PartialAsync("_UsersManagementHeader")
+
+    @await Html.PartialAsync("_UsersDropdownHeader")
+    
+    @await Html.PartialAsync("_UsersGrid")
+
+    @await Html.PartialAsync("_DeleteConfirmationModal")
+
+    @await Html.PartialAsync("_ToastContainer")
+</div>
+
+
+
+@section Scripts {
+
+    <script src="~/js/usersGrid.js"></script>
+    <script src="~/js/addUser.js"></script>
+    <script src="~/js/editUser.js"></script>
+    <script src="~/js/cloneUser.js"></script>
+    <script src="~/js/deleteUser.js"></script>
+    <script src="~/js/sendEmail.js"></script>
+} 

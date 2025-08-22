@@ -1,0 +1,468 @@
+﻿#EditUserModal .modal-header {
+    background-color: #1e1e1e;
+    color: white;
+    padding: 0.5rem 1rem;
+    min-height: auto;
+    border-bottom: none;
+}
+
+#EditUserModal .modal-title-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+#EditUserModal .modal-title {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+#EditUserModal .btn-close {
+    font-size: 0.6rem;
+}
+
+#EditUserModal .modal-custom-large {
+    max-width: 750px;
+}
+
+#EditUserModal .modal-content {
+    height: 645px; /* Fixed height instead of min-height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent content from overflowing */
+}
+
+#EditUserModal .modal-body {
+    background-color: #1e1e1e;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent body from overflowing */
+}
+
+    /* Make the scrollable content area - EXCLUDE apps-header */
+    #EditUserModal .modal-body > :not(.d-flex.justify-content-between):not(.apps-header) {
+        overflow-y: auto; /* Add vertical scroll */
+        padding-right: 10px; /* Space for scrollbar */
+    }
+
+/* Ensure apps-header specifically doesn't scroll */
+#EditUserModal .apps-header {
+    overflow-y: hidden !important;
+}
+
+    /* Keep the bottom buttons fixed */
+    #EditUserModal .modal-body > .d-flex.justify-content-between {
+        margin-top: auto;
+        flex-shrink: 0; /* Prevent shrinking */
+        background-color: #1e1e1e;
+        padding: 0.5rem 1rem;
+        border-top: 1px solid #333; /* Optional: add a subtle separator */
+    }
+
+#EditUserModal .apps-title {
+    padding: 4px 16px;
+    font-size: 14px;
+    background-color: rgb(94 94 94);
+    color: white;
+}
+
+#EditUserModal .cancel-btn {
+    font-size: 12px;
+    background-color: #1e1e1e;
+    color: white;
+    padding: 4px 25px !important;
+    border: 1px solid white !important;
+    border-radius: 8px !important;
+    font-weight: 550 !important;
+}
+
+    #EditUserModal .cancel-btn:hover {
+        background-color: rgb(94 94 94);
+        border: 1px solid rgb(94 94 94) !important;
+    }
+
+#EditUserModal .submit-btn {
+    padding: 4px 30px !important;
+    border-radius: 8px !important;
+    font-weight: 550 !important;
+    color: white !important;
+    font-size: 12px;
+    background-color: rgb(94 94 94);
+    border: 1px solid rgb(94 94 94) !important;
+}
+
+#EditUserModal .form-section {
+    padding: 5px 20px;
+    flex: 1;
+}
+
+#EditUserModal .form-group {
+    margin-bottom: 8px;
+}
+
+#EditUserModal .form-label {
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    display: block;
+}
+
+#EditUserModal .form-control {
+    background-color: #1e1e1e;
+    border: 1px solid #838383;
+    color: white;
+    padding: 4px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+}
+
+    #EditUserModal .form-control .fullName {
+        border-bottom: 1px solid #838383;
+    }
+
+    #EditUserModal .form-control:focus {
+        background-color: #1e1e1e;
+        color: white;
+        box-shadow: none;
+    }
+
+    #EditUserModal .form-control::placeholder {
+        color: #999;
+    }
+
+#EditUserModal .form-check {
+    margin-top: 15px;
+}
+
+#EditUserModal .form-check-input {
+    background-color: #1e1e1e;
+    border-color: #666;
+    margin-right: 8px;
+}
+
+    #EditUserModal .form-check-input:checked {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+#EditUserModal .form-check-label {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+#EditUserModal .section-title {
+    color: #4a9eff;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 5px 0 0 0;
+}
+
+#EditUserModal .section-subtitle {
+    color: #999;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+#EditUserModal .features-subtitle {
+    color: #ff6b6b;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+/* More Actions Section Styling */
+#EditUserModal .more-actions-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+}
+
+    #EditUserModal .more-actions-section .btn {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }
+
+    #EditUserModal .more-actions-section .btn-outline-light {
+        color: white;
+        border-color: #666;
+    }
+
+        #EditUserModal .more-actions-section .btn-outline-light:hover {
+            background-color: rgb(94 94 94);
+            border-color: rgb(94 94 94);
+            color: white;
+        }
+
+    #EditUserModal .more-actions-section .btn-outline-danger {
+        color: #FA641B;
+        border-color: #FA641B;
+    }
+
+        #EditUserModal .more-actions-section .btn-outline-danger:hover {
+            background-color: #FA641B;
+            border-color: #FA641B;
+            color: white;
+        }
+
+.form-control option {
+    background-color: #8b8b8b !important;
+    color: white !important;
+    padding: 8px;
+}
+
+/* Role dropdown styling - using preferred SVG icon with rotation */
+#editRole.form-control {
+    background-color: #1e1e1e !important;
+    border: 1px solid #838383 !important;
+    color: white !important;
+    padding: 4px 30px 4px 12px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 16px 12px !important;
+    padding-right: 2.25rem !important;
+    transition: all 0.2s ease;
+}
+
+/* Add rotation for edit role dropdown when opened */
+.edit-role-dropdown-container.show #editRole {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' style='transform: rotate(180deg)'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e") !important;
+}
+
+#editRole.form-control:focus {
+    background-color: #1e1e1e !important;
+    color: white !important;
+    box-shadow: none !important;
+    border-color: #838383 !important;
+}
+
+#EditUserModal #editFeatures .row {
+    margin: 0;
+}
+
+#EditUserModal #editFeatures .col-md-4 {
+    padding-left: 0;
+    padding-right: 15px;
+}
+
+#EditUserModal #editFeatures .form-check {
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+#EditUserModal #editFeatures .form-check-label {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+#EditUserModal .features-title {
+    color: #4a9eff;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+}
+
+#EditUserModal .role-info {
+    color: #999;
+    font-size: 11px;
+    margin: 3px;
+}
+
+#editSiteGroupDropdown {
+    position: relative;
+}
+
+    #editSiteGroupDropdown .dropdown-btn {
+        background-color: #1e1e1e;
+        color: white;
+        padding: 4px 15px;
+        border: 1px solid #838383;
+        border-radius: 8px;
+        cursor: pointer;
+        min-width: 100%;
+        font-size: 12px;
+    }
+
+    #editSiteGroupDropdown .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: rgb(94 94 94);
+        border: 1px solid #444;
+        border-radius: 5px;
+        margin-top: 5px;
+        z-index: 999;
+        padding: 10px;
+        width: 100%;
+    }
+
+    #editSiteGroupDropdown.show .dropdown-content {
+        display: block;
+    }
+
+    #editSiteGroupDropdown .dropdown-columns {
+        display: flex;
+        gap: 30px;
+    }
+
+    #editSiteGroupDropdown .column {
+        padding-left: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+        #editSiteGroupDropdown .column h4 {
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            font-size: 13px;
+            color: #4a9eff;
+        }
+
+    #editSiteGroupDropdown label {
+        margin-bottom: 8px;
+        cursor: pointer;
+        font-size: 12px;
+        color: white;
+    }
+
+    #editSiteGroupDropdown input[type="checkbox"] {
+        margin-right: 8px;
+    }
+
+    #editSiteGroupDropdown .count {
+        color: #4da6ff;
+    }
+
+.form-control.error {
+    border-color: #dc3545 !important;
+}
+
+    .form-control.error:focus {
+        border-color: #dc3545 !important;
+    }
+
+label.error {
+    color: #dc3545;
+    font-size: 11px;
+    margin-top: 0;
+    display: block;
+    font-weight: normal;
+}
+
+#editFullName {
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0px !important;
+    width: 40%;
+}
+
+/* Custom scrollbar styling for webkit browsers */
+#EditUserModal .modal-body > :not(.d-flex.justify-content-between)::-webkit-scrollbar {
+    width: 6px;
+}
+
+#EditUserModal .modal-body > :not(.d-flex.justify-content-between)::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 3px;
+}
+
+#EditUserModal .modal-body > :not(.d-flex.justify-content-between)::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 3px;
+}
+
+    #EditUserModal .modal-body > :not(.d-flex.justify-content-between)::-webkit-scrollbar-thumb:hover {
+        background: #888;
+    }
+
+
+/* Site Only Dropdown Styles */
+#editSiteOnlyDropdown {
+    position: relative;
+}
+
+    #editSiteOnlyDropdown .dropdown-btn {
+        background-color: #1e1e1e;
+        color: white;
+        padding: 4px 15px;
+        border: 1px solid #838383;
+        border-radius: 8px;
+        cursor: pointer;
+        min-width: 100%;
+        font-size: 12px;
+        position: relative;
+    }
+
+        #editSiteOnlyDropdown .dropdown-btn::after {
+            content: '▼';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 10px;
+            transition: transform 0.2s ease;
+        }
+
+    #editSiteOnlyDropdown.show .dropdown-btn::after {
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    #editSiteOnlyDropdown .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: rgb(94 94 94);
+        border: 1px solid #444;
+        border-radius: 5px;
+        margin-top: 5px;
+        z-index: 999;
+        padding: 10px;
+        width: 100%;
+    }
+
+    #editSiteOnlyDropdown.show .dropdown-content {
+        display: block;
+    }
+
+    #editSiteOnlyDropdown .dropdown-columns {
+        display: flex;
+        gap: 30px;
+    }
+
+    #editSiteOnlyDropdown .column {
+        padding-left: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+        #editSiteOnlyDropdown .column h4 {
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            font-size: 13px;
+            color: #4a9eff;
+        }
+
+    #editSiteOnlyDropdown label {
+        margin-bottom: 8px;
+        cursor: pointer;
+        font-size: 12px;
+        color: white;
+    }
+
+    #editSiteOnlyDropdown input[type="checkbox"] {
+        margin-right: 8px;
+    }
+
+    #editSiteOnlyDropdown .count {
+        color: #4da6ff;
+    }

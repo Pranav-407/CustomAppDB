@@ -1,0 +1,52 @@
+﻿#UserManagementHeader {
+    background-color: #121212;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid grey;
+    margin-bottom: 0;
+}
+
+#UserManagementHeader  h4 {
+    margin-left: 10px;
+    font-size: 1.25rem;
+    font-weight: 630;
+    color: white;
+}
+
+#UserManagementHeader .btn,
+#UserManagementHeader .dropdown-toggle {
+    background-color: transparent !important;
+    font-size: 0.875rem;
+    padding: 5px 5px;
+    color: #ebebeb !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#UserManagementHeader .btn:hover,
+#UserManagementHeader .btn:focus,
+#UserManagementHeader .btn:active,
+#UserManagementHeader .dropdown-toggle:hover,
+#UserManagementHeader .dropdown-toggle:focus,
+#UserManagementHeader .dropdown-toggle:active {
+    background-color: transparent !important;
+    color: #ebebeb !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#UserManagementHeader  .dropdown,
+#UserManagementHeader  .btn-group {
+    margin: 0 5px;
+}
+
+.fa-bell {
+    color: red;
+}
