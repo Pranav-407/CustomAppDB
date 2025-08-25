@@ -1,19 +1,18 @@
-﻿$(document).ready(function () {
+﻿let cloneEmailValidationTimer = null;
+
+$(document).ready(function () {
     initCloneFormValidation();
     updateCloneFormBasedOnRole();
     setupRealTimeCloneEmailValidation();
     $('#cloneRole').on('change', updateCloneFormBasedOnRole);
 
-    // Add class to role dropdown container for easier targeting (matching addUser)
     $('#cloneRole').closest('.form-group').addClass('clone-role-dropdown-container');
 
-    // Handle role dropdown click/focus for rotation (matching addUser)
     $('#cloneRole').on('focus click mousedown', function () {
         $(this).closest('.form-group').addClass('show');
     });
 
     $('#cloneRole').on('blur change', function () {
-        // Small delay to allow for option selection
         setTimeout(() => {
             $(this).closest('.form-group').removeClass('show');
         }, 150);
@@ -24,14 +23,12 @@
         handleCloneUserClick();
     });
 
-    // NEW: Handle clone button click from within Edit User modal
     $(document).on('click', '#cloneUserBtn', function (e) {
         e.preventDefault();
         e.stopPropagation();
         handleCloneFromEditModal();
     });
 
-    // Site and Group dropdown handlers
     $('#cloneSiteGroupDropdown .dropdown-btn').on('click', function (e) {
         e.stopPropagation();
         $('#cloneSiteGroupDropdown').toggleClass('show');
@@ -45,7 +42,6 @@
         updateCloneCounts();
     });
 
-    // Site Only dropdown handlers
     $('#cloneSiteOnlyDropdown .dropdown-btn').on('click', function (e) {
         e.stopPropagation();
         $('#cloneSiteOnlyDropdown').toggleClass('show');
@@ -66,17 +62,15 @@
         if (!$(e.target).closest('#cloneSiteOnlyDropdown').length) {
             $('#cloneSiteOnlyDropdown').removeClass('show');
         }
-        // Close role dropdown when clicking outside (matching addUser)
         if (!$(e.target).closest('#cloneRole').length) {
             $('.clone-role-dropdown-container').removeClass('show');
         }
     });
 
-    // Replace this event handler:
     $('#cloneFeatures input[type="checkbox"]').on('change', function () {
         const selectedRole = $('#cloneRole').val();
         if (selectedRole === 'Limited Administrator') {
-            validateCloneFeatureSelection(); // Call validation on every change
+            validateCloneFeatureSelection();
         }
     });
 
@@ -85,7 +79,6 @@
         if (validateCloneForm()) {
             submitCloneUserForm();
         } else {
-            // Reapply error styling if email exists error is present
             const hasEmailExistenceError = $('#cloneEmailAddress').next('.error-message').length > 0 &&
                 $('#cloneEmailAddress').next('.error-message').text().includes('already exists');
             if (hasEmailExistenceError) {
@@ -98,55 +91,43 @@
     updateCloneSiteOnlyCounts();
     setupCloneModalCloseHandlers();
 });
-
-let cloneEmailValidationTimer = null;
 function setupRealTimeCloneEmailValidation() {
     $('#cloneEmailAddress').on('input', function () {
         const email = $(this).val().trim();
 
-        // Clear previous timer
         if (cloneEmailValidationTimer) {
             clearTimeout(cloneEmailValidationTimer);
         }
 
-        // Clear previous validation states
         $(this).removeClass('error');
         $(this).next('.error-message').remove();
         $(this).removeData('hasCustomError');
 
-        // If email is empty, don't validate
         if (email === '') {
             return;
         }
 
-        // Let jQuery validation handle format validation first
         if (!$('#cloneUserForm').validate().element('#cloneEmailAddress')) {
-            return; // Don't check existence if format is invalid
+            return;
         }
 
-        // Set new timer for debounced validation
         cloneEmailValidationTimer = setTimeout(() => {
             checkCloneEmailExistence(email);
-        }, 800); // 800ms delay after user stops typing
+        }, 800);
     });
 
-    // Prevent error styling from being removed on blur or form validation
     $('#cloneEmailAddress').on('blur focus', function () {
-        // If there's a custom email existence error, keep the error styling
         if ($(this).data('hasCustomError')) {
             $(this).addClass('error');
         }
     });
 
-    // Override jQuery validation's success method for this field
     const originalSuccessMethod = $('#cloneUserForm').validate().settings.success;
     $('#cloneUserForm').validate().settings.success = function (label, element) {
-        // Don't remove error class if we have a custom error
         if ($(element).data('hasCustomError')) {
             $(element).addClass('error');
             return;
         }
-        // Call original success method for other fields
         if (originalSuccessMethod) {
             originalSuccessMethod.call(this, label, element);
         }
@@ -164,10 +145,8 @@ function checkCloneEmailExistence(email) {
                 emailField.addClass('error');
                 emailField.after('<div class="error-message">Email already exists.</div>');
 
-                // Mark field as having custom error to prevent jQuery validation from removing styling
                 emailField.data('hasCustomError', true);
             } else {
-                // Remove custom error flag when email is available
                 emailField.removeData('hasCustomError');
             }
         },
@@ -187,7 +166,6 @@ function setupCloneModalCloseHandlers() {
     });
 }
 function handleCloneFromEditModal() {
-    // Get data from the Edit modal form instead of grid
     const userData = {
         email: $('#editOriginalEmail').val(),
         fullName: $('#editFullName').val(),
@@ -206,14 +184,12 @@ function getEditModalSitesString() {
     if (role === 'Super Administrator') {
         return 'All';
     } else if (role === 'Administrator') {
-        // For Administrator, get sites from site-only dropdown
         const selectedSites = [];
         $('#editSiteOnlyDropdown input.site-only:checked').each(function () {
             selectedSites.push($(this).parent().text().trim());
         });
         return selectedSites.length > 0 ? selectedSites.join(', ') : 'No Access to sites';
     } else {
-        // For other roles, get sites from site-group dropdown
         const selectedSites = [];
         $('#editSiteGroupDropdown input.site:checked').each(function () {
             selectedSites.push($(this).val());
@@ -226,10 +202,8 @@ function getEditModalGroupsString() {
     if (role === 'Super Administrator') {
         return 'All';
     } else if (role === 'Administrator') {
-        // Administrator gets all groups for selected sites
         return 'All';
     } else {
-        // For other roles, get groups from site-group dropdown
         const selectedGroups = [];
         $('#editSiteGroupDropdown input.group:checked').each(function () {
             selectedGroups.push($(this).val());
@@ -243,7 +217,7 @@ function getEditModalFeaturesString() {
     if (role === 'Super Administrator') {
         return 'All';
     } else if (role === 'Administrator') {
-        return 'All'; // Administrators typically have access to all features
+        return 'All';
     } else if (role === 'Remote Support') {
         return 'Remote Connect';
     } else if (role === 'Report Viewer') {
@@ -306,9 +280,7 @@ function populateCloneForm(userData) {
     resetCloneAllCheckboxes();
     updateCloneFormBasedOnRole();
 
-    // Handle sites based on role
     if (userData.role === 'Administrator') {
-        // For Administrator, populate site-only dropdown
         if (userData.sites && userData.sites !== 'All' && userData.sites !== 'No Access to sites') {
             const sites = userData.sites.split(',').map(s => s.trim());
             $('#cloneSiteOnlyDropdown input.site-only').each(function () {
@@ -321,7 +293,6 @@ function populateCloneForm(userData) {
             $('#cloneSiteOnlyDropdown input.site-only').prop('checked', true);
         }
     } else {
-        // For other roles, populate site-group dropdown
         if (userData.sites && userData.sites !== 'All' && userData.sites !== 'No Access to sites') {
             const sites = userData.sites.split(',').map(s => s.trim());
             $('#cloneSiteGroupDropdown input.site').each(function () {
@@ -335,7 +306,6 @@ function populateCloneForm(userData) {
         }
     }
 
-    // Handle groups (only for non-Administrator roles)
     if (userData.role !== 'Administrator') {
         if (userData.groups && userData.groups !== 'All' && userData.groups !== 'No Access to groups') {
             const groups = userData.groups.split(',').map(g => g.trim());
@@ -375,7 +345,6 @@ function populateCloneForm(userData) {
             }
         });
     } else if (userData.features === 'All') {
-        // If features is "All", select all feature checkboxes
         $('#cloneFeatures input[type="checkbox"]').prop('checked', true);
     }
 
@@ -387,7 +356,6 @@ function populateCloneForm(userData) {
     updateCloneSiteOnlyCounts();
 }
 function resetCloneModalForm() {
-    // Clear email validation timer
     if (cloneEmailValidationTimer) {
         clearTimeout(cloneEmailValidationTimer);
         cloneEmailValidationTimer = null;
@@ -411,7 +379,6 @@ function resetCloneModalForm() {
     $('#cloneEmailAddress').next('.error-message').remove();
     $('#cloneEmailAddress').removeData('hasCustomError');
 
-    // Reset role dropdown rotation (matching addUser)
     $('.clone-role-dropdown-container').removeClass('show');
 }
 function updateCloneCounts() {
@@ -458,20 +425,16 @@ function getCloneFormValidationMessages() {
 function validateCloneForm() {
     const isFormValid = $('#cloneUserForm').valid();
 
-    // Check if email has an existence error
     const hasEmailExistenceError = $('#cloneEmailAddress').next('.error-message').length > 0 &&
         $('#cloneEmailAddress').next('.error-message').text().includes('already exists');
 
     const isEmailValid = !hasEmailExistenceError;
 
-    // Only validate features if basic form validation passes
     if (!isFormValid || !isEmailValid) {
-        // Hide feature validation message when basic form fields are invalid
         $('#cloneFeaturesSubtitle').hide();
         return false;
     }
 
-    // Now validate features since basic form is valid
     const isFeaturesValid = validateCloneFeatureSelection();
 
     return isFormValid && isFeaturesValid && isEmailValid;
@@ -480,7 +443,6 @@ function validateCloneFeatureSelection() {
     const selectedRole = $('#cloneRole').val();
     const featuresSubtitle = $('#cloneFeaturesSubtitle');
 
-    // Only Limited Administrator needs feature selection validation
     if (selectedRole === 'Limited Administrator') {
         const checkedFeatures = $('#cloneFeatures input[type="checkbox"]:checked').length;
         if (checkedFeatures === 0) {
@@ -545,30 +507,23 @@ function submitCloneUserForm() {
 
     let features = [];
 
-    // Handle features based on role
     if (selectedRole === 'Limited Administrator') {
-        // Count total available features for Limited Administrator
         const totalAvailableFeatures = $('#cloneFeatures input[type="checkbox"]').length;
         const selectedFeaturesCount = $('#cloneFeatures input[type="checkbox"]:checked').length;
 
-        // If all 12 features are selected, store "All"
         if (selectedFeaturesCount === totalAvailableFeatures && totalAvailableFeatures === 12) {
             features.push('All');
         } else {
-            // Otherwise, store individual feature names
             $('#cloneFeatures input[type="checkbox"]:checked').each(function () {
                 const label = $('label[for="' + $(this).attr('id') + '"]').text().trim();
                 features.push(label);
             });
         }
     } else if (selectedRole === 'Remote Support') {
-        // For Remote Support, automatically add Remote Connect
         features.push('Remote Connect');
     } else if (selectedRole === 'Report Viewer') {
-        // For Report Viewer, automatically add Analytics
         features.push('Analytics');
     }
-    // For Super Administrator and Administrator, features array remains empty or is handled differently
 
     let sites = [];
     let siteCount = 0;
@@ -577,13 +532,11 @@ function submitCloneUserForm() {
         sites = ['Site 1', 'Site 2', 'Site 3'];
         siteCount = 3;
     } else if (selectedRole === 'Administrator') {
-        // For Administrator, get sites from site-only dropdown
         $('#cloneSiteOnlyDropdown input.site-only:checked').each(function () {
             sites.push($(this).parent().text().trim());
         });
         siteCount = sites.length;
     } else {
-        // For other roles, get sites from site-group dropdown
         $('#cloneSiteGroupDropdown input.site:checked').each(function () {
             sites.push($(this).val());
         });
@@ -597,11 +550,9 @@ function submitCloneUserForm() {
         groups = ['Group 1', 'Group 2', 'Group 3'];
         groupCount = 3;
     } else if (selectedRole === 'Administrator') {
-        // Administrator gets all groups for selected sites
         groups = ['Group 1', 'Group 2', 'Group 3'];
         groupCount = 3;
     } else {
-        // For other roles, get groups from site-group dropdown
         $('#cloneSiteGroupDropdown input.group:checked').each(function () {
             groups.push($(this).val());
         });
@@ -637,18 +588,32 @@ function submitCloneUserForm() {
         success: function (response) {
             $('#CloneUserModal').modal('hide');
 
-            // NEW: Close Edit User modal if it's open
             if ($('#EditUserModal').hasClass('show')) {
                 $('#EditUserModal').modal('hide');
             }
+
+            const newUserForGrid = {
+                id: user.Email,
+                fullName: user.FullName,
+                email: user.Email,
+                userType: user.UserType,
+                role: user.Role,
+                siteCount: siteCount,
+                sites: formatSitesForGrid(sites, selectedRole, siteCount),
+                features: formatFeaturesForGrid(features, selectedRole),
+                groups: formatGroupsForGrid(groups, selectedRole, groupCount),
+                groupCount: groupCount,
+                createdOn: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+                lastLogin: 'Never logged in',
+                userManagement: allowUserManagement
+            };
+
+            addUserToLocalData(newUserForGrid);
+
             showClonedToast(user.FullName);
 
             if (typeof clearGridSelection === 'function') {
                 clearGridSelection();
-            }
-
-            if (typeof refreshUsersGrid === 'function') {
-                refreshUsersGrid();
             }
         },
         error: function (xhr) {
@@ -671,7 +636,7 @@ function showClonedToast(userName) {
 
     const clonedToastEl = document.getElementById('userClonedToast');
     if (clonedToastEl) {
-        const clonedToast = new bootstrap.Toast(clonedToastEl, { delay: 4000 }); // Increased delay for longer message
+        const clonedToast = new bootstrap.Toast(clonedToastEl, { delay: 3000 });
         clonedToast.show();
     }
 }

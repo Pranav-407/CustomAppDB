@@ -15,7 +15,6 @@
     });
 
     $('#editRole').on('blur change', function () {
-        // Small delay to allow for option selection
         setTimeout(() => {
             $(this).closest('.form-group').removeClass('show');
         }, 150);
@@ -69,11 +68,9 @@
         if (!$(e.target).closest('#editSiteGroupDropdown').length) {
             $('#editSiteGroupDropdown').removeClass('show');
         }
-        // Close site-only dropdown when clicking outside
         if (!$(e.target).closest('#editSiteOnlyDropdown').length) {
             $('#editSiteOnlyDropdown').removeClass('show');
         }
-        // Close edit role dropdown when clicking outside
         if (!$(e.target).closest('#editRole').length) {
             $('.edit-role-dropdown-container').removeClass('show');
         }
@@ -106,7 +103,6 @@ function setupEditModalCloseHandlers() {
         resetEditModalForm();
     });
 }
-
 function handleEditUserClick() {
     if (!selectedDeviceKey) {
         showNoUserSelectedToast()
@@ -125,7 +121,6 @@ function handleEditUserClick() {
     populateEditForm(userData);
     $('#EditUserModal').modal('show');
 }
-
 function populateEditForm(userData) {
     $('#editOriginalEmail').val(userData.email);
 
@@ -212,7 +207,6 @@ function populateEditForm(userData) {
     updateEditCounts();
     updateEditSiteOnlyCounts();
 }
-
 function resetEditModalForm() {
     if ($('#editUserForm').data('validator')) {
         $('#editUserForm').validate().resetForm();
@@ -224,37 +218,31 @@ function resetEditModalForm() {
     $('#editUserForm')[0].reset();
     $('#editRole').val('Super Administrator');
     resetEditAllCheckboxes();
-    // Reset edit role dropdown rotation
     $('.edit-role-dropdown-container').removeClass('show');
     $('#editFeaturesSubtitle').hide();
     updateEditFormBasedOnRole();
 
-    // Clear the displayed email
     $('#displayUserEmail').text('');
 }
-
 function updateEditCounts() {
     const siteCount = $('#editSiteGroupDropdown input.site:checked').length;
     const groupCount = $('#editSiteGroupDropdown input.group:checked').length;
     $('#editSiteCount').text(siteCount);
     $('#editGroupCount').text(groupCount);
 }
-
 function updateEditSiteOnlyCounts() {
     const siteOnlyCount = $('#editSiteOnlyDropdown input.site-only:checked').length;
     $('#editSiteOnlyCount').text(siteOnlyCount);
 }
-
 function resetEditAllCheckboxes() {
     $('#editSiteGroupDropdown input[type="checkbox"]').prop('checked', false);
-    $('#editSiteOnlyDropdown input[type="checkbox"]').prop('checked', false); // NEW
+    $('#editSiteOnlyDropdown input[type="checkbox"]').prop('checked', false);
     $('#editAdministratorFeatures input[type="checkbox"]').prop('checked', false);
     $('#editFeatures input[type="checkbox"]').prop('checked', false);
     updateEditCounts();
-    updateEditSiteOnlyCounts(); // NEW
+    updateEditSiteOnlyCounts();
     validateEditFeatureSelection();
 }
-
 function initEditFormValidation() {
     $('#editUserForm').validate({
         errorClass: 'error',
@@ -265,21 +253,16 @@ function initEditFormValidation() {
         },
     });
 }
-
 function getEditFormValidationRules() {
     return {
         FullName: { required: true }
-        // Removed EmailAddress validation since field no longer exists
     };
 }
-
 function getEditFormValidationMessages() {
     return {
         FullName: { required: "This field is required" }
-        // Removed EmailAddress validation messages
     };
 }
-
 function validateEditForm() {
 
     const isFormValid = $('#editUserForm').valid();
@@ -295,7 +278,6 @@ function validateEditForm() {
 
     return allValid;
 }
-
 function validateEditFeatureSelection() {
     const selectedRole = $('#editRole').val();
     const featuresSubtitle = $('#editFeaturesSubtitle');
@@ -317,9 +299,8 @@ function validateEditFeatureSelection() {
 function updateEditFormBasedOnRole() {
     const selectedRole = $('#editRole').val();
 
-    // Don't reset checkboxes here to preserve populated data
     $('#editSiteAccessContainer').hide();
-    $('#editSiteOnlyAccessContainer').hide(); // NEW
+    $('#editSiteOnlyAccessContainer').hide();
     $('#editFeaturesSection').hide();
     $('#editAdministratorFeatures').hide();
     $('#editFeatures').hide();
@@ -334,7 +315,7 @@ function updateEditFormBasedOnRole() {
             $('#editRoleInfo').show();
             break;
         case 'Administrator':
-            $('#editSiteOnlyAccessContainer').show(); // NEW: Show site-only container for Administrator
+            $('#editSiteOnlyAccessContainer').show();
             $('#editFeaturesSection').show();
             $('#editAdministratorFeatures').show();
             $('#editRoleInfo').text('An Administrator will have access to all Computer Groups of any sites they have been assigned control of');
@@ -359,40 +340,31 @@ function updateEditFormBasedOnRole() {
             break;
     }
 }
-
 function checkEditEmailAndSubmit() {
     submitEditUserForm();
 }
-
 function submitEditUserForm() {
     const selectedRole = $('#editRole').val();
 
     let features = [];
 
-    // Handle features based on role
     if (selectedRole === 'Limited Administrator') {
-        // Count total available features for Limited Administrator
         const totalAvailableFeatures = $('#editFeatures input[type="checkbox"]').length;
         const selectedFeaturesCount = $('#editFeatures input[type="checkbox"]:checked').length;
 
-        // If all 12 features are selected, store "All"
         if (selectedFeaturesCount === totalAvailableFeatures && totalAvailableFeatures === 12) {
             features.push('All');
         } else {
-            // Otherwise, store individual feature names
             $('#editFeatures input[type="checkbox"]:checked').each(function () {
                 const label = $('label[for="' + $(this).attr('id') + '"]').text().trim();
                 features.push(label);
             });
         }
     } else if (selectedRole === 'Remote Support') {
-        // For Remote Support, automatically add Remote Connect
         features.push('Remote Connect');
     } else if (selectedRole === 'Report Viewer') {
-        // For Report Viewer, automatically add Analytics
         features.push('Analytics');
     }
-    // For Super Administrator and Administrator, features array remains empty or is handled differently
 
     let sites = [];
     let siteCount = 0;
@@ -401,13 +373,11 @@ function submitEditUserForm() {
         sites = ['Site 1', 'Site 2', 'Site 3'];
         siteCount = 3;
     } else if (selectedRole === 'Administrator') {
-        // For Administrator, get sites from site-only dropdown
         $('#editSiteOnlyDropdown input.site-only:checked').each(function () {
             sites.push($(this).parent().text().trim());
         });
         siteCount = sites.length;
     } else {
-        // For other roles, get sites from site-group dropdown
         $('#editSiteGroupDropdown input.site:checked').each(function () {
             sites.push($(this).val());
         });
@@ -421,11 +391,9 @@ function submitEditUserForm() {
         groups = ['Group 1', 'Group 2', 'Group 3'];
         groupCount = 3;
     } else if (selectedRole === 'Administrator') {
-        // Administrator gets all groups for selected sites
         groups = ['Group 1', 'Group 2', 'Group 3'];
         groupCount = 3;
     } else {
-        // For other roles, get groups from site-group dropdown
         $('#editSiteGroupDropdown input.group:checked').each(function () {
             groups.push($(this).val());
         });
@@ -442,7 +410,7 @@ function submitEditUserForm() {
     let user = {
         OriginalEmail: $('#editOriginalEmail').val(),
         FullName: $('#editFullName').val(),
-        Email: $('#editOriginalEmail').val(), // Use original email since we're not changing it
+        Email: $('#editOriginalEmail').val(),
         Role: selectedRole,
         UserType: 'Deploy user',
         Features: features,
@@ -461,14 +429,24 @@ function submitEditUserForm() {
         success: function (response) {
             $('#EditUserModal').modal('hide');
 
+            const updatedUserForGrid = {
+                id: user.Email,
+                fullName: user.FullName,
+                email: user.Email,
+                userType: user.UserType,
+                role: user.Role,
+                siteCount: siteCount,
+                sites: formatSitesForGrid(sites, selectedRole, siteCount),
+                features: formatFeaturesForGrid(features, selectedRole),
+                groups: formatGroupsForGrid(groups, selectedRole, groupCount),
+                groupCount: groupCount,
+                userManagement: allowUserManagement,
+                originalEmail: user.OriginalEmail
+            };
+
+            updateUserInLocalData(updatedUserForGrid);
             showUpdatedToast();
-
-            // Use the same clearGridSelection function from sendEmail file
             clearGridSelection();
-
-            if (typeof refreshUsersGrid === 'function') {
-                refreshUsersGrid();
-            }
         },
         error: function (xhr) {
             var msg = "Failed to update user.";
@@ -483,6 +461,39 @@ function submitEditUserForm() {
             alert(msg);
         }
     });
+}
+function formatSitesForGrid(sites, role, siteCount) {
+    if (role === 'Super Administrator') {
+        return 'All';
+    } else if (siteCount === 0) {
+        return 'No Access to sites';
+    } else if (siteCount === 3) {
+        return 'All';
+    } else {
+        return sites.join(', ');
+    }
+}
+function formatFeaturesForGrid(features, role) {
+    if (role === 'Super Administrator' || role === 'Administrator') {
+        return 'All';
+    } else if (features.length === 0) {
+        return '';
+    } else if (features.includes('All')) {
+        return 'All';
+    } else {
+        return features.join(', ');
+    }
+}
+function formatGroupsForGrid(groups, role, groupCount) {
+    if (role === 'Super Administrator') {
+        return 'All';
+    } else if (groupCount === 0) {
+        return 'No Access to groups';
+    } else if (groupCount === 3) {
+        return 'All';
+    } else {
+        return groups.join(', ');
+    }
 }
 function showUpdatedToast() {
     const updatedToastEl = document.getElementById('userUpdatedToast');

@@ -1,12 +1,70 @@
 ﻿let selectedDeviceKey = null;
 let userGrid = null;
 let searchExpanded = false;
+let usData = [];
 
 $(document).ready(function () {
     initializeUsersGrid();
     initializeTableHelperSearch();
 });
+function addUserToLocalData(newUserData) {
+    usData.push(newUserData);
 
+    if (userGrid) {
+        userGrid.option('dataSource', []);
+        userGrid.option('dataSource', [...usData]);
+        userGrid.refresh();
+    }
+}
+function updateUserInLocalData(updatedUserData) {
+    const index = usData.findIndex(user =>
+        user.email === updatedUserData.originalEmail ||
+        user.email === updatedUserData.email
+    );
+
+    if (index !== -1) {
+        const originalUser = usData[index];
+
+        usData[index] = {
+            id: updatedUserData.email || originalUser.id,
+            fullName: updatedUserData.fullName || originalUser.fullName,
+            email: updatedUserData.email || originalUser.email,
+            userType: updatedUserData.userType || originalUser.userType,
+            role: updatedUserData.role || originalUser.role,
+            siteCount: updatedUserData.siteCount !== undefined ? updatedUserData.siteCount : originalUser.siteCount,
+            sites: updatedUserData.sites || originalUser.sites,
+            features: updatedUserData.features || originalUser.features,
+            groups: updatedUserData.groups || originalUser.groups,
+            groupCount: updatedUserData.groupCount !== undefined ? updatedUserData.groupCount : originalUser.groupCount,
+            createdOn: originalUser.createdOn, // Keep original creation date
+            lastLogin: originalUser.lastLogin, // Keep original last login
+            userManagement: updatedUserData.userManagement !== undefined ? updatedUserData.userManagement : originalUser.userManagement
+        };
+
+        if (userGrid) {
+            userGrid.option('dataSource', []);
+            userGrid.option('dataSource', [...usData]);
+            userGrid.refresh();
+        }
+
+        return true;
+    }
+
+    return false;
+}
+function removeUserFromLocalData(userEmail) {
+    const index = usData.findIndex(user => user.email === userEmail);
+
+    if (index !== -1) {
+        usData.splice(index, 1);
+
+        if (userGrid) {
+            userGrid.option('dataSource', []);
+            userGrid.option('dataSource', [...usData]);
+            userGrid.refresh();
+        }
+    }
+}
 function getRoleColor(role) {
     const roleColors = {
         'Super Administrator': '#8DCE2D',
@@ -18,7 +76,6 @@ function getRoleColor(role) {
 
     return roleColors[role] || '#6C757D';
 }
-
 function initializeTableHelperSearch() {
     const $searchButton = $('.table-header .icon-btn:has(.bi-search)')
         .add('.table-header button:has(.bi-search)')
@@ -42,7 +99,6 @@ function initializeTableHelperSearch() {
         }
     });
 }
-
 function expandSearch() {
     const $tableHeader = $('.table-header');
     const $rightControls = $tableHeader.find('.d-flex.align-items-center.gap-1').last();
@@ -83,7 +139,6 @@ function expandSearch() {
 
     setupSearchHandlers();
 }
-
 function collapseSearch() {
     const $searchButton = $('.table-header .icon-btn:has(.bi-search)')
         .add('.table-header button:has(.bi-search)')
@@ -104,7 +159,6 @@ function collapseSearch() {
         userGrid.searchByText('');
     }
 }
-
 function setupSearchHandlers() {
     const $searchInput = $('#tableUserSearchInput');
     const $clearButton = $('#tableClearUserSearch');
@@ -155,14 +209,16 @@ function setupSearchHandlers() {
         }
     });
 }
-
 function initializeUsersGrid() {
     $.ajax({
         url: '/User/GetUsers',
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            initializeGridWithData(data);
+            usData = data || [];
+            //initializeGridWithData(data);
+            initializeGridWithData(usData);
+            //return usData;
         },
         error: function (xhr, status, error) {
             console.error('Failed to load users data:', error);
@@ -170,10 +226,10 @@ function initializeUsersGrid() {
         }
     });
 }
-
 function initializeGridWithData(usersData) {
     userGrid = $("#userGrid").dxDataGrid({
-        dataSource: usersData,
+        //dataSource: usersData,
+        dataSource: usData,
         keyExpr: "id",
 
         Borders: false,
@@ -324,32 +380,18 @@ function initializeGridWithData(usersData) {
         ]
     }).dxDataGrid('instance');
 }
-
 function updateRadioButtons() {
     $('input[name="userSelection"]').each(function () {
         const dataKey = $(this).attr('data-key');
         $(this).prop("checked", selectedDeviceKey === dataKey);
     });
 }
-
 function refreshUsersGrid() {
     if (userGrid) {
-        $.ajax({
-            url: '/User/GetUsers',
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                userGrid.option('dataSource', data);
-                userGrid.refresh();
-            },
-            error: function (xhr, status, error) {
-                console.error('Failed to refresh users data:', error);
-                alert('Failed to refresh users data. Please try again.');
-            }
-        });
+         userGrid.option('dataSource', [...usData]);
+         userGrid.refresh();
     }
 }
-
 function clearUserSearch() {
     const $searchInput = $('#tableUserSearchInput');
     $searchInput.val('');

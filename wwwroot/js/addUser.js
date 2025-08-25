@@ -1,25 +1,24 @@
-﻿$(document).ready(function () {
+﻿let emailValidationTimer = null;
+
+$(document).ready(function () {
     initFormValidation();
     updateFormBasedOnRole();
-    setupRealTimeEmailValidation(); // Add this line
+    setupRealTimeEmailValidation();
+
     $('#role').on('change', updateFormBasedOnRole);
 
-    // Add class to role dropdown container for easier targeting
     $('#role').closest('.form-group').addClass('role-dropdown-container');
 
-    // Handle role dropdown click/focus for rotation
     $('#role').on('focus click mousedown', function () {
         $(this).closest('.form-group').addClass('show');
     });
 
     $('#role').on('blur change', function () {
-        // Small delay to allow for option selection
         setTimeout(() => {
             $(this).closest('.form-group').removeClass('show');
         }, 150);
     });
 
-    // Site and Group dropdown handlers
     $('#siteGroupDropdown .dropdown-btn').on('click', function (e) {
         e.stopPropagation();
         $('#siteGroupDropdown').toggleClass('show');
@@ -32,7 +31,6 @@
         updateCounts();
     });
 
-    // Site Only dropdown handlers
     $('#siteOnlyDropdown .dropdown-btn').on('click', function (e) {
         e.stopPropagation();
         $('#siteOnlyDropdown').toggleClass('show');
@@ -52,17 +50,15 @@
         if (!$(e.target).closest('#siteOnlyDropdown').length) {
             $('#siteOnlyDropdown').removeClass('show');
         }
-        // Close role dropdown when clicking outside
         if (!$(e.target).closest('#role').length) {
             $('.role-dropdown-container').removeClass('show');
         }
     });
 
-    // Replace this event handler:
     $('#Features input[type="checkbox"]').on('change', function () {
         const selectedRole = $('#role').val();
         if (selectedRole === 'Limited Administrator') {
-            validateFeatureSelection(); // Call validation on every change
+            validateFeatureSelection();
         }
     });
 
@@ -71,7 +67,6 @@
         if (validateForm()) {
             submitUserForm();
         } else {
-            // Reapply error styling if email exists error is present
             const hasEmailExistenceError = $('#emailAddress').next('.error-message').length > 0 &&
                 $('#emailAddress').next('.error-message').text().includes('already exists');
             if (hasEmailExistenceError) {
@@ -84,55 +79,43 @@
     updateSiteOnlyCounts();
     setupModalCloseHandlers();
 });
-
-let emailValidationTimer = null;
 function setupRealTimeEmailValidation() {
     $('#emailAddress').on('input', function () {
         const email = $(this).val().trim();
 
-        // Clear previous timer
         if (emailValidationTimer) {
             clearTimeout(emailValidationTimer);
         }
 
-        // Clear previous validation states
         $(this).removeClass('error');
         $(this).next('.error-message').remove();
         $(this).removeData('hasCustomError');
 
-        // If email is empty, don't validate
         if (email === '') {
             return;
         }
 
-        // Let jQuery validation handle format validation first
         if (!$('#addUserForm').validate().element('#emailAddress')) {
-            return; // Don't check existence if format is invalid
+            return; 
         }
 
-        // Set new timer for debounced validation
         emailValidationTimer = setTimeout(() => {
             checkEmailExistence(email);
-        }, 800); // 800ms delay after user stops typing
+        }, 800);
     });
 
-    // Prevent error styling from being removed on blur or form validation
     $('#emailAddress').on('blur focus', function () {
-        // If there's a custom email existence error, keep the error styling
         if ($(this).data('hasCustomError')) {
             $(this).addClass('error');
         }
     });
 
-    // Override jQuery validation's success method for this field
     const originalSuccessMethod = $('#addUserForm').validate().settings.success;
     $('#addUserForm').validate().settings.success = function (label, element) {
-        // Don't remove error class if we have a custom error
         if ($(element).data('hasCustomError')) {
             $(element).addClass('error');
             return;
         }
-        // Call original success method for other fields
         if (originalSuccessMethod) {
             originalSuccessMethod.call(this, label, element);
         }
@@ -150,10 +133,8 @@ function checkEmailExistence(email) {
                 emailField.addClass('error');
                 emailField.after('<div class="error-message">Email already exists.</div>');
 
-                // Mark field as having custom error to prevent jQuery validation from removing styling
                 emailField.data('hasCustomError', true);
             } else {
-                // Remove custom error flag when email is available
                 emailField.removeData('hasCustomError');
             }
         },
@@ -173,7 +154,6 @@ function setupModalCloseHandlers() {
     });
 }
 function resetModalForm() {
-    // Clear email validation timer
     if (emailValidationTimer) {
         clearTimeout(emailValidationTimer);
         emailValidationTimer = null;
@@ -197,7 +177,6 @@ function resetModalForm() {
     $('#emailAddress').next('.error-message').remove();
     $('#emailAddress').removeData('hasCustomError');
 
-    // Reset role dropdown rotation
     $('.role-dropdown-container').removeClass('show');
 }
 function updateCounts() {
@@ -333,29 +312,22 @@ function submitUserForm() {
 
     let features = [];
 
-    // Handle features based on role
     if (selectedRole === 'Limited Administrator') {
-        // Count total available features for Limited Administrator
         const totalAvailableFeatures = $('#Features input[type="checkbox"]').length;
         const selectedFeaturesCount = $('#Features input[type="checkbox"]:checked').length;
 
-        // If all 12 features are selected, store "All"
         if (selectedFeaturesCount === totalAvailableFeatures && totalAvailableFeatures === 12) {
             features.push('All');
         } else {
-            // Otherwise, store individual feature names
             $('#Features input[type="checkbox"]:checked').each(function () {
                 features.push($(this).attr('id') || $(this).val());
             });
         }
     } else if (selectedRole === 'Remote Support') {
-        // For Remote Support, automatically add Remote Connect
         features.push('Remote Connect');
     } else if (selectedRole === 'Report Viewer') {
-        // For Report Viewer, automatically add Analytics
         features.push('Analytics');
     }
-    // For Super Administrator and Administrator, features array remains empty or is handled differently
 
     let sites = [];
     let siteCount = 0;
@@ -364,7 +336,6 @@ function submitUserForm() {
         sites = ['Site 1', 'Site 2', 'Site 3'];
         siteCount = 3;
     } else if (selectedRole === 'Administrator') {
-        // For Administrator, get sites from site-only dropdown
         $('#siteOnlyDropdown input.site-only:checked').each(function () {
             sites.push($(this).parent().text().trim());
         });
@@ -420,12 +391,23 @@ function submitUserForm() {
         data: JSON.stringify(user),
         success: function (response) {
             $('#AddUserModal').modal('hide');
-
+            const newUserForGrid = {
+                id: user.Email,
+                fullName: user.FullName,           
+                email: user.Email,                
+                userType: user.UserType,       
+                role: user.Role,           
+                siteCount: siteCount,
+                sites: formatSitesForGrid(sites, selectedRole, siteCount),
+                features: formatFeaturesForGrid(features, selectedRole),
+                groups: formatGroupsForGrid(groups, selectedRole, groupCount),
+                groupCount: groupCount,
+                createdOn: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+                lastLogin: 'Never logged in',
+                userManagement: allowUserManagement
+            };
+            addUserToLocalData(newUserForGrid);
             showCreatedToast(user.FullName);
-
-            if (typeof refreshUsersGrid === 'function') {
-                refreshUsersGrid();
-            }
         },
         error: function (xhr) {
             var msg = "Failed to add user.";
@@ -434,13 +416,46 @@ function submitUserForm() {
         }
     });
 }
+function formatSitesForGrid(sites, role, siteCount) {
+    if (role === 'Super Administrator') {
+        return 'All';
+    } else if (siteCount === 0) {
+        return 'No Access to sites';
+    } else if (siteCount === 3) {
+        return 'All';
+    } else {
+        return sites.join(', ');
+    }
+}
+function formatFeaturesForGrid(features, role) {
+    if (role === 'Super Administrator' || role === 'Administrator') {
+        return 'All';
+    } else if (features.length === 0) {
+        return '';
+    } else if (features.includes('All')) {
+        return 'All';
+    } else {
+        return features.join(', ');
+    }
+}
+function formatGroupsForGrid(groups, role, groupCount) {
+    if (role === 'Super Administrator') {
+        return 'All';
+    } else if (groupCount === 0) {
+        return 'No Access to groups';
+    } else if (groupCount === 3) { 
+        return 'All';
+    } else {
+        return groups.join(', ');
+    }
+}
 function showCreatedToast(userName) {
     const messageText = `"${userName}" added successfully. The invite email has been sent to the user.`;
     $('#userAddedMessage').text(messageText);
 
     const createdToastEl = document.getElementById('userAddedToast');
     if (createdToastEl) {
-        const createdToast = new bootstrap.Toast(createdToastEl, { delay: 4000 }); // Increased delay for longer message
+        const createdToast = new bootstrap.Toast(createdToastEl, { delay: 3000 });
         createdToast.show();
     }
 }

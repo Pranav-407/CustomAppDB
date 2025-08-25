@@ -2,26 +2,22 @@
     setupDeleteFunctionality();
 });
 function setupDeleteFunctionality() {
-    // Handle Delete User dropdown item click
     $(document).on('click', 'a.dropdown-item:contains("Delete User")', function (e) {
         e.preventDefault();
         handleDeleteUserClick();
     });
 
-    // NEW: Handle Delete User button click from within Edit User modal
     $(document).on('click', '#deleteUserBtn', function (e) {
         e.preventDefault();
         e.stopPropagation();
         handleDeleteFromEditModal();
     });
 
-    // Handle Delete button in confirmation modal
     $(document).on('click', '#deleteConfirmBtn', function (e) {
         e.preventDefault();
         confirmDeleteUser();
     });
 
-    // Handle Cancel button in confirmation modal
     $(document).on('click', '#deleteCancelBtn', function (e) {
         e.preventDefault();
         $('#deleteConfirmationModal').modal('hide');
@@ -33,7 +29,6 @@ function handleDeleteUserClick() {
         return;
     }
 
-    // Get selected user data from the grid
     const grid = $("#userGrid").dxDataGrid("instance");
     const selectedRowData = grid.getSelectedRowsData();
 
@@ -71,18 +66,15 @@ function confirmDeleteUser() {
         success: function (response) {
             $('#deleteConfirmationModal').modal('hide');
 
-            // NEW: Close Edit User modal if it's open
             if ($('#EditUserModal').hasClass('show')) {
                 $('#EditUserModal').modal('hide');
             }
 
+            removeUserFromLocalData(userData.email);
             showDeletedToast(userData.fullName);
 
-            console.log(selectedDeviceKey);
             selectedDeviceKey = null;
-            console.log(selectedDeviceKey);
 
-            // NEW: Clear grid selection
             if (typeof clearGridSelection === 'function') {
                 clearGridSelection();
             }
@@ -92,7 +84,6 @@ function confirmDeleteUser() {
             }
         },
         error: function (xhr, status, error) {
-            console.error('Failed to delete user:', error);
 
             $('#deleteConfirmationModal').modal('hide');
 
@@ -106,7 +97,6 @@ function confirmDeleteUser() {
                 }
             }
 
-            // NEW: Show error message instead of just logging
             alert(errorMessage);
         },
     });
@@ -121,7 +111,6 @@ function showNoUserSelectedToast() {
 function showDeletedToast(fullName) {
     const deletedToastEl = document.getElementById('userDeletedToast');
     if (deletedToastEl) {
-        // Update the toast message to include the user's name
         const toastBody = deletedToastEl.querySelector('.toast-body');
         if (toastBody) {
             toastBody.innerHTML = `<i class="bi bi-check-circle me-2"></i>"${fullName}" User deleted successfully.`;

@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Data.SqlClient;
+﻿
+using Microsoft.AspNetCore.Mvc;
+using CustomAppDB.DAL;
+using CustomAppDB.Models;
 
 namespace CustomAppDB.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly string _connectionString;
+        private readonly AccountManager _accountManager;
 
-        public AccountController(Microsoft.Extensions.Configuration.IConfiguration configuration)
+        public AccountController(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _accountManager = new AccountManager(configuration);
         }
 
         // -------------------- Logout --------------------
@@ -24,58 +26,40 @@ namespace CustomAppDB.Controllers
         [HttpGet]
         public IActionResult Login() => View();
 
-
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            try
             {
-                conn.Open();
-                string sql = "SELECT * FROM NewUsers WHERE Email = @Email AND Password = @Password";
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                var loginResult = _accountManager.AuthenticateUser(email, password);
+
+                if (loginResult.IsAuthenticated)
                 {
-                    cmd.Parameters.AddWithValue("@Email", email ?? string.Empty);
-                    cmd.Parameters.AddWithValue("@Password", password ?? string.Empty);
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            reader.Read();
-                            var fullName = reader["FullName"]?.ToString();
-                            HttpContext.Session.SetString("FullName", fullName ?? string.Empty);
-                            HttpContext.Session.SetString("Email", reader["Email"]?.ToString() ?? string.Empty);
-                            HttpContext.Session.SetString("Role", reader["Role"]?.ToString() ?? "");
-                            HttpContext.Session.SetString("Features", reader["Features"]?.ToString() ?? "");
-                            bool isUserManagement = false;
-                            if (reader["UserManagement"] != DBNull.Value)
-                                isUserManagement = Convert.ToBoolean(reader["UserManagement"]);
-                            HttpContext.Session.SetString("UserManagement", isUserManagement.ToString());
+                    // Set session variables
+                    HttpContext.Session.SetString("FullName", loginResult.FullName);
+                    HttpContext.Session.SetString("Email", loginResult.Email);
+                    HttpContext.Session.SetString("Role", loginResult.Role);
+                    HttpContext.Session.SetString("Features", loginResult.Features);
+                    HttpContext.Session.SetString("UserManagement", loginResult.UserManagement.ToString());
 
-                            reader.Close();
+                    // Update last login and set session
+                    _accountManager.UpdateLastLogin(email);
+                    string lastLogin = _accountManager.GetFormattedCurrentDateTime();
+                    HttpContext.Session.SetString("LastLogin", lastLogin);
 
-                            string updateSql = "UPDATE NewUsers SET LastLogin = @LastLogin WHERE Email = @Email";
-                            using (SqlCommand updateCmd = new SqlCommand(updateSql, conn))
-                            {
-                                string formattedNow = DateTime.Now.ToString("M/d/yyyy h:mm:ss tt");
-                                updateCmd.Parameters.AddWithValue("@LastLogin", formattedNow);
-                                updateCmd.Parameters.AddWithValue("@Email", email);
-                                updateCmd.ExecuteNonQuery();
-                                HttpContext.Session.SetString("LastLogin", formattedNow);
-                            }
-
-                            conn.Close();
-                            return RedirectToAction("Index", "Home");
-                        }
-                        else
-                        {
-                            ViewBag.Error = "Invalid Email or Password";
-                        }
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
-                conn.Close();
+                else
+                {
+                    ViewBag.Error = "Invalid Email or Password";
+                    return View();
+                }
             }
-            return View();
+            catch (Exception ex)
+            {
+                ViewBag.Error = "An error occurred during login. Please try again.";
+                return View();
+            }
         }
-
     }
 }
